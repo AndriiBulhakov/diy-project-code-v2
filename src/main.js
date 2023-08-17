@@ -4,5 +4,5 @@ import createMap from './scripts/wizard-map'
 import initModel from './scripts/wizard-model'
 
 createMap()
-// callApi()
+callApi()
 initModel()
