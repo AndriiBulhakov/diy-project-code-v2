@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { gsap } from 'gsap'
+// import { gsap } from 'gsap'
 
-import Materials from '../Materials';
+// import Materials from '../Materials';
 
 export default class Manager {
     constructor() {
