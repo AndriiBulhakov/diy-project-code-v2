@@ -1,709 +1,788 @@
 // prettier-ignore
+import './styles/style.css'
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
-import * as THREE from 'three'
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-// import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
-import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js'
+const math = require('canvas-sketch-util/math');
 
-const math = require('canvas-sketch-util/math')
+import PARAMS from './Experience/Utils/PARAMS';
+import Price from './Experience/Utils/Price';
+import Manager from './Experience/Utils/Manager';
 
-const woodColorTextureUrl = require('')
+import Textures from './Experience/Textures.js';
+import Materials from './Experience/Materials.js';
+import PatioSizes from './Experience/Utils/PatioSizes.js';
+
+import House from './Experience/World/House.js'
+import Roof from './Experience/World/Patio/Roof.js'
+import Rafters from './Experience/World/Patio/Rafters.js';
+import Posts from './Experience/World/Patio/Posts';
+import Beams from './Experience/World/Patio/Beams';
+import Lattice from './Experience/World/Patio/Lattice';
+import PatioGroup from './Experience/World/Patio/PatioGroup';
+
+import ShadowFloor from './Experience/World/ShadowFloor';
+import Floor from './Experience/World/Floor';
+import EnterFloor from './Experience/World/EnterFloor';
+
+import DirectionalLight from './Experience/World/DirectionalLight';
+import AreaLight from './Experience/World/AreaLight';
 
 function initModel() {
-  /**
-   * DOC
-   */
-  const canvas = document.querySelector('.webgl')
-  const widthOffset = 0.95
-  const sizes = {
+/**
+ * DOC
+ */
+
+const canvas = document.querySelector(".webgl");
+const widthOffset = 0.95
+const sizes = {
     width: window.innerWidth * widthOffset,
-    height: window.innerHeight,
-  }
-  const mouse = { x: 99999, y: 99999 }
+    height: window.innerHeight
+}
 
-  /**
-   * GUI
-   */
-  const gui = new dat.GUI()
-  const folderCamera = gui.addFolder('camera')
-  const folderDirectionalLight = gui.addFolder('directional light')
-  const folderAreaLight01 = gui.addFolder('area light 01 patio down')
-  const folderAreaLight02 = gui.addFolder('area light 02 patio up')
-  const folderAreaLight03 = gui.addFolder('area light 03 wall front')
-  const folderAreaLight04 = gui.addFolder('area light 04 enter')
-  const folderAreaLight05 = gui.addFolder('area light 05 wall side')
+/**
+ * GUI
+ */
 
-  folderCamera.open()
-  folderDirectionalLight.close()
-  folderAreaLight01.close()
-  folderAreaLight02.close()
-  folderAreaLight03.close()
-  folderAreaLight04.close()
-  folderAreaLight05.close()
+const gui = new dat.GUI({ width: 550 }).open()
 
-  /**
-   * Parameters
-   */
-  const cameraPosition = {}
-  const cameraRotation = {}
+const folderTypes = gui.addFolder('Patio types').close()
+const folderColor = gui.addFolder('Color').close()
+const folderAttachment = gui.addFolder('Attachment').close().show()
+const folderSizes = gui.addFolder('Sizes').close()
+const folderBeams = gui.addFolder('Beams').close()
+const folderPosts = gui.addFolder('Posts').close()
+const folderRafters = gui.addFolder('Rafters').close()
+const folderLattice = gui.addFolder('Lattice').close()
+const folderGuides = gui.addFolder('Guides').close()
+const folderPrice = gui.addFolder('Price').close()
 
-  /**
-   * Loaders
-   */
-  const loadingManager = new THREE.LoadingManager()
-  const textureLoader = new THREE.TextureLoader(loadingManager)
-  const gltfLoader = new GLTFLoader(loadingManager)
+/**
+ * Scene
+ */
 
-  /**
-   * Progress bar
-   */
-  const progressBar = document.getElementById('progress-bar')
-  loadingManager.onProgress = function (url, loaded, total) {
-    progressBar.value = (loaded / total) * 100
-  }
-  const progressBarContainer = document.querySelector('.progress-bar-container')
-  loadingManager.onLoad = function () {
-    progressBarContainer.style.display = 'none'
-  }
+const scene = new THREE.Scene()
+scene.background = new THREE.Color(0xbec9cb)
 
-  /**
-   * TEXTURES
-   */
+const axesHelper = new THREE.AxesHelper(50)
+scene.add(axesHelper)
 
-  // Wood textures
-  const woobColorTexture = textureLoader.load(
-    'https://uploads-ssl.webflow.com/642e62f5ba9679c13f59f5e1/64c261eff4a865088f3b3a3d_ulyobjsn_2K_Albedo.jpg'
-  )
-  woobColorTexture.repeat.x = 6
-  woobColorTexture.repeat.y = 6
-  woobColorTexture.wrapS = THREE.RepeatWrapping
-  woobColorTexture.wrapT = THREE.RepeatWrapping
-  woobColorTexture.offset.x = 0.15
-  const woobAOTexture = textureLoader.load(
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/v02/woodPlank/ulyobjsn_2K_AO.jpg'
-  )
-  woobAOTexture.repeat.x = 6
-  woobAOTexture.repeat.y = 6
-  woobAOTexture.wrapS = THREE.RepeatWrapping
-  woobAOTexture.wrapT = THREE.RepeatWrapping
-  woobAOTexture.offset.x = 0.15
-  const woobNormalTexture = textureLoader.load(
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/v02/woodPlank/ulyobjsn_2K_Normal.jpg'
-  )
-  woobNormalTexture.repeat.x = 6
-  woobNormalTexture.repeat.y = 6
-  woobNormalTexture.wrapS = THREE.RepeatWrapping
-  woobNormalTexture.wrapT = THREE.RepeatWrapping
-  woobNormalTexture.offset.x = 0.15
+/**
+ * TEXTURES
+ */
 
-  // Patio textures
-  // parameters
-  const patiorepeat = 5
-  const patioOffsetX = 0
-  const patioRotation = Math.PI * 0.5
-  // textures
-  const patioColorTexture = textureLoader.load(
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/v02/woodPlank/ulyobjsn_2K_Albedo.jpg'
-  )
-  patioColorTexture.repeat.x = patiorepeat
-  patioColorTexture.repeat.y = patiorepeat
-  patioColorTexture.wrapS = THREE.RepeatWrapping
-  patioColorTexture.wrapT = THREE.RepeatWrapping
-  patioColorTexture.offset.x = patioOffsetX
-  patioColorTexture.rotation = patioRotation
-  const patioAOTexture = textureLoader.load(
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/v02/woodPlank/ulyobjsn_2K_AO.jpg'
-  )
-  patioAOTexture.repeat.x = patiorepeat
-  patioAOTexture.repeat.y = patiorepeat
-  patioAOTexture.wrapS = THREE.RepeatWrapping
-  patioAOTexture.wrapT = THREE.RepeatWrapping
-  patioAOTexture.offset.x = patioOffsetX
-  patioAOTexture.rotation = patioRotation
-  const patioNormalTexture = textureLoader.load(
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/v02/woodPlank/ulyobjsn_2K_Normal.jpg'
-  )
-  patioNormalTexture.repeat.x = patiorepeat
-  patioNormalTexture.repeat.y = patiorepeat
-  patioNormalTexture.wrapS = THREE.RepeatWrapping
-  patioNormalTexture.wrapT = THREE.RepeatWrapping
-  patioNormalTexture.offset.x = patioOffsetX
-  patioNormalTexture.rotation = patioRotation
+const textures = new Textures()
 
-  // concrete
-  const concreteAOTexture = textureLoader.load(
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/v02/stone_terrazzo/vd5iffro_2K_AO.jpg'
-  )
-  concreteAOTexture.repeat.x = 10
-  concreteAOTexture.repeat.y = 10
-  concreteAOTexture.wrapS = THREE.RepeatWrapping
-  concreteAOTexture.wrapT = THREE.RepeatWrapping
+/**
+ * Materials
+ */
 
-  /**
-   * HDRI
-   */
-  const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager)
-  const environmentMapTexture = cubeTextureLoader.load([
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/Standard-Cube-Map/01/px.png',
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/Standard-Cube-Map/01/nx.png',
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/Standard-Cube-Map/01/py.png',
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/Standard-Cube-Map/01/ny.png',
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/Standard-Cube-Map/01/pz.png',
-    'https://resplendent-chimera-ba596d.netlify.app/src/static/textures/Standard-Cube-Map/01/nz.png',
-  ])
+const materials = new Materials()
 
-  /**
-   * Materials
-   */
+// Functions for Material Color GUI
 
-  // Material floor
-  const materialfloor = new THREE.MeshBasicMaterial()
-  materialfloor.color = new THREE.Color(0xbec9cb)
-  materialfloor.side = THREE.DoubleSide
+function changeMaterialColor(material, value) {
+    if (value === 'adobe') {
+        material.map = textures.adobeTextureColor
+    }
 
-  // Shadow material
-  const shadowMaterial = new THREE.ShadowMaterial()
-  shadowMaterial.opacity = 1
+    if (value === 'almond') {
+        material.map = textures.almondTextureColor
+    }
 
-  // Material wood
-  const materialWood = new THREE.MeshStandardMaterial()
-  materialWood.map = woobColorTexture
-  materialWood.aoMap = woobAOTexture
-  materialWood.aoMapIntensity = 10
-  materialWood.normalMap = woobNormalTexture
-  materialWood.normalScale.set(1, 1)
+    if (value === 'belge') {
+        material.map = textures.belgeTextureColor
+    }
 
-  // Material patio
-  const materialPatio = new THREE.MeshStandardMaterial()
-  materialPatio.map = patioColorTexture
-  materialPatio.aoMap = patioAOTexture
-  materialPatio.aoMapIntensity = 10
-  materialPatio.normalMap = patioNormalTexture
-  materialPatio.normalScale.set(1, 1)
+    if (value === 'brown') {
+        material.map = textures.brownTextureColor
+    }
 
-  // Material roof
-  const materialRoof = new THREE.MeshStandardMaterial()
-  materialRoof.color = new THREE.Color(0x303030)
-  materialRoof.metalness = 0
-  materialRoof.roughness = 1
+    if (value === 'cameo') {
+        material.map = textures.cameoTextureColor
+    }
 
-  // Material walls
-  const materialWalls = new THREE.MeshStandardMaterial()
-  materialWalls.color = new THREE.Color('white')
-  materialWalls.map = concreteAOTexture
+    if (value === 'champagne') {
+        material.map = textures.champagneTextureColor
+    }
 
-  materialWalls.metalness = 0.1
-  materialWalls.roughness = 1
+    if (value === 'desert') {
+        material.map = textures.desertTextureColor
+    }
 
-  // Material glass
-  const materialGlass = new THREE.MeshStandardMaterial()
-  materialGlass.color = new THREE.Color('white')
-  materialGlass.metalness = 1
-  materialGlass.roughness = 0
-  materialGlass.envMap = environmentMapTexture
-  materialGlass.envMapIntensity = 0.5
-  materialGlass.transparent = true //set the transparent property to true
-  materialGlass.opacity = 0.5 //and then set the opacity
+    if (value === 'white') {
+        material.map = textures.whiteTextureColor
+    }
 
-  /**
-   * Scene
-   */
+}
 
-  const scene = new THREE.Scene()
-  scene.background = new THREE.Color(0xbec9cb)
+function backUpColors() {
+    // backup colors
+    materials.colorBackup.roofColor = materials.roof.map
+    materials.colorBackup.raftersColor = materials.rafters.map
+    materials.colorBackup.beamsColor = materials.beams.map
+    materials.colorBackup.postsColor = materials.posts.map
+    materials.colorBackup.latticeColor = materials.lattice.map
+}
 
-  const group = new THREE.Group()
-  scene.add(group)
+function updateColors() {
+    //update colors
+    materials.roof.map = materials.general.map;
+    materials.rafters.map = materials.general.map;
+    materials.beams.map = materials.general.map;
+    materials.posts.map = materials.general.map;
+    materials.lattice.map = materials.general.map;
+    roof.updateToMaterial(materials.roof)
+    rafters.updateToMaterial(materials.rafters)
+    beams.updateToMaterial(materials.beams)
+    posts.updateToMaterial(materials.posts)
+    lattice.updateToMaterial(materials.lattice)
 
-  /**
-   * Helpers
-   */
+}
 
-  const gridHelper = new THREE.GridHelper(10, 10, 'red', 'white')
-  // scene.add(gridHelper)
-  const axesHelper = new THREE.AxesHelper(10)
-  // scene.add(axesHelper)
+function returnColors() {
+    // return colors from backup
+    materials.roof.map = materials.colorBackup.roofColor;
+    materials.rafters.map = materials.colorBackup.raftersColor;
+    materials.beams.map = materials.colorBackup.beamsColor;
+    materials.posts.map = materials.colorBackup.postsColor;
+    materials.lattice.map = materials.colorBackup.latticeColor;
+}
 
-  /**
-   * Camera
-   */
+/**
+ * Color GUI
+ */
 
-  const camera = new THREE.PerspectiveCamera(25, sizes.width / sizes.height)
-  scene.add(camera)
+const ctrlColorRoof = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRoof').onChange((value) => {
+    changeMaterialColor(materials.roof, value)
+    roof.updateToMaterial(materials.roof)
+});
 
-  const cameraTarget = new THREE.Vector3(4.76, 2.79, 0)
-  // gui.add(cameraTarget, 'x', -20, 20, 0.01).name('target-x')
-  // gui.add(cameraTarget, 'y', -20, 20, 0.01).name('target-y')
-  // gui.add(cameraTarget, 'z', -20, 20, 0.01).name('target-z')
+const ctrlColorLattice = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorLattice').onChange((value) => {
+    changeMaterialColor(materials.lattice, value)
+    lattice.updateToMaterial(materials.lattice)
+});
 
-  camera.position.x = -16.94
-  camera.position.y = 2.79
-  camera.position.z = -17.69
+const ctrlColorPosts = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorPosts').onChange((value) => {
+    changeMaterialColor(materials.posts, value)
+    posts.updateToMaterial(materials.posts)
+});
 
-  camera.rotation.x = -Math.PI
-  camera.rotation.y = -0.89
-  camera.rotation.z = -Math.PI
+const ctrlColorRafters = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRafters').onChange((value) => {
+    changeMaterialColor(materials.rafters, value)
+    rafters.updateToMaterial(materials.rafters)
+});
 
-  /**
-   * CONTROLS
-   */
+const ctrlColorBeams = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorBeams').onChange((value) => {
+    changeMaterialColor(materials.beams, value)
+    beams.updateToMaterial(materials.beams)
+});
 
-  //  const controls = new OrbitControls(camera, canvas)
-  //  controls.enableDamping = true
-  //  controls.minDistance = 28
-  //  controls.maxDistance = 31
-  //  controls.minPolarAngle = -Math.PI / 2;
-  //  controls.maxPolarAngle = Math.PI / 2;
-  //  controls.minAzimuthAngle = - Math.PI * 0.88
-  //  controls.maxAzimuthAngle = - Math.PI / 1.8
+folderColor.add(materials.parameters, 'combine').name('combine').onChange((value) => {
+    materials.parameters.combine = value
+    if (materials.parameters.combine) {
+        // update GUI
+        ctrlCombineColor.show()
+        ctrlColorRoof.hide()
+        ctrlColorLattice.hide()
+        ctrlColorPosts.hide()
+        ctrlColorRafters.hide()
+        ctrlColorBeams.hide()
 
-  /**
-   *  3D Models
-   */
+        backUpColors() // backup previous material color
+        updateColors() // update to the new material color
 
-  // PLane shadow floor
-  const plane = new THREE.Mesh(new THREE.PlaneGeometry(50, 50), shadowMaterial)
-  scene.add(plane)
-  plane.position.y = 0.05
-  plane.rotation.x = -Math.PI / 2
-  plane.receiveShadow = true
+    }
+    if (!materials.parameters.combine) {
+        // update GUI
+        ctrlCombineColor.hide()
+        ctrlColorRoof.show()
+        ctrlColorLattice.show()
+        ctrlColorPosts.show()
+        ctrlColorRafters.show()
+        ctrlColorBeams.show()
 
-  // DIY Scene v02 gltf scene import
+        returnColors() // return material color from backup
+    }
+});
 
-  gltfLoader.load('https://resplendent-chimera-ba596d.netlify.app/src/static/diy_scene_v02/diy_scene_v02.gltf', (gltf) => {
-    group.add(gltf.scene)
+const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').hide().onChange((value) => {
+    changeMaterialColor(materials.general, value)
+    updateColors() // update to the new material color
+});
 
-    gltf.scene.traverse((child) => {
-      if (child.isMesh) {
-        if (child.name === 'floor') {
-          child.material = materialfloor
+/**
+ * Groups
+ */
+
+// Group for controlling the scene 
+const sceneCtrl = new THREE.Group()
+scene.add(sceneCtrl)
+sceneCtrl.position.set(1, 0, -1)
+
+// Group for controlling PatioGroup
+const patioCtrl = new THREE.Group()
+sceneCtrl.add(patioCtrl)
+patioCtrl.position.set(-1.3, 0, -4.06)
+patioCtrl.rotation.y = Math.PI / 2
+patioCtrl.scale.set(0.263, 0.263, 0.263)
+
+// Patio Group
+const patioGroup = new PatioGroup()
+patioCtrl.add(patioGroup.instance)
+
+/**
+ *  3D Models
+ */
+
+/**
+ * House
+ */
+
+const house = new House()
+sceneCtrl.add(house.instanse, house.enterFloor)
+
+/**
+ * Loaders
+ */
+
+const manager = new Manager()
+
+/**
+ * Patio
+ */
+
+/**
+ * Roof
+ */
+
+const roof = new Roof()
+patioGroup.instance.add(roof.group)
+
+/**
+ * Rafters
+ */
+
+const rafters = new Rafters()
+patioGroup.instance.add(rafters.group)
+
+// Rafters GUI
+folderRafters.add(PARAMS, 'rafterType', ['2x6', '3x8']).name('rafterType').onChange((value) => {
+    rafters.setSize(value)
+    roof.updateGeometry()
+    lattice.setPosition()
+
+    price.update()
+
+})
+
+folderRafters.add(PARAMS, 'rafterMaxDistance', 0.4, 2, 0.1).name('rafterMaxDistance (ft)').onChange((value) => {
+    PARAMS.rafterMaxDistance = value
+    rafters.update()
+    rafters.updateToMaterial(materials.rafters)
+})
+
+/**
+ * Posts
+ */
+
+const posts = new Posts()
+patioGroup.instance.add(posts.backGroup, posts.frontGroup)
+
+// Posts GUI
+folderPosts.add(PARAMS, 'postsType', ['default', '8x8', '10x10', 'D=8', 'D=10']).onChange((value) => {
+    posts.updateType(value)
+    posts.updateToMaterial(materials.posts)
+    beams.update()
+    beams.updateToMaterial(materials.beams)
+
+    price.update()
+
+})
+
+folderPosts.add(PARAMS, 'postsHeight', ['8 ft', '10 ft']).onChange((value) => {
+
+    if (value === '8 ft') {
+        patioGroup.instance.position.y = 8 / 2
+    }
+    if (value === '10 ft') {
+        patioGroup.instance.position.y = 10 / 2
+    }
+
+})
+
+/**
+ * Beams
+**/
+
+const beams = new Beams()
+patioGroup.instance.add(beams.frontGroup, beams.backGroup)
+
+// Beams GUI
+
+folderBeams.add(PARAMS, 'beamsType', ['single', 'double']).name('beamsType').onChange((value) => {
+    if (value === 'single') {
+        ctrlBeamsSizes.hide().reset()
+        PARAMS.beamsSizes.width = 0.66
+        PARAMS.beamsSizes.depth = 0.25
+    }
+    if (value === 'double') {
+        ctrlBeamsSizes.show()
+    }
+
+    PARAMS.beamsType === value
+
+    beams.update()
+    beams.updateToMaterial(materials.beams)
+
+    price.update()
+
+})
+
+const ctrlBeamsSizes = folderBeams.add(PARAMS, 'beamsSizeType', ['6x2', '8x3']).name('beamsSizes').hide().onChange((value) => {
+    if (value === '8x3') {
+        PARAMS.beamsSizes.height = 0.66
+        PARAMS.beamsSizes.depth = 0.25
+    }
+    if (value === '6x2') {
+        PARAMS.beamsSizes.height = 0.5
+        PARAMS.beamsSizes.depth = 0.1667
+    }
+
+    beams.update()
+    beams.updateToMaterial(materials.beams)
+
+    price.update()
+})
+
+/**
+ * Lattice
+ */
+
+const lattice = new Lattice()
+patioGroup.instance.add(lattice.group)
+
+// Lattice GUI
+
+folderLattice.add(PARAMS, 'latticeType', ['2x2', '3x2']).name('latticeType').onChange((value) => {
+    PARAMS.latticeType = value
+    if (PARAMS.latticeType === '2x2') {
+        PARAMS.latticeSizes.height = 0.1667
+        PARAMS.latticeSizes.depth = 0.1667
+    }
+    if (PARAMS.latticeType === '3x2') {
+        PARAMS.latticeSizes.height = 0.1667 // 2 inch
+        PARAMS.latticeSizes.depth = 0.25 // 3 inch
+    }
+
+    lattice.update()
+    lattice.updateToMaterial(materials.lattice)
+
+    price.update()
+
+})
+
+folderLattice.add(PARAMS, 'latticeMaxDistance', 0, 2, 0.0001).name('latticeMaxDistance (ft)').onChange((value) => {
+
+    PARAMS.latticeMaxDistance = value
+
+    lattice.update()
+    lattice.updateToMaterial(materials.lattice)
+})
+
+
+/**
+ * Patio types
+ */
+
+function patioTypesSetup() {
+
+    if (PARAMS.patioType === 'solid') {
+        if (!materials.parameters.combine) {
+            ctrlColorRoof.show()
         }
-        if (child.name === 'glass') {
-          child.material = materialGlass
-        }
-        if (child.name === 'patio') {
-          child.material = materialPatio
-        }
-        if (child.name === 'wallWood' || child.name === 'floorEnter') {
-          child.material = materialWood
-        }
-        if (
-          child.name === 'roof' ||
-          child.name === 'funnel' ||
-          child.name === 'glassFrames'
-        ) {
-          child.material = materialRoof
-        }
-        if (
-          child.name === 'wall' ||
-          child.name === 'curtains' ||
-          child.name === 'patioCurtain' ||
-          child.name === 'door' ||
-          child.name === 'groundFloor' ||
-          child.name === 'fundament'
-        ) {
-          child.material = materialWalls
-        }
-        if (
-          child.name === 'chair01' ||
-          child.name === 'chair02' ||
-          child.name === 'sofa'
-        ) {
-          child.material = materialWalls
+        ctrlColorLattice.hide()
+
+        roof.setScale(1)
+        lattice.setScale(0)
+        beams.setScale(1)
+        posts.update()
+    }
+    if (PARAMS.patioType === 'lattice') {
+        ctrlColorRoof.hide()
+        if (!materials.parameters.combine) {
+            ctrlColorLattice.show()
         }
 
-        child.castShadow = true
-        child.receiveShadow = true
-      }
-    })
-  })
+        roof.setScale(0)
+        lattice.setScale(1)
+        beams.setScale(1)
+        posts.update()
+    }
+    if (PARAMS.patioType === 'insulated') {
+        if (!materials.parameters.combine) {
+            ctrlColorRoof.show()
+        }
+        ctrlColorLattice.hide()
 
-  /**
-   * Light
-   */
+        roof.setScale(1)
+        lattice.setScale(0)
+        beams.setScale(1)
+        posts.update()
+    }
+}
 
-  /**
-   * Directional light
-   */
+patioTypesSetup()
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7)
+folderTypes.add(PARAMS, 'patioType', ['solid', 'lattice', 'insulated']).name('patioTypes').onChange((value) => {
 
-  group.add(directionalLight)
+    PARAMS.patioType = value
 
-  // DIY Lights v02 import light parameters
+    patioTypesSetup()
 
-  gltfLoader.load('https://resplendent-chimera-ba596d.netlify.app/src/static/diy_scene_v02/diy_lights_v02.gltf', (gltf) => {
-    // export coordinates from the scene
-    const infinityLight = gltf.scene.children[4]
-    directionalLight.rotation.x = infinityLight.rotation.x
-    directionalLight.rotation.y = infinityLight.rotation.y
-    directionalLight.rotation.z = infinityLight.rotation.z
-  })
+    price.update()
 
-  directionalLight.position.x = -28.67
-  directionalLight.position.y = 45.91
-  directionalLight.position.z = 19.27
 
-  const dirLightvariantion = { variant: true }
-  folderDirectionalLight
-    .add(dirLightvariantion, 'variant')
-    .name('light variations')
-    .onChange(() => {
-      if (dirLightvariantion.variant) {
-        directionalLight.position.x = -28.67
-        directionalLight.position.y = 45.91
-        directionalLight.position.z = 19.27
-      }
-      if (!dirLightvariantion.variant) {
-        directionalLight.position.x = -10.23
-        directionalLight.position.y = 45.91
-        directionalLight.position.z = -33.59
-      }
-    })
+})
 
-  // folderDirectionalLight.add(directionalLight, 'intensity', 0.1, 2, 0.01).name('dir-light-intensity')
-  folderDirectionalLight
-    .add(directionalLight.position, 'x', -50, 50, 0.01)
-    .name('dir-light-pos-x')
-  folderDirectionalLight
-    .add(directionalLight.position, 'y', 0, 100, 0.01)
-    .name('dir-light-pos-y')
-  folderDirectionalLight
-    .add(directionalLight.position, 'z', -50, 50, 0.01)
-    .name('dir-light-pos-z')
+/**
+ * Shadow floor
+ */
+const shadowFloor = new ShadowFloor()
+sceneCtrl.add(shadowFloor.instance)
 
-  // Shadows
-  directionalLight.shadow.camera.near = 0.5
-  directionalLight.shadow.camera.far = 70
-  directionalLight.shadow.camera.top = 10
-  directionalLight.shadow.camera.right = 10
-  directionalLight.shadow.camera.bottom = -10
-  directionalLight.shadow.camera.left = -10
-  directionalLight.castShadow = true
-  directionalLight.shadow.mapSize.width = 2048
-  directionalLight.shadow.mapSize.height = 2048
-  directionalLight.shadow.intensity = 1
 
-  // directional light camera helper
-  const directionalLightCameraHelper = new THREE.CameraHelper(
-    directionalLight.shadow.camera
-  )
-  // scene.add(directionalLightCameraHelper)
+/**
+ * Floor
+ */
+const floor = new Floor()
+sceneCtrl.add(floor.instance)
 
-  /**
-   * Area light
-   */
+/**
+ * Enter Floor
+ */
+const enterFloor = new EnterFloor()
+sceneCtrl.add(enterFloor.instance)
 
-  // arealight01 patio down
-  const rectAreaLight01 = new THREE.RectAreaLight(0xffffff, 1, 2.3, 2.5)
-  group.add(rectAreaLight01)
-  rectAreaLight01.rotation.x = -Math.PI / 2
 
-  // import arealight01 position
-  gltfLoader.load('https://resplendent-chimera-ba596d.netlify.app/src/static/diy_scene_v02/diy_lights_v02.gltf', (gltf) => {
-    // export coordinates from the scene
-    const areaLight = gltf.scene.children[2]
-    rectAreaLight01.position.x = areaLight.position.x
-    rectAreaLight01.position.y = areaLight.position.y - 0.2
-    rectAreaLight01.position.z = areaLight.position.z
-  })
+/**
+ * Camera
+ */
 
-  const rectAreaLightHelper01 = new RectAreaLightHelper(rectAreaLight01)
-  // scene.add(rectAreaLightHelper01)
+const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height)
+scene.add(camera)
 
-  folderAreaLight01
-    .add(rectAreaLight01, 'intensity', 0, 5, 0.01)
-    .name('area-01-intensity')
-  folderAreaLight01
-    .add(rectAreaLight01, 'width', 0.1, 20, 0.01)
-    .name('area-01-width')
-  folderAreaLight01
-    .add(rectAreaLight01, 'height', 0.1, 10, 0.01)
-    .name('area-01-height')
-  folderAreaLight01
-    .add(rectAreaLight01.position, 'x', -20, 20, 0.01)
-    .name('area-01-pos-x')
-  folderAreaLight01
-    .add(rectAreaLight01.position, 'y', -20, 20, 0.01)
-    .name('area-01-pos-y')
-  folderAreaLight01
-    .add(rectAreaLight01.position, 'z', -20, 20, 0.01)
-    .name('area-01-pos-z')
+camera.position.set(-13.768, 2.4486, -17.997)
+camera.rotation.set(-3.14, -0.65, -3.14)
 
-  folderAreaLight01
-    .add(rectAreaLight01.rotation, 'x', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-01-rot-x')
-  folderAreaLight01
-    .add(rectAreaLight01.rotation, 'y', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-01-rot-y')
-  folderAreaLight01
-    .add(rectAreaLight01.rotation, 'z', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-01-rot-z')
+/**
+ * Controls
+ */
 
-  // arealight02 patio up
-  const rectAreaLight02 = new THREE.RectAreaLight(0xffffff, 0.5, 2.3, 4)
-  group.add(rectAreaLight02)
-  rectAreaLight02.rotation.x = Math.PI / 2
+const controls = new OrbitControls(camera, canvas)
+// controls.enableDamping = true
+controls.enabled = true
+const target = new THREE.Vector3(0, 0, 0)
+target.set(5, 3, 0)
+controls.target.copy(target)
+controls.update()
+controls.maxPolarAngle = Math.PI / 2
+controls.minDistance = 15
+controls.maxDistance = 33
+controls.minAzimuthAngle = - Math.PI * 0.88
+controls.maxAzimuthAngle = - Math.PI / 1.8
 
-  // import arealight02 position
-  gltfLoader.load('https://resplendent-chimera-ba596d.netlify.app/src/static/diy_scene_v02/diy_lights_v02.gltf', (gltf) => {
-    // export coordinates from the scene
-    const areaLight = gltf.scene.children[2]
-    rectAreaLight02.position.x = areaLight.position.x
-    rectAreaLight02.position.y = areaLight.position.y + 0.115
-    rectAreaLight02.position.z = areaLight.position.z
-  })
 
-  const rectAreaLightHelper02 = new RectAreaLightHelper(rectAreaLight02)
-  // scene.add(rectAreaLightHelper02)
+/**
+ * Light
+ */
 
-  folderAreaLight02
-    .add(rectAreaLight02, 'intensity', 0, 5, 0.01)
-    .name('area-02-intensity')
-  folderAreaLight02
-    .add(rectAreaLight02, 'width', 0.1, 20, 0.01)
-    .name('area-02-width')
-  folderAreaLight02
-    .add(rectAreaLight02, 'height', 0.1, 10, 0.01)
-    .name('area-02-height')
-  folderAreaLight02
-    .add(rectAreaLight02.position, 'x', -20, 20, 0.01)
-    .name('area-02-pos-x')
-  folderAreaLight02
-    .add(rectAreaLight02.position, 'y', -20, 20, 0.01)
-    .name('area-02-pos-y')
-  folderAreaLight02
-    .add(rectAreaLight02.position, 'z', -20, 20, 0.01)
-    .name('area-02-pos-z')
 
-  folderAreaLight02
-    .add(rectAreaLight02.rotation, 'x', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-02-rot-x')
-  folderAreaLight02
-    .add(rectAreaLight02.rotation, 'y', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-02-rot-y')
-  folderAreaLight02
-    .add(rectAreaLight02.rotation, 'z', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-02-rot-z')
+/**
+ * Directional light
+ */
 
-  // arealight03 wall
-  const rectAreaLight03 = new THREE.RectAreaLight(0xffffff, 0.8, 8, 7.52)
-  group.add(rectAreaLight03)
-  rectAreaLight03.rotation.x = Math.PI / 2
 
-  rectAreaLight03.position.x = -5.08
-  rectAreaLight03.position.y = 2.3
-  rectAreaLight03.position.z = 0
+const directionalLight = new DirectionalLight()
+sceneCtrl.add(directionalLight.instance)
 
-  rectAreaLight03.rotation.x = 0
-  rectAreaLight03.rotation.y = -Math.PI / 2
-  rectAreaLight03.rotation.z = 0
+/**
+ * Area light
+ */
 
-  folderAreaLight03
-    .add(rectAreaLight03, 'intensity', 0, 5, 0.01)
-    .name('area-03-intensity')
-  folderAreaLight03
-    .add(rectAreaLight03, 'width', 0.1, 20, 0.01)
-    .name('area-03-width')
-  folderAreaLight03
-    .add(rectAreaLight03, 'height', 0.1, 10, 0.01)
-    .name('area-03-height')
-  folderAreaLight03
-    .add(rectAreaLight03.position, 'x', -20, 20, 0.01)
-    .name('area-03-pos-x')
-  folderAreaLight03
-    .add(rectAreaLight03.position, 'y', -20, 20, 0.01)
-    .name('area-03-pos-y')
-  folderAreaLight03
-    .add(rectAreaLight03.position, 'z', -20, 20, 0.01)
-    .name('area-03-pos-z')
+const areaLight = new AreaLight()
+sceneCtrl.add(areaLight.patioBottom, areaLight.patioTop, areaLight.frontWall, areaLight.enter, areaLight.sideWall)
 
-  folderAreaLight03
-    .add(rectAreaLight03.rotation, 'x', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-03-rot-x')
-  folderAreaLight03
-    .add(rectAreaLight03.rotation, 'y', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-03-rot-y')
-  folderAreaLight03
-    .add(rectAreaLight03.rotation, 'z', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-03-rot-z')
+/**
+ * Renderer
+ */
 
-  const rectAreaLightHelper03 = new RectAreaLightHelper(rectAreaLight03)
-  // scene.add(rectAreaLightHelper03)
-
-  // arealight04 enter
-  const rectAreaLight04 = new THREE.RectAreaLight(0xffffff, 1.4, 8, 4)
-  group.add(rectAreaLight04)
-  rectAreaLight04.rotation.x = Math.PI / 2
-
-  rectAreaLight04.position.x = -5.08
-  rectAreaLight04.position.y = 1.32
-  rectAreaLight04.position.z = -8
-
-  rectAreaLight04.rotation.x = 0
-  rectAreaLight04.rotation.y = -Math.PI / 2
-  rectAreaLight04.rotation.z = 0
-
-  folderAreaLight04
-    .add(rectAreaLight04, 'intensity', 0, 5, 0.01)
-    .name('area-04-intensity')
-  folderAreaLight04
-    .add(rectAreaLight04, 'width', 0.1, 20, 0.01)
-    .name('area-04-width')
-  folderAreaLight04
-    .add(rectAreaLight04, 'height', 0.1, 10, 0.01)
-    .name('area-04-height')
-  folderAreaLight04
-    .add(rectAreaLight04.position, 'x', -20, 20, 0.01)
-    .name('area-04-pos-x')
-  folderAreaLight04
-    .add(rectAreaLight04.position, 'y', -20, 20, 0.01)
-    .name('area-04-pos-y')
-  folderAreaLight04
-    .add(rectAreaLight04.position, 'z', -20, 20, 0.01)
-    .name('area-04-pos-z')
-
-  folderAreaLight04
-    .add(rectAreaLight04.rotation, 'x', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-04-rot-x')
-  folderAreaLight04
-    .add(rectAreaLight04.rotation, 'y', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-04-rot-y')
-  folderAreaLight04
-    .add(rectAreaLight04.rotation, 'z', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-04-rot-z')
-
-  const rectAreaLightHelper04 = new RectAreaLightHelper(rectAreaLight04)
-  // scene.add(rectAreaLightHelper04)
-
-  // arealight05 side floor
-  const rectAreaLight05 = new THREE.RectAreaLight(0xffffff, 2.1, 6.3, 5.86)
-  group.add(rectAreaLight05)
-
-  rectAreaLight05.position.set(2.3, 2.3, -12.56)
-  rectAreaLight05.rotation.y = Math.PI
-
-  folderAreaLight05
-    .add(rectAreaLight05, 'intensity', 0, 5, 0.01)
-    .name('area-05-intensity')
-  folderAreaLight05
-    .add(rectAreaLight05, 'width', 0.1, 20, 0.01)
-    .name('area-05-width')
-  folderAreaLight05
-    .add(rectAreaLight05, 'height', 0.1, 10, 0.01)
-    .name('area-05-height')
-  folderAreaLight05
-    .add(rectAreaLight05.position, 'x', -20, 20, 0.01)
-    .name('area-05-pos-x')
-  folderAreaLight05
-    .add(rectAreaLight05.position, 'y', -20, 20, 0.01)
-    .name('area-05-pos-y')
-  folderAreaLight05
-    .add(rectAreaLight05.position, 'z', -20, 20, 0.01)
-    .name('area-05-pos-z')
-
-  folderAreaLight05
-    .add(rectAreaLight05.rotation, 'x', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-05-rot-x')
-  folderAreaLight05
-    .add(rectAreaLight05.rotation, 'y', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-05-rot-y')
-  folderAreaLight05
-    .add(rectAreaLight05.rotation, 'z', -Math.PI * 2, Math.PI * 2, 0.01)
-    .name('area-05-rot-z')
-
-  const rectAreaLightHelper05 = new RectAreaLightHelper(rectAreaLight05)
-  // scene.add(rectAreaLightHelper05)
-
-  /**
-   * Renderer
-   */
-  const renderer = new THREE.WebGLRenderer({
+const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    antialias: true,
-  })
-  renderer.setSize(sizes.width, sizes.height)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    antialias: true
+})
+renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
+renderer.toneMappingExposure = 1
+renderer.toneMapping = THREE.LinearToneMapping
 
-  // Physically accurate lighting
-  renderer.useLegacyLights = false
+function animate() {
 
-  renderer.toneMappingExposure = 1
-  renderer.toneMapping = THREE.LinearToneMapping
+    renderer.render(scene, camera);
 
-  gui.add(renderer, 'toneMapping', {
-    No: THREE.NoToneMapping,
-    Linear: THREE.LinearToneMapping,
-    Reinhard: THREE.ReinhardToneMapping,
-    Cineon: THREE.CineonToneMapping,
-    ACESFilmic: THREE.ACESFilmicToneMapping,
-  })
+    controls.update();
 
-  function animate() {
-    requestAnimationFrame(animate)
+    requestAnimationFrame(animate);
 
-    // controls.update();
+}
 
-    renderer.render(scene, camera)
-  }
+animate();
 
-  animate()
+/**
+ * Resizes
+ */
 
-  /**
-   * Resizes
-   */
-
-  window.addEventListener('resize', () => {
+window.addEventListener('resize', () => {
     // Update sizes
     sizes.width = innerWidth * widthOffset
     sizes.height = innerHeight
 
     //Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
 
     // Update render
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-  })
 
-  /**
-   * CAamera track mouse
-   */
+})
 
-  let dynamicCamera = { status: false }
+/**
+ * Patio attachment
+ */
 
-  folderCamera
-    .add(dynamicCamera, 'status')
-    .name('dynamic')
-    .onChange(() => {
-      if (dynamicCamera.status) {
-        window.addEventListener('mousemove', onMouseMove)
-        console.log('test')
-      }
-      if (!dynamicCamera.status) {
-        window.removeEventListener('mousemove', onMouseMove)
-        console.log('test')
-        group.rotation.y = 0
-      }
-    })
+folderAttachment.add(PARAMS, 'attachment', ['free standing', 'attached']).onChange((value) => {
+    if (value === 'free standing') {
 
-  window.addEventListener('mousemove', onMouseMove)
-  function onMouseMove(event) {
-    mouse.x = (event.clientX / sizes.width) * 2 - 1
-    mouse.y = -((event.clientY / sizes.height) * 2 - 1)
-    group.rotation.y = math.mapRange(mouse.x, 0, 1, 0.05, 0.5)
-  }
+        button10x10.show()
+        button11x11.show()
+        button12x12.show()
+        button12x16.hide()
+        button12x20.hide()
+        button12x24.hide()
 
-  function onMouseMove(event) {
-    mouse.x = (event.clientX / sizes.width) * 2 - 1
-    mouse.y = -((event.clientY / sizes.height) * 2 - 1)
+        if (patioSizes.doCustom) {
+            freeStandingCtrlX.show().setValue(10)
+            freeStandingCtrlZ.show().setValue(10)
+            attachedCtrlX.hide()
+            attachedCtrlZ.hide()
+        }
+        if (!patioSizes.doCustom) {
+            freeStandingCtrlX.hide()
+            freeStandingCtrlZ.hide()
+            attachedCtrlX.hide()
+            attachedCtrlZ.hide()
+        }
+        attachmentType.hide()
 
-    group.rotation.y = math.mapRange(mouse.x, 0, 1, 0.05, 0.5)
-  }
+
+        PARAMS.attachment === 'free standing'
+        const setSize = patioSizes.size10x10()
+        updatePatioSize(setSize)
+        patioGroup.update()
+        beams.setScaleBackGroup(1)
+        house.bigGroup.position.z = 0
+        house.instanse.position.x = 0
+        house.instanse.position.y = 0
+        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        areaLight.enter.position.set(-10.08, 1.32, -8)
+
+    }
+
+    if (value === 'attached') {
+        // GUI
+        button10x10.hide()
+        button11x11.hide()
+        button12x12.hide()
+        button12x16.show()
+        button12x20.show()
+        button12x24.show()
+        if (patioSizes.doCustom) {
+            freeStandingCtrlX.hide()
+            freeStandingCtrlZ.hide()
+            attachedCtrlX.show().setValue(12)
+            attachedCtrlZ.hide().setValue(12)
+        }
+        if (!patioSizes.doCustom) {
+            freeStandingCtrlX.hide()
+            freeStandingCtrlZ.hide()
+            attachedCtrlX.hide()
+            attachedCtrlZ.hide()
+        }
+        attachmentType.show().setValue('roof')
+
+        PARAMS.attachment === 'attached'
+        const setSize = patioSizes.size12x16()
+        updatePatioSize(setSize)
+        patioGroup.update()
+        beams.setScaleBackGroup(0)
+        house.bigGroup.position.z = -0.15
+        house.instanse.position.x = -0.249
+        house.instanse.position.y = -0.29 //-0.236
+        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        areaLight.enter.position.set(-8.5, 1.32, -8)
+        posts.delete()
+        posts.createFront()
+        posts.updateToMaterial(materials.posts)
+
+    }
+})
+
+const attachmentType = folderAttachment.add(PARAMS, 'attachmentType', ['roof', 'fasciaEave', 'underEave', 'wall']).hide().onChange((value) => {
+    if (value === 'roof') {
+        house.instanse.position.x = -0.249
+        house.instanse.position.y = -0.29 //-0.236
+    }
+    if (value === 'fasciaEave') {
+        house.instanse.position.x = -0.171
+        house.instanse.position.y = -0.09
+    }
+    if (value === 'underEave') {
+        house.instanse.position.x = -0.132
+        house.instanse.position.y = 0.168
+    }
+    if (value === 'wall') {
+        house.instanse.position.x = -0.51
+        house.instanse.position.y = 0.35
+    }
+})
+
+/**
+ * Patio Sizes
+ */
+
+const patioSizes = new PatioSizes()
+
+
+function updatePatioSize(value) {
+
+    PARAMS.roofDepth = value[0]
+    PARAMS.roofWidth = value[1]
+
+    patioGroup.update()
+
+    roof.updateGeometry()
+
+    rafters.update()
+    rafters.updateToMaterial(materials.rafters)
+
+    lattice.update()
+    lattice.updateToMaterial(materials.lattice)
+
+    posts.update()
+    posts.updateToMaterial(materials.posts)
+
+    beams.update()
+    beams.updateToMaterial(materials.beams)
+
+    price.update()
+
+}
+
+const button10x10 = folderSizes.add(patioSizes, 'size10x10').name('10x10').show().onChange((value) => {
+    value = patioSizes.size10x10()
+    updatePatioSize(value)
+    house.bigGroup.position.z = 0
+    areaLight.sideWall.position.z = -12.56
+
+})
+const button11x11 = folderSizes.add(patioSizes, 'size11x11').name('11x11').show().onChange((value) => {
+    value = patioSizes.size11x11()
+    updatePatioSize(value)
+    // house.bigGroup.postion.z = 1.18
+})
+const button12x12 = folderSizes.add(patioSizes, 'size12x12').name('12x12').show().onChange((value) => {
+    value = patioSizes.size12x12()
+    updatePatioSize(value)
+    // house.bigGroup.position.z = 0.91
+})
+const button12x16 = folderSizes.add(patioSizes, 'size12x16').name('12x16').hide().onChange((value) => {
+    value = patioSizes.size12x16()
+    updatePatioSize(value)
+
+    house.bigGroup.position.z = -0.15
+    areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+
+})
+const button12x20 = folderSizes.add(patioSizes, 'size12x20').name('12x20').hide().onChange((value) => {
+    value = patioSizes.size12x20()
+    updatePatioSize(value)
+    house.bigGroup.position.z = -1.2
+    areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+
+
+})
+const button12x24 = folderSizes.add(patioSizes, 'size12x24').name('12x24').hide().onChange((value) => {
+    value = patioSizes.size12x24()
+    updatePatioSize(value)
+    house.bigGroup.position.z = -2.25
+    areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+
+
+})
+folderSizes.add(patioSizes, 'doCustom').name('do custom').onChange((value) => {
+    if (value) {
+        if (PARAMS.attachment === 'free standing') {
+            freeStandingCtrlX.show().setValue(10)
+            freeStandingCtrlZ.show().setValue(10)
+
+            attachedCtrlX.hide()
+            attachedCtrlZ.hide()
+        }
+        if (PARAMS.attachment === 'attached') {
+            freeStandingCtrlX.hide()
+            freeStandingCtrlZ.hide()
+
+            attachedCtrlX.show().setValue(12)
+            attachedCtrlZ.hide()
+        }
+
+    }
+    if (!value) {
+        freeStandingCtrlX.hide()
+        freeStandingCtrlZ.hide()
+        attachedCtrlX.hide()
+        attachedCtrlZ.hide()
+    }
+})
+const freeStandingCtrlX = folderSizes.add(PARAMS, 'roofWidth', 10, 12, 0.1).name('roofWidth').hide().onChange((value) => {
+    const updateSize = [PARAMS.roofDepth, value]
+    updatePatioSize(updateSize)
+    house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.25)
+})
+const freeStandingCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 10, 12, 0.1).name('roofDepth').hide().onChange((value) => {
+    const updateSize = [value, PARAMS.roofWidth]
+    updatePatioSize(updateSize)
+})
+
+const attachedCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidth').hide().onChange((value) => {
+    const updateSize = [PARAMS.roofDepth, value]
+    updatePatioSize(updateSize)
+    house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.25)
+})
+const attachedCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 12, 12, 0.1).name('roofDepth').hide().onChange((value) => {
+    const updateSize = [value, PARAMS.roofWidth]
+    updatePatioSize(updateSize)
+})
+
+/**
+ * Patio Price
+ */
+
+const price = new Price(folderPrice)
+price.update()
 }
 
 export default initModel
