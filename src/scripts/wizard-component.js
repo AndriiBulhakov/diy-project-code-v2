@@ -14,6 +14,8 @@ function callApi() {
   const requestBlock = document.querySelector('.request-info');
   const wizardBottomContent = document.querySelector('.wizard-bottom-content');
   const submitButton = document.querySelector('.submit-button');
+  const zipErorr = document.querySelector('.error-text.is-zip');
+
   // API details
   const apiUrl = "https://app.zipcodebase.com";
   const apiKey = "b5cf5250-19a6-11ee-be23-9dc79ba58fcf"
@@ -68,6 +70,8 @@ function callApi() {
         }
       })
     }
+    zipErorr.style.display = 'none';
+    input.style.borderBottom = '1px solid #000000';
     if (code.length === 5 && /^\d+$/.test(code)) {
       try {
         const response = await fetch(
@@ -132,6 +136,9 @@ function callApi() {
         }
       } catch (error) {
         console.error('Error:', error)
+
+        zipErorr.style.display = 'block';
+        input.style.borderBottom = '1px solid #ff6b00';
       }
     } else {
       outputText.forEach(output => {
