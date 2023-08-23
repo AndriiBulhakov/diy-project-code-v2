@@ -1,86 +1,70 @@
+const patioSizes = {
+    sizes: {
+        size10x10: [10, 10],
+        size11x11: [11, 11],
+        size12x12: [12, 12],
+        size12x16: [12, 16],
+        size12x20: [12, 20],
+        size12x24: [12, 24]
+    },
 
-export default class PatioSizes {
-    constructor() {
-
-        this.sizes = {
-
-        }
-
-        this.size10x10 = () => {
-            const patioSizes = [10, 10]
-            return patioSizes
-        }
-        this.size11x11 = () => {
-            const patioSizes = [11, 11]
-            return patioSizes
-        }
-        this.size12x12 = () => {
-            const patioSizes = [12, 12]
-            return patioSizes
-
-        }
-        this.size12x16 = () => {
-            const patioSizes = [12, 16]
-            return patioSizes
-
-        }
-        this.size12x20 = () => {
-            const patioSizes = [12, 20]
-            return patioSizes
-
-        }
-
-        this.size12x24 = () => {
-            const patioSizes = [12, 24]
-            return patioSizes
-        }
-
-        this.doCustom = false
-    }
-
-}
-const patioSizesFunctions = {
-    patioSize10x10: patioSize10x10,
-    patioSize11x11: patioSize11x11,
-    patioSize12x12: patioSize12x12,
-    patioSize12x16: patioSize12x16,
-    patioSize12x20: patioSize12x20,
-    patioSize12x24: patioSize12x24,
     doCustom: false,
-}
 
-function patioSize10x10() {
-    const patioSize11 = [10, 10]
-    return patioSize11
+    size10x10: function() {
+        return this.sizes.size10x10;
+    },
 
-}
-function patioSize11x11() {
-    const patioSize11 = [11, 11]
-    return patioSize11
+    size11x11: function() {
+        return this.sizes.size11x11;
+    },
 
-}
-function patioSize12x12() {
-    const patioSize11 = [12, 12]
-    return patioSize11
+    size12x12: function() {
+        return this.sizes.size12x12;
+    },
 
-}
-function patioSize12x16() {
-    const patioSize11 = [12, 16]
-    return patioSize11
+    size12x16: function() {
+        return this.sizes.size12x16;
+    },
 
-}
-function patioSize12x20() {
-    const patioSize11 = [12, 20]
-    return patioSize11
+    size12x20: function() {
+        return this.sizes.size12x20;
+    },
 
-}
+    size12x24: function() {
+        return this.sizes.size12x24;
+    },
 
-function patioSize12x24() {
-    const patioSize11 = [12, 24]
-    return patioSize11
+    getSize: function(sizeName) {
+        if (this.sizes.hasOwnProperty(sizeName)) {
+            return this.sizes[sizeName];
+        } else {
+            throw new Error(`Size ${sizeName} not found.`);
+        }
+    },
 
-}
+    enableCustomSizes: function() {
+        this.doCustom = true;
+    },
 
-export { patioSizesFunctions, patioSize10x10, patioSize11x11, patioSize12x12, patioSize12x16, patioSize12x20, patioSize12x24 }
+    disableCustomSizes: function() {
+        this.doCustom = false;
+    },
 
+    addCustomSize: function(name, width, length) {
+        if (this.doCustom) {
+            this.sizes[name] = [width, length];
+        } else {
+            throw new Error("Custom sizes can only be added when custom sizes are enabled.");
+        }
+    },
 
+    removeCustomSize: function(name) {
+        if (this.doCustom && this.sizes.hasOwnProperty(name)) {
+            delete this.sizes[name];
+        } else {
+            throw new Error(`Custom size ${name} not found or custom sizes are not enabled.`);
+        }
+    }
+};
+
+export default patioSizes;

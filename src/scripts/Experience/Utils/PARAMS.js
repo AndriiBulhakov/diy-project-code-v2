@@ -1,6 +1,6 @@
 const PARAMS =
 {
-    patioType: 'lattice', // solid, lattice, insulated
+    patioType: 'solid', // solid, lattice, insulated
     patioSizes: '10x10', // '10x10', '11x11', '12x12', '12x16', '12x20', '12x24'
     patioProjection: '10', // '10', '11', '12'
     roofWidth: 10,
