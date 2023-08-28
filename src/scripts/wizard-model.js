@@ -800,9 +800,11 @@ function initModel() {
     const colorList = document.querySelector('#patio-color')
     const postsList = document.querySelector('#patio-posts')
     const sizeList = document.querySelector('#patio-size')
+    const priceInput = document.querySelector('.price-hidden-input');
+    const priceOutput = document.querySelector('.product_total');
 
 
-    //  ---- Control events ----
+    //  ---- Controls events ----
     // Type
     typeList.addEventListener('click', (event) => {
         if(event.target.classList.contains('trigger-button-item')) {
@@ -1058,8 +1060,15 @@ function initModel() {
             }
           }
         }
-      });
+    });
       
+
+    folderPrice.onChange( event => {
+        if(Number(event.controller.object.total) > 0){
+            priceInput.value = event.controller.object.total;
+            priceOutput.innerHTML =  `$${event.controller.object.total}`;
+        }
+    });
 
     /**
      * Patio Price

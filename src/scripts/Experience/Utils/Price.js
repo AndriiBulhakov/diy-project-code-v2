@@ -237,7 +237,7 @@ export default class Price {
 
     total() {
         const summary = this.component.totalRoof + this.component.totalPosts
-        this.numberGUI.total.setValue(`$${this.component.totalRoof.toFixed(2)} + $${this.component.totalPosts} = $${summary.toFixed(2)}`)
+        this.numberGUI.total.setValue(`${summary.toFixed(2)}`)
     }
 
     create() {
