@@ -179,7 +179,6 @@ function callApi() {
               // show requestFormWrapper and hide checkoutFormWrapper
               classRemover(requestFormWrapper, 'is--hidden')
               classAdder(checkoutFormWrapper, 'is--hidden')
-              formChangeToRequest()
               // change input text color
               input.style.color = '#000000'
               // set to the local storage flag that requesteZipCode false
@@ -216,7 +215,6 @@ function callApi() {
       classAdder(tabControls, 'is--hidden')
       classAdder(requestBlock, 'is--hidden')
       classAdder(wizardBottomContent, 'is--hidden')
-      formChangeToRequest()
       
       tabLinksNotClickable()
 
