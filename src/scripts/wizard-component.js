@@ -157,10 +157,6 @@ function callApi() {
               // show checkoutFormWrapper and hide requestFormWrapper
               classRemover(checkoutFormWrapper, 'is--hidden')
               classAdder(requestFormWrapper, 'is--hidden')
-              // show checkout form
-              classRemover(checkoutForm, 'is--hidden')
-              // hide request form
-              classAdder(requestForm, 'is--hidden')
               // set to the local storage flag that requesteZipCode true
               localStorage.setItem('requestedZipCode', true)
               // change input text color
@@ -173,8 +169,7 @@ function callApi() {
               classAdder(checkoutButton, 'is--hidden')
               classAdder(priceWrapper, 'is--hidden')
               classRemover(requestBlock, 'is--hidden')
-              classRemover(requestForm, 'is--hidden')
-              classAdder(checkoutForm, 'is--hidden')
+              
               zipErorr.style.display = 'none';
               // show requestFormWrapper and hide checkoutFormWrapper
               classRemover(requestFormWrapper, 'is--hidden')
