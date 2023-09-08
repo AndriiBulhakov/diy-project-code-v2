@@ -27,6 +27,7 @@ import EnterFloor from './Experience/World/EnterFloor';
 
 import DirectionalLight from './Experience/World/DirectionalLight';
 import AreaLight from './Experience/World/AreaLight';
+import { color } from 'canvas-sketch-util';
 
 
 
@@ -800,9 +801,107 @@ function initModel() {
     const colorList = document.querySelector('#patio-color')
     const postsList = document.querySelector('#patio-posts')
     const sizeList = document.querySelector('#patio-size')
+    const installationList = document.querySelector('#patio-installation')
     const priceInput = document.querySelector('.price-hidden-input');
     const priceOutput = document.querySelector('.product_total');
+    // sizes
+    const customSizeWrapper = document.querySelector('.custom-size-wrapper')
+    const customSizeAttached = document.querySelector('.is--attached-custom-size')
+    const customSizeFreeStanding = document.querySelector('.is--standing-custom-size')
+    const freeStandingSizes = document.querySelector('.free-standing-sizes')
+    const attachedSizes = document.querySelector('.attached-sizes')
+    const freeStandingWidthInput = document.querySelector('#free-standing-width')
+    const freeStandingDepthInput = document.querySelector('#free-standing-length')
+    const attachedWidthInput = document.querySelector('#attached-width')
+    // custom size button
+    const customSizeButton = document.querySelector('#custom-size-btn')
+    // select inputs
+    const typeInput = document.querySelectorAll('[name="Type"]');
+    const typeOutput = document.querySelectorAll('.type-output');
+    const colorInput = document.querySelectorAll('[name="Color"]');
+    const colorOutput = document.querySelectorAll('.color-output');
+    const attachmentInput = document.querySelectorAll('[name="Attachment"]');
+    const attachmentOutput = document.querySelectorAll('.attachment-output');
+    const sizeInput = document.querySelectorAll('[name="Size"]');
+    const sizeOutput = document.querySelectorAll('.size-output');
+    const headerInput = document.querySelectorAll('[name="Header"]');
+    const headerOutput = document.querySelectorAll('.header-output');
+    const postsInput = document.querySelectorAll('[name="Posts"]');
+    const postsOutput = document.querySelectorAll('.posts-output');
+    const accessoriesInput = document.querySelectorAll('[name="Accessories"]');
+    const accessoriesOutput = document.querySelectorAll('.accessories-output');
+    const installationInput = document.querySelectorAll('[name="Installation"]');
+    const installationOutput = document.querySelectorAll('.installation-output');
+    // elements for showing and hiding
+    const requestForm = document.querySelector('.request-form-wrapper');
+    const checkoutForm = document.querySelector('.checkout-form-wrapper');
+    const priceWrapper = document.querySelector('.price-wrapper');
+    const checkoutButton = document.querySelector('.checkout-button');
+    const requestInfo = document.querySelector('.request-info');
 
+    function checkoutState(){
+        requestForm.classList.add('is--hidden');
+        checkoutForm.classList.remove('is--hidden');
+        priceWrapper.classList.remove('is--hidden');
+        checkoutButton.classList.remove('is--hidden');
+        requestInfo.classList.add('is--hidden');
+    }
+
+    function requestState(){
+        requestForm.classList.remove('is--hidden');
+        checkoutForm.classList.add('is--hidden');
+        priceWrapper.classList.add('is--hidden');
+        checkoutButton.classList.add('is--hidden');
+        requestInfo.classList.remove('is--hidden');
+    }
+
+    // function for settin value and placeholder to the input and textContent to the output
+    function setInputOutput(input, output, value) {
+        input.forEach((item) => {
+            item.value = value;
+            item.placeholder = value;
+        })
+        output.forEach((item) => {
+            item.textContent = value;
+        })
+    }
+
+    // set default values to the inputs and outputs
+    setInputOutput(typeInput, typeOutput, 'Solid');
+    setInputOutput(colorInput, colorOutput, 'Adobe');
+    setInputOutput(attachmentInput, attachmentOutput, 'Free Standing');
+    setInputOutput(sizeInput, sizeOutput, '10x10');
+    setInputOutput(headerInput, headerOutput, 'Single beam 3x8');
+    setInputOutput(postsInput, postsOutput, 'Default');
+    setInputOutput(accessoriesInput, accessoriesOutput, 'None');
+    setInputOutput(installationInput, installationOutput, 'Self Installation');
+
+    // function for adding active class to the button
+    function addActiveClass(button) {
+        button.classList.add('active')
+    }
+
+    // function for removing active class from all buttons in list
+    function removeActiveClass(list) {
+        list.querySelectorAll('.button-item').forEach((button) => {
+            button.classList.remove('active')
+        })
+    }
+
+    // function for adding active class to the each first button by default
+    function addActiveClassDefault(list) {
+        list.querySelectorAll('.button-item')[0].classList.add('active');
+    }
+
+    // call addActiveClassDefault function for each list
+    addActiveClassDefault(typeList)
+    addActiveClassDefault(attachmentList)
+    addActiveClassDefault(beamsList)
+    addActiveClassDefault(postsList)
+    addActiveClassDefault(sizeList)
+    addActiveClassDefault(attachedSizes)
+    addActiveClassDefault(freeStandingSizes)
+    addActiveClassDefault(installationList)
 
     //  ---- Controls events ----
     // Type
@@ -811,11 +910,27 @@ function initModel() {
             let typeName = event.target.getAttribute('data-name')
             PARAMS.patioType = typeName.toLowerCase()
             patioTypesSetup()
+            // update value and placeholder of input and textContent of output
+            setInputOutput(typeInput, typeOutput, typeName)
             price.update()
+            removeActiveClass(typeList)
+            addActiveClass(event.target.parentElement)
         }
     })
 
     // Color
+    const colorLists = colorList.querySelectorAll('.button-grid')
+    // Set active button by default for first element of each list
+    colorLists.forEach((list) => {
+        addActiveClassDefault(list)
+        list.addEventListener('click', (event) => {
+            if(event.target.classList.contains('trigger-button-item')){
+                removeActiveClass(list)
+                addActiveClass(event.target.parentElement)
+            }
+        })
+    });
+
     colorList.addEventListener('click', (event) => {
         if(event.target.classList.contains('trigger-button-item')){
             let colorType = event.target.getAttribute('data-type')
@@ -831,6 +946,8 @@ function initModel() {
                 colorChanger(colorType, colorAddType, colorName)
             } else if(colorType === 'combineValue'){
                 colorChanger(colorType, colorAddType, colorName)
+                // update value and placeholder of input and textContent of output
+                setInputOutput(colorInput, colorOutput, colorName)
             }
         }
     })
@@ -844,29 +961,137 @@ function initModel() {
         })
     }
 
+    // color toggle
+    const colorToggleWrapper = document.querySelector('.color-combine-wrapper');
+    const colorTab = document.querySelector('.color-tab');
+    const colorCombine = document.querySelector('.color-combine');
+    const colorTabLinks = colorTab.querySelectorAll('.w-tab-link');
+    const colorTabPanes = colorTab.querySelectorAll('.w-tab-pane');
+
+    if(colorToggleWrapper){
+        colorToggleWrapper.addEventListener('click', () => {
+            colorToggleWrapper.classList.toggle('is--active');
+            colorTab.classList.toggle('is--hidden');
+            colorCombine.classList.toggle('is--hidden');
+            // if colorToggleWrapper is active, then activate first combine color
+            if(colorToggleWrapper.classList.contains('is--active')){
+                folderColor.controllers[5].setValue('adobe')
+                // remove active class from all buttons
+                removeActiveClass(colorLists[colorLists.length - 1]) 
+                // activate first button of last color list
+                colorLists[colorLists.length - 1].querySelectorAll('.button-item')[0].classList.add('active')
+            } else {
+                // if colorToggleWrapper is not active, then activate first color of each list besides last one
+                folderColor.controllers[0].setValue('adobe')
+                folderColor.controllers[1].setValue('adobe')
+                folderColor.controllers[2].setValue('adobe')
+                folderColor.controllers[3].setValue('adobe')
+                folderColor.controllers[4].setValue('adobe')
+                // remove active class from all buttons
+                removeActiveClass(colorLists[0])
+                removeActiveClass(colorLists[1])
+                removeActiveClass(colorLists[2])
+                removeActiveClass(colorLists[3])
+                // activate first button of each list besides last one
+                addActiveClass(colorLists[0].querySelectorAll('.button-item')[0])
+                addActiveClass(colorLists[1].querySelectorAll('.button-item')[0])
+                addActiveClass(colorLists[2].querySelectorAll('.button-item')[0])
+                addActiveClass(colorLists[3].querySelectorAll('.button-item')[0])
+                // reactive all tabs of colors tabs
+                colorTabLinks.forEach((link) => {
+                    link.classList.remove('w--current')
+                })
+                colorTabPanes.forEach((pane) => {
+                    pane.classList.remove('w--tab-active')
+                })
+                // activate first tab of colors tabs
+                colorTabLinks[0].classList.add('w--current')
+                colorTabPanes[0].classList.add('w--tab-active')
+                
+            }
+        })
+    }
+
     // Attachment
     attachmentList.addEventListener('click', (event) => {
         if(event.target.classList.contains('trigger-button-item')) {
             let attachmentName = event.target.getAttribute('data-name')
+            removeActiveClass(attachmentList)
+            addActiveClass(event.target.parentElement)
             if(attachmentName.toLowerCase() === 'free standing'){
                 folderAttachment.controllers[0].setValue('free standing')
                 freeStandingSize()
+                // update value and placeholder of input and textContent of output
+                setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // rectivate all butons of sizes free standing list
+                freeStandingSizes.querySelectorAll('.button-item').forEach((button) => {
+                    button.classList.remove('active')
+                })
+                // reactivate custom size button
+                customSizeButton.classList.remove('active')
+                customSizeHide()
+                // activate first button of sizes free standing list
+                addActiveClass(freeStandingSizes.querySelectorAll('.button-item')[0])
             } else if(attachmentName.toLowerCase() === 'to the wall'){
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('wall')
                 attachedSize()
+                // update value and placeholder of input and textContent of output
+                setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // rectivate all butons of sizes attached list
+                attachedSizes.querySelectorAll('.button-item').forEach((button) => {
+                    button.classList.remove('active')
+                })
+                // reactivate custom size button
+                customSizeButton.classList.remove('active')
+                customSizeHide()
+                // activate first button of sizes attached list
+                addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
             } else if(attachmentName.toLowerCase() === 'to facia/eave'){
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('fasciaEave')
                 attachedSize()
+                // update value and placeholder of input and textContent of output
+                setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // rectivate all butons of sizes attached list
+                attachedSizes.querySelectorAll('.button-item').forEach((button) => {
+                    button.classList.remove('active')
+                })
+                // reactivate custom size button
+                customSizeButton.classList.remove('active')
+                customSizeHide()
+                // activate first button of sizes attached list
+                addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
             } else if(attachmentName.toLowerCase() === 'to under eave'){
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('underEave')
                 attachedSize()
+                // update value and placeholder of input and textContent of output
+                setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // rectivate all butons of sizes attached list
+                attachedSizes.querySelectorAll('.button-item').forEach((button) => {
+                    button.classList.remove('active')
+                })
+                // reactivate custom size button
+                customSizeButton.classList.remove('active')
+                customSizeHide()
+                // activate first button of sizes attached list
+                addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
             } else if(attachmentName.toLowerCase() === 'to the roof'){
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('roof')
                 attachedSize()
+                // update value and placeholder of input and textContent of output
+                setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // rectivate all butons of sizes attached list
+                attachedSizes.querySelectorAll('.button-item').forEach((button) => {
+                    button.classList.remove('active')
+                })
+                // reactivate custom size button
+                customSizeButton.classList.remove('active')
+                customSizeHide()
+                // activate first button of sizes attached list
+                addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
             }
         }
     })
@@ -876,18 +1101,25 @@ function initModel() {
         if(event.target.classList.contains('trigger-button-item')) {
             let beamsName = event.target.getAttribute('data-type')
             let beamsTypeSize = event.target.getAttribute('data-size-type')
+            removeActiveClass(beamsList)
+            addActiveClass(event.target.parentElement)
             if(beamsName.toLowerCase() === 'single'){
                 folderBeams.controllers[0].setValue('single')
+                // update value and placeholder of input and textContent of output
+                setInputOutput(headerInput, headerOutput, 'Single 3x8')
             } else if(beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '8x3'){
+                // update value and placeholder of input and textContent of output
+                setInputOutput(headerInput, headerOutput, 'Double 8x3')
                 folderBeams.controllers[0].setValue('double')
                 folderBeams.controllers[1].setValue('8x3')
             } else if(beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '6x2'){
+                // update value and placeholder of input and textContent of output
+                setInputOutput(headerInput, headerOutput, 'Double 6x2')
                 folderBeams.controllers[0].setValue('double')
                 folderBeams.controllers[1].setValue('6x2')
             } 
             beams.update()
             beams.updateToMaterial(materials.beams)
-
             price.update()
         }
     })
@@ -908,23 +1140,33 @@ function initModel() {
     postsList.addEventListener('click', (event) => {
         if(event.target.classList.contains('trigger-button-item')) {
             let postsName = event.target.getAttribute('data-type')
+            removeActiveClass(postsList)
+            addActiveClass(event.target.parentElement)
             if(postsName.toLowerCase() === 'default'){
                 postsSelectsWrapper.classList.add('is--hidden')
                 folderPosts.controllers[0].setValue('default')
                 folderPosts.controllers[1].setValue('8 ft')
+                // update value and placeholder of input and textContent of output
+                setInputOutput(postsInput, postsOutput, 'Default')
             } else if(postsName.toLowerCase() === 'square'){
                 postsSelectsWrapper.classList.remove('is--hidden')
                 postsSelectsSquare.classList.remove('is--hidden')
                 postsSelectsRound.classList.add('is--hidden')
                 folderPosts.controllers[0].setValue('8x8')
                 folderPosts.controllers[1].setValue('8 ft')
+                // update value and placeholder of input and textContent of output
+                setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
                 postsSelectSquareWide.addEventListener('change', (event) => {
                     let postsWideSize = postsSelectSquareWide.value
                     
                     if(postsWideSize.toLowerCase() === 'wide 8'){
                         folderPosts.controllers[0].setValue('8x8')
+                        // update value and placeholder of input and textContent of output
+                        setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
                     } else if(postsWideSize.toLowerCase() === 'wide 10'){
                         folderPosts.controllers[0].setValue('10x10')
+                        // update value and placeholder of input and textContent of output
+                        setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
                     }
                 })
                 postsSelectSquareTall.addEventListener('change', (event) => {
@@ -932,8 +1174,10 @@ function initModel() {
                     
                     if(postsTallSize.toLowerCase() === 'tall 8'){
                         folderPosts.controllers[1].setValue('8 ft')
+                        setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
                     } else if(postsTallSize.toLowerCase() === 'tall 10'){
                         folderPosts.controllers[1].setValue('10 ft')
+                        setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
                     }
                 })
             } else if(postsName.toLowerCase() === 'round'){
@@ -942,23 +1186,28 @@ function initModel() {
                 postsSelectsSquare.classList.add('is--hidden')
                 folderPosts.controllers[0].setValue('D=8')
                 folderPosts.controllers[1].setValue('8 ft')
-
+                // update value and placeholder of input and textContent of output
+                setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                 postsSelectRoundWide.addEventListener('change', (event) => {
                     let postsWideSize = postsSelectRoundWide.value
-                    
+                    setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     if(postsWideSize.toLowerCase() === 'wide 8'){
                         folderPosts.controllers[0].setValue('D=8')
+                        setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     } else if(postsWideSize.toLowerCase() === 'wide 10'){
                         folderPosts.controllers[0].setValue('D=10')
+                        setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     }
                 })
                 postsSelectRoundTall.addEventListener('change', (event) => {
                     let postsTallSize = postsSelectRoundTall.value
-                    
+                    setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     if(postsTallSize.toLowerCase() === 'tall 8'){
                         folderPosts.controllers[1].setValue('8 ft')
+                        setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     } else if(postsTallSize.toLowerCase() === 'tall 10'){
                         folderPosts.controllers[1].setValue('10 ft')
+                        setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     }
                 })
             }
@@ -966,15 +1215,6 @@ function initModel() {
     })
 
     // Size
-    const customSizeWrapper = document.querySelector('.custom-size-wrapper')
-    const customSizeAttached = document.querySelector('.is--attached-custom-size')
-    const customSizeFreeStanding = document.querySelector('.is--standing-custom-size')
-    const freeStandingSizes = document.querySelector('.free-standing-sizes')
-    const attachedSizes = document.querySelector('.attached-sizes')
-    const freeStandingWidthInput = document.querySelector('#free-standing-width')
-    const freeStandingDepthInput = document.querySelector('#free-standing-length')
-    const attachedWidthInput = document.querySelector('#attached-width')
-
     function connectInputWithController(input, controller, min, max) {
         input.addEventListener('input', (event) => {
             let value = parseFloat(event.target.value);
@@ -989,13 +1229,11 @@ function initModel() {
                 value = max;
             }
     
-            event.target.value = value.toFixed(1); // Округлення до одного знаку після коми
+            event.target.value = value.toFixed(1);
     
             controller.setValue(value);
         });
     }
-
-    console.log(folderSizes.controllers)
 
     connectInputWithController(freeStandingWidthInput, folderSizes.controllers[7], 10, 12)
     connectInputWithController(freeStandingDepthInput, folderSizes.controllers[8], 10, 12)
@@ -1034,25 +1272,34 @@ function initModel() {
         attachedSizes.classList.remove('is--hidden')
     }
 
-
-
     sizeList.addEventListener('click', (event) => {
         if (event.target.classList.contains('trigger-button-item')) {
           let sizeName = event.target.getAttribute('data-type');
-      
+          removeActiveClass(sizeList)
+          addActiveClass(event.target.parentElement)
           // Loop through the controllers to find a match
           for (const controller of folderSizes.controllers) {
-            
             const controllerProperty = controller.property.replace('size', '');
+            
             if (controllerProperty === sizeName) {
-              customSizeHide();
-              controller.setValue(true);
+                // reset all inputs for sizes
+                freeStandingWidthInput.value = 10.0
+                freeStandingDepthInput.value = 10.0
+                attachedWidthInput.value = 12.0
+                customSizeHide();
+                controller.setValue(true);
+                // if local storage requestedZipCode is not false, then call checkoutState function, else call requestState function
+                if(localStorage.getItem('requestedZipCode') !== 'false'){
+                    checkoutState();
+                }
             }
           }
       
           // Handle the 'custom' case
           if (sizeName === 'custom') {
             customSizeShow();
+            // call func request state
+            requestState()
             if (PARAMS.attachment === 'free standing') {
               freeStandingSize();
             } else if (PARAMS.attachment === 'attached') {
@@ -1069,6 +1316,44 @@ function initModel() {
             priceOutput.innerHTML =  `$${event.controller.object.total}`;
         }
     });
+
+    // Installation
+    installationList.addEventListener('click', (event) => {
+        if(event.target.classList.contains('button-item')) {
+            removeActiveClass(installationList)
+            addActiveClass(event.target)
+        }
+    });
+
+    // summury
+
+
+    // Monday
+
+    document.getElementById('request-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Retrieve form data from input field
+        const itemName = document.getElementById('Name').value;
+        let query3 = `mutation{ create_item (board_id:1176396712, item_name:${itemName}){ id}}`;
+        // Call a function to send API request with the form data
+        createTableElement(query3);
+    });
+      
+    function createTableElement(query){
+        fetch ("https://api.monday.com/v2", {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI0OTMwMjM5NiwidWlkIjo0MTg3NzcwNCwiaWFkIjoiMjAyMy0wNC0wNlQwNzoxMToxMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTY0MDcyNTksInJnbiI6ImV1YzEifQ.6RSZtUamQ50F4VGrpJk3DNYo5gLYlkN3F3DOMrrlm2w'
+            },
+            body: JSON.stringify({
+                'query' : query
+            })
+        })
+        .then(res => res.json())
+        .then(res => console.log(JSON.stringify(res, null, 2)));
+    };
+
 
     /**
      * Patio Price
