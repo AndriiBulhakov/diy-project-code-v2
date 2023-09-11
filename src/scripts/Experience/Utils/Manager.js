@@ -1,30 +1,32 @@
 import * as THREE from 'three';
-// import { gsap } from 'gsap'
 
-// import Materials from '../Materials';
+import Materials from '../Materials';
+
+
 
 export default class Manager {
-    constructor() {
+    constructor(progressBarContainer, progressBar) {
 
-        this.loaded = false
-        this.progressRatio = 0
+        this.progressBarContainer = progressBarContainer
+        this.progressBar = progressBar
 
-        this.loading = new THREE.LoadingManager(
+        this.loader = new THREE.LoadingManager(
             // Loaded
             () => {
-                console.log('loaded');
+                // console.log('loaded');
+                this.progressBarContainer.style.display = 'none'
             },
 
             // Progress
-            (itemUrl, itemsLoaded, itemsTotal) => {
-                this.progressRatio = itemsLoaded / itemsTotal
+            (url, loaded, total) => {
+                // console.log('progress');
+                this.progressBar.value = (loaded / total) * 100
+
             }
         )
+
     }
 
-    onLoadComplete() {
-        this.loaded = true
-        this.material.opacity = 0
-    }
+
 }
 

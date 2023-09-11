@@ -9,6 +9,7 @@ import PARAMS from './Experience/Utils/PARAMS';
 import Price from './Experience/Utils/Price';
 import Manager from './Experience/Utils/Manager';
 
+import Color from './Experience/Utils/Color';
 import Textures from './Experience/Textures.js';
 import Materials from './Experience/Materials.js';
 import patioSizes from './Experience/Utils/PatioSizes.js';
@@ -24,10 +25,11 @@ import PatioGroup from './Experience/World/Patio/PatioGroup';
 import ShadowFloor from './Experience/World/ShadowFloor';
 import Floor from './Experience/World/Floor';
 import EnterFloor from './Experience/World/EnterFloor';
+import PlaneDepth from './Experience/World/PlaneDepth';
 
 import DirectionalLight from './Experience/World/DirectionalLight';
 import AreaLight from './Experience/World/AreaLight';
-import { color } from 'canvas-sketch-util';
+
 
 
 
@@ -45,6 +47,7 @@ function initModel() {
      * DOC
      */
 
+    const mouse = { x: 99999, y: 99999 }
     const canvas = document.querySelector(".webgl");
     const widthOffset = 0.95
     const sizes = {
@@ -70,6 +73,14 @@ function initModel() {
     const folderPrice = gui.addFolder('Price').close()
 
     /**
+    * Loader
+    */
+    const progressBar = document.getElementById('progress-bar')
+    const progressBarContainer = document.querySelector(".progress-bar-container")
+
+    const manager = new Manager(progressBarContainer, progressBar)
+
+    /**
      * Scene
      */
 
@@ -77,7 +88,15 @@ function initModel() {
     scene.background = new THREE.Color(0xbec9cb)
 
     const axesHelper = new THREE.AxesHelper(50)
-    scene.add(axesHelper)
+    // scene.add(axesHelper)
+
+    const cubeTarger = new THREE.Mesh(
+        new THREE.BoxGeometry(0.25, 0.25, 0.25),
+        new THREE.MeshBasicMaterial()
+    )
+
+    scene.add(cubeTarger)
+    cubeTarger.position.set(5, 5, 0)
 
     /**
      * TEXTURES
@@ -89,7 +108,13 @@ function initModel() {
      * Materials
      */
 
-    const materials = new Materials()
+    const materials = new Materials(manager.loader)
+
+    /**
+     * Color
+     */
+
+    const color = new Color()
 
     // Functions for Material Color GUI
 
@@ -166,27 +191,27 @@ function initModel() {
      */
 
     const ctrlColorRoof = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRoof').onChange((value) => {
-        changeMaterialColor(materials.roof, value)
+        color.changeMaterialColor(materials.roof, value)
         roof.updateToMaterial(materials.roof)
     });
 
     const ctrlColorLattice = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorLattice').onChange((value) => {
-        changeMaterialColor(materials.lattice, value)
+        color.changeMaterialColor(materials.lattice, value)
         lattice.updateToMaterial(materials.lattice)
     });
 
     const ctrlColorPosts = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorPosts').onChange((value) => {
-        changeMaterialColor(materials.posts, value)
+        color.changeMaterialColor(materials.posts, value)
         posts.updateToMaterial(materials.posts)
     });
 
     const ctrlColorRafters = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRafters').onChange((value) => {
-        changeMaterialColor(materials.rafters, value)
+        color.changeMaterialColor(materials.rafters, value)
         rafters.updateToMaterial(materials.rafters)
     });
 
     const ctrlColorBeams = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorBeams').onChange((value) => {
-        changeMaterialColor(materials.beams, value)
+        color.changeMaterialColor(materials.beams, value)
         beams.updateToMaterial(materials.beams)
     });
 
@@ -201,26 +226,26 @@ function initModel() {
             ctrlColorRafters.hide()
             ctrlColorBeams.hide()
 
-            backUpColors() // backup previous material color
-            updateColors() // update to the new material color
+            color.backUpColors(materials) // backup previous material color
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
 
         }
         if (!materials.parameters.combine) {
             // update GUI
-            ctrlCombineColor.show()
+            ctrlCombineColor.hide()
             ctrlColorRoof.show()
             ctrlColorLattice.show()
             ctrlColorPosts.show()
             ctrlColorRafters.show()
             ctrlColorBeams.show()
 
-            returnColors() // return material color from backup
+            color.returnColors(materials) // return material color from backup
         }
     });
 
-    const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').onChange((value) => {
-        changeMaterialColor(materials.general, value)
-        updateColors() // update to the new material color
+    const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').hide().onChange((value) => {
+        color.changeMaterialColor(materials.general, value)
+        color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
     });
 
     /**
@@ -253,12 +278,6 @@ function initModel() {
 
     const house = new House()
     sceneCtrl.add(house.instanse, house.enterFloor)
-
-    /**
-     * Loaders
-     */
-
-    const manager = new Manager()
 
     /**
      * Patio
@@ -789,6 +808,9 @@ function initModel() {
         updatePatioSize(updateSize)
     })
 
+    /** !!!!!!!!!!!!!!
+     *  BULHAKOV
+     !!!!!!!!!!!!!! */
 
     /*
         Controls
