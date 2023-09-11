@@ -3,11 +3,15 @@ import * as dat from 'lil-gui'
 import PARAMS from '../Utils/PARAMS'
 import Materials from '../Materials'
 
+import House from './House'
+
 export default class EnterFloor {
     constructor() {
 
         // this.gui = new dat.GUI()
         this.materials = new Materials()
+
+        this.house = new House()
 
         this.center = new THREE.Vector3(-0.75, 0, -6.5)
 
@@ -31,9 +35,7 @@ export default class EnterFloor {
     }
 
     setPosition() {
-        this.instance.position.x = this.center.x
-        this.instance.position.y = this.center.y
-        this.instance.position.z = this.center.z
+        this.instance.position.set(this.house.instanse.position.x - 0.75, 0, this.house.instanse.position.z - 6.5)
 
     }
 

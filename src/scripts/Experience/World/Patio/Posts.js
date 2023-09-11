@@ -16,6 +16,8 @@ export default class Posts {
         this.maxDistance = null
         this.maxBlocks = null
 
+        this.beamsOffset
+
         this.setPosition()
         this.setAsset()
         this.create()
@@ -27,7 +29,16 @@ export default class Posts {
         this.backGroup.position.z = PARAMS.roofDepth / 2 - 1
     }
 
+
+    checkBeams() {
+        if (PARAMS.beamsType === 'single') this.beamsOffset = PARAMS.beamsSizes.height * 2
+        if (PARAMS.beamsType === 'double') this.beamsOffset = 0
+    }
+
     setAsset() {
+
+        this.checkBeams()
+
         this.postSide01 = new THREE.Mesh(
             new THREE.BoxGeometry(PARAMS.postsSizes.widthSide, PARAMS.postsSizes.height, PARAMS.postsSizes.depthSide),
             this.materials.posts
@@ -215,14 +226,17 @@ export default class Posts {
     }
 
     setGeometry() {
+
+        this.checkBeams()
+
         if (PARAMS.postsSizes.diametr) {
             this.postSide01.geometry = new THREE.BoxGeometry(PARAMS.postsSizes.widthSide, PARAMS.postsSizes.height, PARAMS.postsSizes.depthSide)
             this.postSide02.geometry = new THREE.BoxGeometry(PARAMS.postsSizes.widthSide, PARAMS.postsSizes.height, PARAMS.postsSizes.depthSide)
             this.postCenter.geometry = new THREE.CylinderGeometry(PARAMS.postsSizes.diametr, PARAMS.postsSizes.diametr, PARAMS.postsSizes.height, 32, 4)
         }
         if (PARAMS.postsSizes.widthCenter) {
-            this.postSide01.geometry = new THREE.BoxGeometry(PARAMS.postsSizes.widthSide, PARAMS.postsSizes.height, PARAMS.postsSizes.depthSide)
-            this.postSide02.geometry = new THREE.BoxGeometry(PARAMS.postsSizes.widthSide, PARAMS.postsSizes.height, PARAMS.postsSizes.depthSide)
+            this.postSide01.geometry = new THREE.BoxGeometry(PARAMS.postsSizes.widthSide, PARAMS.postsSizes.height + this.beamsOffset, PARAMS.postsSizes.depthSide)
+            this.postSide02.geometry = new THREE.BoxGeometry(PARAMS.postsSizes.widthSide, PARAMS.postsSizes.height + this.beamsOffset, PARAMS.postsSizes.depthSide)
             this.postCenter.geometry = new THREE.BoxGeometry(PARAMS.postsSizes.widthCenter, PARAMS.postsSizes.height, PARAMS.postsSizes.depthCenter)
         }
     }
@@ -236,6 +250,7 @@ export default class Posts {
     }
 
     update() {
+        this.setGeometry()
         this.delete()
         if (PARAMS.attachment === 'free standing')
             this.create()

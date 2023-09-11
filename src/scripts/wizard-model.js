@@ -9,9 +9,12 @@ import PARAMS from './Experience/Utils/PARAMS';
 import Price from './Experience/Utils/Price';
 import Manager from './Experience/Utils/Manager';
 
+import Color from './Experience/Utils/Color';
 import Textures from './Experience/Textures.js';
 import Materials from './Experience/Materials.js';
 import patioSizes from './Experience/Utils/PatioSizes.js';
+
+import ClassSizes from './Experience/Utils/classSizes';
 
 import House from './Experience/World/House.js'
 import Roof from './Experience/World/Patio/Roof.js'
@@ -24,10 +27,11 @@ import PatioGroup from './Experience/World/Patio/PatioGroup';
 import ShadowFloor from './Experience/World/ShadowFloor';
 import Floor from './Experience/World/Floor';
 import EnterFloor from './Experience/World/EnterFloor';
+import PlaneDepth from './Experience/World/PlaneDepth';
 
 import DirectionalLight from './Experience/World/DirectionalLight';
 import AreaLight from './Experience/World/AreaLight';
-import { color } from 'canvas-sketch-util';
+
 
 
 
@@ -41,9 +45,28 @@ const size12x24Wrapper = () => patioSizes.size12x24();
 
 
 function initModel() {
+
+    /**
+     * Hover
+     */
+
+    const mouse = { x: 99999, y: 99999 }
+
+    window.addEventListener('mousemove', onMouseMove)
+
+    function onMouseMove(event) {
+        mouse.x = event.clientX / sizes.width * 2 - 1
+        mouse.y = - (event.clientY / sizes.height * 2 - 1);
+
+        rotationGroup.rotation.y = math.mapRange(mouse.x, 0, 1, -0.016, 0.016)
+
+        console.log('check');
+    }
+
     /**
      * DOC
      */
+
 
     const canvas = document.querySelector(".webgl");
     const widthOffset = 0.95
@@ -69,6 +92,22 @@ function initModel() {
     const folderGuides = gui.addFolder('Guides').close()
     const folderPrice = gui.addFolder('Price').close()
 
+
+    /**
+     * Patio Price
+     */
+
+    const price = new Price(folderPrice)
+    price.update()
+
+    /**
+     * Loader
+     */
+    const progressBar = document.getElementById('progress-bar')
+    const progressBarContainer = document.querySelector(".progress-bar-container")
+
+    const manager = new Manager(progressBarContainer, progressBar)
+
     /**
      * Scene
      */
@@ -77,7 +116,16 @@ function initModel() {
     scene.background = new THREE.Color(0xbec9cb)
 
     const axesHelper = new THREE.AxesHelper(50)
-    scene.add(axesHelper)
+    // scene.add(axesHelper)
+
+    const cubeTarger = new THREE.Mesh(
+        new THREE.BoxGeometry(0.25, 0.25, 0.25),
+        new THREE.MeshBasicMaterial()
+    )
+
+    // scene.add(cubeTarger)
+    cubeTarger.position.set(5, 5, 0)
+
 
     /**
      * TEXTURES
@@ -89,104 +137,42 @@ function initModel() {
      * Materials
      */
 
-    const materials = new Materials()
+    const materials = new Materials(manager.loader)
+
+    /**
+     * Color
+     */
+
+    const color = new Color()
 
     // Functions for Material Color GUI
-
-    function changeMaterialColor(material, value) {
-        if (value === 'adobe') {
-            material.map = textures.adobeTextureColor
-        }
-
-        if (value === 'almond') {
-            material.map = textures.almondTextureColor
-        }
-
-        if (value === 'belge') {
-            material.map = textures.belgeTextureColor
-        }
-
-        if (value === 'brown') {
-            material.map = textures.brownTextureColor
-        }
-
-        if (value === 'cameo') {
-            material.map = textures.cameoTextureColor
-        }
-
-        if (value === 'champagne') {
-            material.map = textures.champagneTextureColor
-        }
-
-        if (value === 'desert') {
-            material.map = textures.desertTextureColor
-        }
-
-        if (value === 'white') {
-            material.map = textures.whiteTextureColor
-        }
-
-    }
-
-    function backUpColors() {
-        // backup colors
-        materials.colorBackup.roofColor = materials.roof.map
-        materials.colorBackup.raftersColor = materials.rafters.map
-        materials.colorBackup.beamsColor = materials.beams.map
-        materials.colorBackup.postsColor = materials.posts.map
-        materials.colorBackup.latticeColor = materials.lattice.map
-    }
-
-    function updateColors() {
-        //update colors
-        materials.roof.map = materials.general.map;
-        materials.rafters.map = materials.general.map;
-        materials.beams.map = materials.general.map;
-        materials.posts.map = materials.general.map;
-        materials.lattice.map = materials.general.map;
-        roof.updateToMaterial(materials.roof)
-        rafters.updateToMaterial(materials.rafters)
-        beams.updateToMaterial(materials.beams)
-        posts.updateToMaterial(materials.posts)
-        lattice.updateToMaterial(materials.lattice)
-
-    }
-
-    function returnColors() {
-        // return colors from backup
-        materials.roof.map = materials.colorBackup.roofColor;
-        materials.rafters.map = materials.colorBackup.raftersColor;
-        materials.beams.map = materials.colorBackup.beamsColor;
-        materials.posts.map = materials.colorBackup.postsColor;
-        materials.lattice.map = materials.colorBackup.latticeColor;
-    }
 
     /**
      * Color GUI
      */
 
     const ctrlColorRoof = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRoof').onChange((value) => {
-        changeMaterialColor(materials.roof, value)
+        color.changeMaterialColor(materials.roof, value)
         roof.updateToMaterial(materials.roof)
     });
 
     const ctrlColorLattice = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorLattice').onChange((value) => {
-        changeMaterialColor(materials.lattice, value)
+        color.changeMaterialColor(materials.lattice, value)
         lattice.updateToMaterial(materials.lattice)
     });
 
     const ctrlColorPosts = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorPosts').onChange((value) => {
-        changeMaterialColor(materials.posts, value)
+        color.changeMaterialColor(materials.posts, value)
         posts.updateToMaterial(materials.posts)
     });
 
     const ctrlColorRafters = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRafters').onChange((value) => {
-        changeMaterialColor(materials.rafters, value)
+        color.changeMaterialColor(materials.rafters, value)
         rafters.updateToMaterial(materials.rafters)
     });
 
     const ctrlColorBeams = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorBeams').onChange((value) => {
-        changeMaterialColor(materials.beams, value)
+        color.changeMaterialColor(materials.beams, value)
         beams.updateToMaterial(materials.beams)
     });
 
@@ -201,36 +187,47 @@ function initModel() {
             ctrlColorRafters.hide()
             ctrlColorBeams.hide()
 
-            backUpColors() // backup previous material color
-            updateColors() // update to the new material color
+            color.backUpColors(materials) // backup previous material color
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
 
         }
         if (!materials.parameters.combine) {
             // update GUI
-            ctrlCombineColor.show()
+            ctrlCombineColor.hide()
             ctrlColorRoof.show()
             ctrlColorLattice.show()
             ctrlColorPosts.show()
             ctrlColorRafters.show()
             ctrlColorBeams.show()
 
-            returnColors() // return material color from backup
+            color.returnColors(materials) // return material color from backup
         }
     });
 
-    const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').onChange((value) => {
-        changeMaterialColor(materials.general, value)
-        updateColors() // update to the new material color
+    const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').hide().onChange((value) => {
+        color.changeMaterialColor(materials.general, value)
+        color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
     });
+
 
     /**
      * Groups
      */
 
+    const rotationGroup = new THREE.Group()
+    scene.add(rotationGroup)
+
+    rotationGroup.position.set(5, 5, 0) //target coordinates
+
     // Group for controlling the scene 
     const sceneCtrl = new THREE.Group()
-    scene.add(sceneCtrl)
-    sceneCtrl.position.set(1, 0, -1)
+
+    //free standing
+    sceneCtrl.position.set(9.858 - 5, 0 - 5, 7.986) // sceneCtrl.position(9.858, 0, 7.986) - rotationGroup.position(5, 5, 0)
+    //attached
+    // sceneCtrl.position.set(7.798, 0, 6.207) 
+
+    rotationGroup.add(sceneCtrl)
 
     // Group for controlling PatioGroup
     const patioCtrl = new THREE.Group()
@@ -251,14 +248,20 @@ function initModel() {
      * House
      */
 
-    const house = new House()
+    const house = new House(manager.loader)
     sceneCtrl.add(house.instanse, house.enterFloor)
 
     /**
-     * Loaders
+     * Depth
      */
 
-    const manager = new Manager()
+    const planeDepth = new PlaneDepth(scene)
+
+    /**
+     * Enter Floor
+     */
+    const enterFloor = new EnterFloor()
+    sceneCtrl.add(enterFloor.instance)
 
     /**
      * Patio
@@ -283,7 +286,6 @@ function initModel() {
         rafters.setSize(value)
         roof.updateGeometry()
         lattice.setPosition()
-
         price.update()
 
     })
@@ -307,18 +309,18 @@ function initModel() {
         posts.updateToMaterial(materials.posts)
         beams.update()
         beams.updateToMaterial(materials.beams)
-
         price.update()
-
     })
 
     folderPosts.add(PARAMS, 'postsHeight', ['8 ft', '10 ft']).onChange((value) => {
 
         if (value === '8 ft') {
             patioGroup.instance.position.y = 8 / 2
+            if (PARAMS.attachment === 'attached') setAttachmentHeight()
         }
         if (value === '10 ft') {
             patioGroup.instance.position.y = 10 / 2
+            if (PARAMS.attachment === 'attached') setAttachmentHeight()
         }
 
     })
@@ -328,7 +330,7 @@ function initModel() {
     **/
 
     const beams = new Beams()
-    patioGroup.instance.add(beams.frontGroup, beams.backGroup)
+    patioGroup.instance.add(beams.frontGroup, beams.backGroup, beams.attachedGroup)
 
     // Beams GUI
 
@@ -344,8 +346,16 @@ function initModel() {
 
         PARAMS.beamsType === value
 
+        if (PARAMS.attachment === 'attached') {
+            setAttachmentHeight()
+        }
+
         beams.update()
         beams.updateToMaterial(materials.beams)
+        rafters.setPosition()
+        roof.setPosition()
+        lattice.setPosition()
+        posts.update()
 
         price.update()
 
@@ -417,7 +427,6 @@ function initModel() {
 
             roof.setScale(1)
             lattice.setScale(0)
-            beams.setScale(1)
             posts.update()
         }
         if (PARAMS.patioType === 'lattice') {
@@ -428,7 +437,6 @@ function initModel() {
 
             roof.setScale(0)
             lattice.setScale(1)
-            beams.setScale(1)
             posts.update()
         }
         if (PARAMS.patioType === 'insulated') {
@@ -439,7 +447,6 @@ function initModel() {
 
             roof.setScale(1)
             lattice.setScale(0)
-            beams.setScale(1)
             posts.update()
         }
     }
@@ -471,20 +478,15 @@ function initModel() {
     sceneCtrl.add(floor.instance)
 
     /**
-     * Enter Floor
-     */
-    const enterFloor = new EnterFloor()
-    sceneCtrl.add(enterFloor.instance)
-
-
-    /**
      * Camera
      */
 
     const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height)
     scene.add(camera)
 
-    camera.position.set(-13.768, 2.4486, -17.997)
+    //camera.position.set(-13.768, 2.4486, -17.997)
+    // camera.position.set(-4.155, 3.000, -8.779) 
+    camera.position.set(-5.639, 3.000, -9.184)
     camera.rotation.set(-3.14, -0.65, -3.14)
 
     /**
@@ -499,8 +501,8 @@ function initModel() {
     controls.target.copy(target)
     controls.update()
     controls.maxPolarAngle = Math.PI / 2
-    controls.minDistance = 15
-    controls.maxDistance = 33
+    // controls.minDistance = 15
+    // controls.maxDistance = 33
     controls.minAzimuthAngle = - Math.PI * 0.88
     controls.maxAzimuthAngle = - Math.PI / 1.8
 
@@ -575,6 +577,8 @@ function initModel() {
      * Patio attachment
      */
 
+    const bigOffsetZ = - 0.3
+
     folderAttachment.add(PARAMS, 'attachment', ['free standing', 'attached']).onChange((value) => {
         if (value === 'free standing') {
 
@@ -585,13 +589,13 @@ function initModel() {
             button12x20.hide()
             button12x24.hide()
 
-            if (patioSizes.doCustom) {
+            if (classSizes.doCustom) {
                 freeStandingCtrlX.show().setValue(10)
                 freeStandingCtrlZ.show().setValue(10)
                 attachedCtrlX.hide()
                 attachedCtrlZ.hide()
             }
-            if (!patioSizes.doCustom) {
+            if (!classSizes.doCustom) {
                 freeStandingCtrlX.hide()
                 freeStandingCtrlZ.hide()
                 attachedCtrlX.hide()
@@ -601,13 +605,22 @@ function initModel() {
 
 
             PARAMS.attachment === 'free standing'
-            const setSize = patioSizes.size10x10()
+
+            planeDepth.setOpacity(0.7)
+            sceneCtrl.position.set(9.858 - 5, 0 - 5, 7.986)  //control position of the scene
+            const setSize = classSizes.size10x10()
             updatePatioSize(setSize)
             patioGroup.update()
             beams.setScaleBackGroup(1)
+            beams.setScaleAttachedGroup(0)
+            house.setPosition()
             house.bigGroup.position.z = 0
-            house.instanse.position.x = 0
-            house.instanse.position.y = 0
+            house.bigRoof.position.y = 0
+            house.smallRoof.position.y = 0
+            house.bigMask.scale.y = 0.356
+            house.smallMask.scale.y = 0.75
+            house.smallMask.position.y = 2.4
+            enterFloor.instance.position.set(house.instanse.position.x - 0.75, 0, house.instanse.position.z - 6.5)
             areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
             areaLight.enter.position.set(-10.08, 1.32, -8)
 
@@ -621,13 +634,13 @@ function initModel() {
             button12x16.show()
             button12x20.show()
             button12x24.show()
-            if (patioSizes.doCustom) {
+            if (classSizes.doCustom) {
                 freeStandingCtrlX.hide()
                 freeStandingCtrlZ.hide()
                 attachedCtrlX.show().setValue(12)
                 attachedCtrlZ.hide().setValue(12)
             }
-            if (!patioSizes.doCustom) {
+            if (!classSizes.doCustom) {
                 freeStandingCtrlX.hide()
                 freeStandingCtrlZ.hide()
                 attachedCtrlX.hide()
@@ -636,13 +649,17 @@ function initModel() {
             attachmentType.show().setValue('roof')
 
             PARAMS.attachment === 'attached'
-            const setSize = patioSizes.size12x16()
+
+            planeDepth.setOpacity(0)
+            sceneCtrl.position.set(7.705 - 5, 0 - 5, 6.170) //control position of the scene
+            const setSize = classSizes.size12x16()
             updatePatioSize(setSize)
             patioGroup.update()
             beams.setScaleBackGroup(0)
-            house.bigGroup.position.z = -0.15
-            house.instanse.position.x = -0.249
-            house.instanse.position.y = -0.29 //-0.236
+            beams.setScaleAttachedGroup(1)
+            house.instanse.position.set(0, 0, 0)
+            house.bigGroup.position.z = - 0.15 + bigOffsetZ
+            enterFloor.instance.position.set(-0.75, 0, -6.5)
             areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
             areaLight.enter.position.set(-8.5, 1.32, -8)
             posts.delete()
@@ -652,30 +669,55 @@ function initModel() {
         }
     })
 
+    function setAttachmentHeight() {
+
+        let beamsOffset, postsOffset
+        if (PARAMS.beamsType === 'single') beamsOffset = PARAMS.beamsSizes.height / 4
+        if (PARAMS.beamsType === 'double') beamsOffset = 0
+        if (PARAMS.postsHeight === '8 ft') postsOffset = 0
+        if (PARAMS.postsHeight === '10 ft') postsOffset = 0.250
+
+        let y
+        if (PARAMS.attachmentType === 'roof') {
+            y = -0.55 + beamsOffset + postsOffset
+            house.bigRoof.position.y = y
+            house.smallRoof.position.y = y
+            patioGroup.instance.position.z = -5.315
+        }
+        if (PARAMS.attachmentType === 'fasciaEave') {
+            y = -0.293 + beamsOffset + postsOffset
+            house.bigRoof.position.y = y
+            house.smallRoof.position.y = y
+            patioGroup.instance.position.z = -5.783
+        }
+        if (PARAMS.attachmentType === 'underEave') {
+            y = -0.135 + beamsOffset + postsOffset
+            house.bigRoof.position.y = y
+            house.smallRoof.position.y = y
+            patioGroup.instance.position.z = -5.315
+        }
+        if (PARAMS.attachmentType === 'wall') {
+            y = 0.00 + beamsOffset + postsOffset
+            house.bigRoof.position.y = y
+            house.smallRoof.position.y = y
+            patioGroup.instance.position.z = -4.379
+        }
+
+        house.bigMask.scale.y = math.mapRange(y, -0.3, 0.415, 0.01, 1)
+        house.smallMask.scale.y = math.mapRange(y, -0.47, 0.415, 0.3, 1)
+        house.smallMask.position.y = math.mapRange(y, -0.47, 0.415, 2.235, 2.4)
+    }
+
     const attachmentType = folderAttachment.add(PARAMS, 'attachmentType', ['roof', 'fasciaEave', 'underEave', 'wall']).hide().onChange((value) => {
-        if (value === 'roof') {
-            house.instanse.position.x = -0.249
-            house.instanse.position.y = -0.29 //-0.236
-        }
-        if (value === 'fasciaEave') {
-            house.instanse.position.x = -0.171
-            house.instanse.position.y = -0.09
-        }
-        if (value === 'underEave') {
-            house.instanse.position.x = -0.132
-            house.instanse.position.y = 0.168
-        }
-        if (value === 'wall') {
-            house.instanse.position.x = -0.51
-            house.instanse.position.y = 0.35
-        }
+        PARAMS.attachmentType = value
+        setAttachmentHeight()
     })
 
     /**
      * Patio Sizes
      */
 
-    // const patioSizes = new PatioSizes()
+    const classSizes = new ClassSizes()
 
 
     function updatePatioSize(value) {
@@ -703,48 +745,48 @@ function initModel() {
 
     }
 
-    const button10x10 = folderSizes.add({ size10x10: size10x10Wrapper }, 'size10x10').name('10x10').show().onChange((value) => {
-        value = size10x10Wrapper();
+    const button10x10 = folderSizes.add(classSizes, 'size10x10').name('10x10').show().onChange((value) => {
+        value = classSizes.size10x10()
         updatePatioSize(value)
         house.bigGroup.position.z = 0
         areaLight.sideWall.position.z = -12.56
 
     })
-    const button11x11 = folderSizes.add({ size11x11: size11x11Wrapper }, 'size11x11').name('11x11').show().onChange((value) => {
-        value = size11x11Wrapper();
+    const button11x11 = folderSizes.add(classSizes, 'size11x11').name('11x11').show().onChange((value) => {
+        value = classSizes.size11x11()
         updatePatioSize(value)
         // house.bigGroup.postion.z = 1.18
     })
-    const button12x12 = folderSizes.add({ size12x12: size12x12Wrapper}, 'size12x12').name('12x12').show().onChange((value) => {
-        value = size12x12Wrapper();
+    const button12x12 = folderSizes.add(classSizes, 'size12x12').name('12x12').show().onChange((value) => {
+        value = classSizes.size12x12()
         updatePatioSize(value)
         // house.bigGroup.position.z = 0.91
     })
-    const button12x16 = folderSizes.add({ size12x16: size12x16Wrapper }, 'size12x16').name('12x16').hide().onChange((value) => {
-        value = size12x16Wrapper()
+    const button12x16 = folderSizes.add(classSizes, 'size12x16').name('12x16').hide().onChange((value) => {
+        value = classSizes.size12x16()
         updatePatioSize(value)
 
-        house.bigGroup.position.z = -0.15
+        house.bigGroup.position.z = - 0.15 + bigOffsetZ // -0.15 - 0.5
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
 
     })
-    const button12x20 = folderSizes.add({ size12x20: size12x20Wrapper }, 'size12x20').name('12x20').hide().onChange((value) => {
-        value = size12x20Wrapper()
+    const button12x20 = folderSizes.add(classSizes, 'size12x20').name('12x20').hide().onChange((value) => {
+        value = classSizes.size12x20()
         updatePatioSize(value)
-        house.bigGroup.position.z = -1.2
-        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
-
-
-    })
-    const button12x24 = folderSizes.add({ size12x24: size12x24Wrapper }, 'size12x24').name('12x24').hide().onChange((value) => {
-        value = size12x24Wrapper()
-        updatePatioSize(value)
-        house.bigGroup.position.z = -2.25
+        house.bigGroup.position.z = -1.2 + bigOffsetZ
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
 
 
     })
-    folderSizes.add(patioSizes, 'doCustom').name('do custom').onChange((value) => {
+    const button12x24 = folderSizes.add(classSizes, 'size12x24').name('12x24').hide().onChange((value) => {
+        value = classSizes.size12x24()
+        updatePatioSize(value)
+        house.bigGroup.position.z = -2.25 + bigOffsetZ
+        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+
+
+    })
+    folderSizes.add(classSizes, 'doCustom').name('do custom').onChange((value) => {
         if (value) {
             if (PARAMS.attachment === 'free standing') {
                 freeStandingCtrlX.show().setValue(10)
@@ -772,7 +814,7 @@ function initModel() {
     const freeStandingCtrlX = folderSizes.add(PARAMS, 'roofWidth', 10, 12, 0.1).name('roofWidth').hide().onChange((value) => {
         const updateSize = [PARAMS.roofDepth, value]
         updatePatioSize(updateSize)
-        house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.25)
+        // house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.25)
     })
     const freeStandingCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 10, 12, 0.1).name('roofDepth').hide().onChange((value) => {
         const updateSize = [value, PARAMS.roofWidth]
@@ -788,6 +830,7 @@ function initModel() {
         const updateSize = [value, PARAMS.roofWidth]
         updatePatioSize(updateSize)
     })
+
 
 
     /*
@@ -839,7 +882,7 @@ function initModel() {
     const checkoutButton = document.querySelector('.checkout-button');
     const requestInfo = document.querySelector('.request-info');
 
-    function checkoutState(){
+    function checkoutState() {
         requestForm.classList.add('is--hidden');
         checkoutForm.classList.remove('is--hidden');
         priceWrapper.classList.remove('is--hidden');
@@ -847,7 +890,7 @@ function initModel() {
         requestInfo.classList.add('is--hidden');
     }
 
-    function requestState(){
+    function requestState() {
         requestForm.classList.remove('is--hidden');
         checkoutForm.classList.add('is--hidden');
         priceWrapper.classList.add('is--hidden');
@@ -906,7 +949,7 @@ function initModel() {
     //  ---- Controls events ----
     // Type
     typeList.addEventListener('click', (event) => {
-        if(event.target.classList.contains('trigger-button-item')) {
+        if (event.target.classList.contains('trigger-button-item')) {
             let typeName = event.target.getAttribute('data-name')
             PARAMS.patioType = typeName.toLowerCase()
             patioTypesSetup()
@@ -924,7 +967,7 @@ function initModel() {
     colorLists.forEach((list) => {
         addActiveClassDefault(list)
         list.addEventListener('click', (event) => {
-            if(event.target.classList.contains('trigger-button-item')){
+            if (event.target.classList.contains('trigger-button-item')) {
                 removeActiveClass(list)
                 addActiveClass(event.target.parentElement)
             }
@@ -932,19 +975,19 @@ function initModel() {
     });
 
     colorList.addEventListener('click', (event) => {
-        if(event.target.classList.contains('trigger-button-item')){
+        if (event.target.classList.contains('trigger-button-item')) {
             let colorType = event.target.getAttribute('data-type')
             let colorAddType = event.target.getAttribute('data-typ')
             let colorName = event.target.getAttribute('data-name').toLowerCase()
-            if(colorType === 'colorRoof' || colorAddType === 'colorLattice'){
+            if (colorType === 'colorRoof' || colorAddType === 'colorLattice') {
                 colorChanger(colorType, colorAddType, colorName)
-            } else if(colorType === 'colorBeams'){
+            } else if (colorType === 'colorBeams') {
                 colorChanger(colorType, colorAddType, colorName)
-            } else if(colorType === 'colorPosts'){
+            } else if (colorType === 'colorPosts') {
                 colorChanger(colorType, colorAddType, colorName)
-            } else if(colorType === 'colorRafters'){
+            } else if (colorType === 'colorRafters') {
                 colorChanger(colorType, colorAddType, colorName)
-            } else if(colorType === 'combineValue'){
+            } else if (colorType === 'combineValue') {
                 colorChanger(colorType, colorAddType, colorName)
                 // update value and placeholder of input and textContent of output
                 setInputOutput(colorInput, colorOutput, colorName)
@@ -952,10 +995,10 @@ function initModel() {
         }
     })
 
-    function colorChanger(colorType, colorAddType, colorName){
+    function colorChanger(colorType, colorAddType, colorName) {
         folderColor.controllers.forEach((controller) => {
-            
-            if(controller._name === colorType || controller._name === colorAddType){
+
+            if (controller._name === colorType || controller._name === colorAddType) {
                 controller.setValue(colorName)
             }
         })
@@ -968,16 +1011,16 @@ function initModel() {
     const colorTabLinks = colorTab.querySelectorAll('.w-tab-link');
     const colorTabPanes = colorTab.querySelectorAll('.w-tab-pane');
 
-    if(colorToggleWrapper){
+    if (colorToggleWrapper) {
         colorToggleWrapper.addEventListener('click', () => {
             colorToggleWrapper.classList.toggle('is--active');
             colorTab.classList.toggle('is--hidden');
             colorCombine.classList.toggle('is--hidden');
             // if colorToggleWrapper is active, then activate first combine color
-            if(colorToggleWrapper.classList.contains('is--active')){
+            if (colorToggleWrapper.classList.contains('is--active')) {
                 folderColor.controllers[5].setValue('adobe')
                 // remove active class from all buttons
-                removeActiveClass(colorLists[colorLists.length - 1]) 
+                removeActiveClass(colorLists[colorLists.length - 1])
                 // activate first button of last color list
                 colorLists[colorLists.length - 1].querySelectorAll('.button-item')[0].classList.add('active')
             } else {
@@ -1007,18 +1050,18 @@ function initModel() {
                 // activate first tab of colors tabs
                 colorTabLinks[0].classList.add('w--current')
                 colorTabPanes[0].classList.add('w--tab-active')
-                
+
             }
         })
     }
 
     // Attachment
     attachmentList.addEventListener('click', (event) => {
-        if(event.target.classList.contains('trigger-button-item')) {
+        if (event.target.classList.contains('trigger-button-item')) {
             let attachmentName = event.target.getAttribute('data-name')
             removeActiveClass(attachmentList)
             addActiveClass(event.target.parentElement)
-            if(attachmentName.toLowerCase() === 'free standing'){
+            if (attachmentName.toLowerCase() === 'free standing') {
                 folderAttachment.controllers[0].setValue('free standing')
                 freeStandingSize()
                 // update value and placeholder of input and textContent of output
@@ -1032,7 +1075,7 @@ function initModel() {
                 customSizeHide()
                 // activate first button of sizes free standing list
                 addActiveClass(freeStandingSizes.querySelectorAll('.button-item')[0])
-            } else if(attachmentName.toLowerCase() === 'to the wall'){
+            } else if (attachmentName.toLowerCase() === 'to the wall') {
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('wall')
                 attachedSize()
@@ -1047,7 +1090,7 @@ function initModel() {
                 customSizeHide()
                 // activate first button of sizes attached list
                 addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
-            } else if(attachmentName.toLowerCase() === 'to facia/eave'){
+            } else if (attachmentName.toLowerCase() === 'to facia/eave') {
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('fasciaEave')
                 attachedSize()
@@ -1062,7 +1105,7 @@ function initModel() {
                 customSizeHide()
                 // activate first button of sizes attached list
                 addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
-            } else if(attachmentName.toLowerCase() === 'to under eave'){
+            } else if (attachmentName.toLowerCase() === 'to under eave') {
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('underEave')
                 attachedSize()
@@ -1077,7 +1120,7 @@ function initModel() {
                 customSizeHide()
                 // activate first button of sizes attached list
                 addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
-            } else if(attachmentName.toLowerCase() === 'to the roof'){
+            } else if (attachmentName.toLowerCase() === 'to the roof') {
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('roof')
                 attachedSize()
@@ -1098,26 +1141,26 @@ function initModel() {
 
     // Beams/headers
     beamsList.addEventListener('click', (event) => {
-        if(event.target.classList.contains('trigger-button-item')) {
+        if (event.target.classList.contains('trigger-button-item')) {
             let beamsName = event.target.getAttribute('data-type')
             let beamsTypeSize = event.target.getAttribute('data-size-type')
             removeActiveClass(beamsList)
             addActiveClass(event.target.parentElement)
-            if(beamsName.toLowerCase() === 'single'){
+            if (beamsName.toLowerCase() === 'single') {
                 folderBeams.controllers[0].setValue('single')
                 // update value and placeholder of input and textContent of output
                 setInputOutput(headerInput, headerOutput, 'Single 3x8')
-            } else if(beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '8x3'){
+            } else if (beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '8x3') {
                 // update value and placeholder of input and textContent of output
                 setInputOutput(headerInput, headerOutput, 'Double 8x3')
                 folderBeams.controllers[0].setValue('double')
                 folderBeams.controllers[1].setValue('8x3')
-            } else if(beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '6x2'){
+            } else if (beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '6x2') {
                 // update value and placeholder of input and textContent of output
                 setInputOutput(headerInput, headerOutput, 'Double 6x2')
                 folderBeams.controllers[0].setValue('double')
                 folderBeams.controllers[1].setValue('6x2')
-            } 
+            }
             beams.update()
             beams.updateToMaterial(materials.beams)
             price.update()
@@ -1136,19 +1179,19 @@ function initModel() {
     postsSelectsWrapper.classList.add('is--hidden')
     postsSelectsSquare.classList.add('is--hidden')
     postsSelectsRound.classList.add('is--hidden')
-    
+
     postsList.addEventListener('click', (event) => {
-        if(event.target.classList.contains('trigger-button-item')) {
+        if (event.target.classList.contains('trigger-button-item')) {
             let postsName = event.target.getAttribute('data-type')
             removeActiveClass(postsList)
             addActiveClass(event.target.parentElement)
-            if(postsName.toLowerCase() === 'default'){
+            if (postsName.toLowerCase() === 'default') {
                 postsSelectsWrapper.classList.add('is--hidden')
                 folderPosts.controllers[0].setValue('default')
                 folderPosts.controllers[1].setValue('8 ft')
                 // update value and placeholder of input and textContent of output
                 setInputOutput(postsInput, postsOutput, 'Default')
-            } else if(postsName.toLowerCase() === 'square'){
+            } else if (postsName.toLowerCase() === 'square') {
                 postsSelectsWrapper.classList.remove('is--hidden')
                 postsSelectsSquare.classList.remove('is--hidden')
                 postsSelectsRound.classList.add('is--hidden')
@@ -1158,12 +1201,12 @@ function initModel() {
                 setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
                 postsSelectSquareWide.addEventListener('change', (event) => {
                     let postsWideSize = postsSelectSquareWide.value
-                    
-                    if(postsWideSize.toLowerCase() === 'wide 8'){
+
+                    if (postsWideSize.toLowerCase() === 'wide 8') {
                         folderPosts.controllers[0].setValue('8x8')
                         // update value and placeholder of input and textContent of output
                         setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
-                    } else if(postsWideSize.toLowerCase() === 'wide 10'){
+                    } else if (postsWideSize.toLowerCase() === 'wide 10') {
                         folderPosts.controllers[0].setValue('10x10')
                         // update value and placeholder of input and textContent of output
                         setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
@@ -1171,16 +1214,16 @@ function initModel() {
                 })
                 postsSelectSquareTall.addEventListener('change', (event) => {
                     let postsTallSize = postsSelectSquareTall.value
-                    
-                    if(postsTallSize.toLowerCase() === 'tall 8'){
+
+                    if (postsTallSize.toLowerCase() === 'tall 8') {
                         folderPosts.controllers[1].setValue('8 ft')
                         setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
-                    } else if(postsTallSize.toLowerCase() === 'tall 10'){
+                    } else if (postsTallSize.toLowerCase() === 'tall 10') {
                         folderPosts.controllers[1].setValue('10 ft')
                         setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
                     }
                 })
-            } else if(postsName.toLowerCase() === 'round'){
+            } else if (postsName.toLowerCase() === 'round') {
                 postsSelectsWrapper.classList.remove('is--hidden')
                 postsSelectsRound.classList.remove('is--hidden')
                 postsSelectsSquare.classList.add('is--hidden')
@@ -1191,10 +1234,10 @@ function initModel() {
                 postsSelectRoundWide.addEventListener('change', (event) => {
                     let postsWideSize = postsSelectRoundWide.value
                     setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
-                    if(postsWideSize.toLowerCase() === 'wide 8'){
+                    if (postsWideSize.toLowerCase() === 'wide 8') {
                         folderPosts.controllers[0].setValue('D=8')
                         setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
-                    } else if(postsWideSize.toLowerCase() === 'wide 10'){
+                    } else if (postsWideSize.toLowerCase() === 'wide 10') {
                         folderPosts.controllers[0].setValue('D=10')
                         setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     }
@@ -1202,10 +1245,10 @@ function initModel() {
                 postsSelectRoundTall.addEventListener('change', (event) => {
                     let postsTallSize = postsSelectRoundTall.value
                     setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
-                    if(postsTallSize.toLowerCase() === 'tall 8'){
+                    if (postsTallSize.toLowerCase() === 'tall 8') {
                         folderPosts.controllers[1].setValue('8 ft')
                         setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
-                    } else if(postsTallSize.toLowerCase() === 'tall 10'){
+                    } else if (postsTallSize.toLowerCase() === 'tall 10') {
                         folderPosts.controllers[1].setValue('10 ft')
                         setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     }
@@ -1218,19 +1261,19 @@ function initModel() {
     function connectInputWithController(input, controller, min, max) {
         input.addEventListener('input', (event) => {
             let value = parseFloat(event.target.value);
-    
+
             if (isNaN(value)) {
                 value = min;
             }
-    
+
             if (value < min) {
                 value = min;
             } else if (value > max) {
                 value = max;
             }
-    
+
             event.target.value = value.toFixed(1);
-    
+
             controller.setValue(value);
         });
     }
@@ -1242,84 +1285,84 @@ function initModel() {
     customSizeHide()
     attachedSizesSettingsHide()
 
-    function customSizeHide(){
+    function customSizeHide() {
         customSizeWrapper.classList.add('is--hidden')
     }
 
-    function customSizeShow(){
+    function customSizeShow() {
         customSizeWrapper.classList.remove('is--hidden')
     }
 
-    function attachedSize(){
+    function attachedSize() {
         customSizeAttached.classList.remove('is--hidden')
         customSizeFreeStanding.classList.add('is--hidden')
         freeStandingSizesSettingsHide()
-    } 
+    }
 
-    function freeStandingSize(){
+    function freeStandingSize() {
         customSizeFreeStanding.classList.remove('is--hidden')
         customSizeAttached.classList.add('is--hidden')
         attachedSizesSettingsHide()
     }
 
-    function attachedSizesSettingsHide(){
+    function attachedSizesSettingsHide() {
         attachedSizes.classList.add('is--hidden')
         freeStandingSizes.classList.remove('is--hidden')
     }
 
-    function freeStandingSizesSettingsHide(){
+    function freeStandingSizesSettingsHide() {
         freeStandingSizes.classList.add('is--hidden')
         attachedSizes.classList.remove('is--hidden')
     }
 
     sizeList.addEventListener('click', (event) => {
         if (event.target.classList.contains('trigger-button-item')) {
-          let sizeName = event.target.getAttribute('data-type');
-          removeActiveClass(sizeList)
-          addActiveClass(event.target.parentElement)
-          // Loop through the controllers to find a match
-          for (const controller of folderSizes.controllers) {
-            const controllerProperty = controller.property.replace('size', '');
-            
-            if (controllerProperty === sizeName) {
-                // reset all inputs for sizes
-                freeStandingWidthInput.value = 10.0
-                freeStandingDepthInput.value = 10.0
-                attachedWidthInput.value = 12.0
-                customSizeHide();
-                controller.setValue(true);
-                // if local storage requestedZipCode is not false, then call checkoutState function, else call requestState function
-                if(localStorage.getItem('requestedZipCode') !== 'false'){
-                    checkoutState();
+            let sizeName = event.target.getAttribute('data-type');
+            removeActiveClass(sizeList)
+            addActiveClass(event.target.parentElement)
+            // Loop through the controllers to find a match
+            for (const controller of folderSizes.controllers) {
+                const controllerProperty = controller.property.replace('size', '');
+
+                if (controllerProperty === sizeName) {
+                    // reset all inputs for sizes
+                    freeStandingWidthInput.value = 10.0
+                    freeStandingDepthInput.value = 10.0
+                    attachedWidthInput.value = 12.0
+                    customSizeHide();
+                    controller.setValue(true);
+                    // if local storage requestedZipCode is not false, then call checkoutState function, else call requestState function
+                    if (localStorage.getItem('requestedZipCode') !== 'false') {
+                        checkoutState();
+                    }
                 }
             }
-          }
-      
-          // Handle the 'custom' case
-          if (sizeName === 'custom') {
-            customSizeShow();
-            // call func request state
-            requestState()
-            if (PARAMS.attachment === 'free standing') {
-              freeStandingSize();
-            } else if (PARAMS.attachment === 'attached') {
-              attachedSize();
+
+            // Handle the 'custom' case
+            if (sizeName === 'custom') {
+                customSizeShow();
+                // call func request state
+                requestState()
+                if (PARAMS.attachment === 'free standing') {
+                    freeStandingSize();
+                } else if (PARAMS.attachment === 'attached') {
+                    attachedSize();
+                }
             }
-          }
         }
     });
-      
 
-    folderPrice.onChange( event => {
-        if(Number(event.controller.object.total) > 0){
+
+    folderPrice.onChange(event => {
+        if (Number(event.controller.object.total) > 0) {
             priceInput.value = event.controller.object.total;
-            priceOutput.innerHTML =  `$${event.controller.object.total}`;
+            priceOutput.innerHTML = `$${event.controller.object.total}`;
         }
     });
 
     // Installation
     installationList.addEventListener('click', (event) => {
-        if(event.target.classList.contains('button-item')) {
+        if (event.target.classList.contains('button-item')) {
             removeActiveClass(installationList)
             addActiveClass(event.target)
         }
@@ -1330,7 +1373,7 @@ function initModel() {
 
     // Monday
 
-    document.getElementById('request-form').addEventListener('submit', function(event) {
+    document.getElementById('request-form').addEventListener('submit', function (event) {
         event.preventDefault();
         // Retrieve form data from input field
         const itemName = document.getElementById('Name').value;
@@ -1338,29 +1381,26 @@ function initModel() {
         // Call a function to send API request with the form data
         createTableElement(query3);
     });
-      
-    function createTableElement(query){
-        fetch ("https://api.monday.com/v2", {
+
+    function createTableElement(query) {
+        fetch("https://api.monday.com/v2", {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization' : 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI0OTMwMjM5NiwidWlkIjo0MTg3NzcwNCwiaWFkIjoiMjAyMy0wNC0wNlQwNzoxMToxMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTY0MDcyNTksInJnbiI6ImV1YzEifQ.6RSZtUamQ50F4VGrpJk3DNYo5gLYlkN3F3DOMrrlm2w'
+                'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI0OTMwMjM5NiwidWlkIjo0MTg3NzcwNCwiaWFkIjoiMjAyMy0wNC0wNlQwNzoxMToxMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTY0MDcyNTksInJnbiI6ImV1YzEifQ.6RSZtUamQ50F4VGrpJk3DNYo5gLYlkN3F3DOMrrlm2w'
             },
             body: JSON.stringify({
-                'query' : query
+                'query': query
             })
         })
-        .then(res => res.json())
-        .then(res => console.log(JSON.stringify(res, null, 2)));
+            .then(res => res.json())
+            .then(res => console.log(JSON.stringify(res, null, 2)));
     };
 
 
-    /**
-     * Patio Price
-     */
 
-    const price = new Price(folderPrice)
-    price.update()
+
+
 }
 
 export default initModel
