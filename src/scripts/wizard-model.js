@@ -109,7 +109,7 @@ function initModel() {
      * Materials
      */
 
-    const materials = new Materials()
+    const materials = new Materials(manager.loader)
 
     /**
      * Color
@@ -118,75 +118,6 @@ function initModel() {
     const color = new Color()
 
     // Functions for Material Color GUI
-
-    function changeMaterialColor(material, value) {
-        if (value === 'adobe') {
-            material.map = textures.adobeTextureColor
-        }
-
-        if (value === 'almond') {
-            material.map = textures.almondTextureColor
-        }
-
-        if (value === 'belge') {
-            material.map = textures.belgeTextureColor
-        }
-
-        if (value === 'brown') {
-            material.map = textures.brownTextureColor
-        }
-
-        if (value === 'cameo') {
-            material.map = textures.cameoTextureColor
-        }
-
-        if (value === 'champagne') {
-            material.map = textures.champagneTextureColor
-        }
-
-        if (value === 'desert') {
-            material.map = textures.desertTextureColor
-        }
-
-        if (value === 'white') {
-            material.map = textures.whiteTextureColor
-        }
-
-    }
-
-    function backUpColors() {
-        // backup colors
-        materials.colorBackup.roofColor = materials.roof.map
-        materials.colorBackup.raftersColor = materials.rafters.map
-        materials.colorBackup.beamsColor = materials.beams.map
-        materials.colorBackup.postsColor = materials.posts.map
-        materials.colorBackup.latticeColor = materials.lattice.map
-    }
-
-    function updateColors() {
-        //update colors
-        materials.roof.map = materials.general.map;
-        materials.rafters.map = materials.general.map;
-        materials.beams.map = materials.general.map;
-        materials.posts.map = materials.general.map;
-        materials.lattice.map = materials.general.map;
-        roof.updateToMaterial(materials.roof)
-        rafters.updateToMaterial(materials.rafters)
-        beams.updateToMaterial(materials.beams)
-        posts.updateToMaterial(materials.posts)
-        lattice.updateToMaterial(materials.lattice)
-
-    }
-
-    function returnColors() {
-        // return colors from backup
-        materials.roof.map = materials.colorBackup.roofColor;
-        materials.rafters.map = materials.colorBackup.raftersColor;
-        materials.beams.map = materials.colorBackup.beamsColor;
-        materials.posts.map = materials.colorBackup.postsColor;
-        materials.lattice.map = materials.colorBackup.latticeColor;
-    }
-
 
     /**
      * Color GUI
@@ -289,7 +220,7 @@ function initModel() {
      * House
      */
 
-    const house = new House()
+    const house = new House(manager.loader)
     sceneCtrl.add(house.instanse, house.enterFloor)
 
     /**
