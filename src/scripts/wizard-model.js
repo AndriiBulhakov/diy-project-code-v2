@@ -88,7 +88,16 @@ function initModel() {
     scene.background = new THREE.Color(0xbec9cb)
 
     const axesHelper = new THREE.AxesHelper(50)
-    scene.add(axesHelper)
+    // scene.add(axesHelper)
+
+    const cubeTarger = new THREE.Mesh(
+        new THREE.BoxGeometry(0.25, 0.25, 0.25),
+        new THREE.MeshBasicMaterial()
+    )
+
+    scene.add(cubeTarger)
+    cubeTarger.position.set(5, 5, 0)
+
 
     /**
      * TEXTURES
@@ -101,6 +110,12 @@ function initModel() {
      */
 
     const materials = new Materials()
+
+    /**
+     * Color
+     */
+
+    const color = new Color()
 
     // Functions for Material Color GUI
 
@@ -172,32 +187,33 @@ function initModel() {
         materials.lattice.map = materials.colorBackup.latticeColor;
     }
 
+
     /**
      * Color GUI
      */
 
     const ctrlColorRoof = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRoof').onChange((value) => {
-        changeMaterialColor(materials.roof, value)
+        color.changeMaterialColor(materials.roof, value)
         roof.updateToMaterial(materials.roof)
     });
 
     const ctrlColorLattice = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorLattice').onChange((value) => {
-        changeMaterialColor(materials.lattice, value)
+        color.changeMaterialColor(materials.lattice, value)
         lattice.updateToMaterial(materials.lattice)
     });
 
     const ctrlColorPosts = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorPosts').onChange((value) => {
-        changeMaterialColor(materials.posts, value)
+        color.changeMaterialColor(materials.posts, value)
         posts.updateToMaterial(materials.posts)
     });
 
     const ctrlColorRafters = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRafters').onChange((value) => {
-        changeMaterialColor(materials.rafters, value)
+        color.changeMaterialColor(materials.rafters, value)
         rafters.updateToMaterial(materials.rafters)
     });
 
     const ctrlColorBeams = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorBeams').onChange((value) => {
-        changeMaterialColor(materials.beams, value)
+        color.changeMaterialColor(materials.beams, value)
         beams.updateToMaterial(materials.beams)
     });
 
@@ -212,27 +228,28 @@ function initModel() {
             ctrlColorRafters.hide()
             ctrlColorBeams.hide()
 
-            backUpColors() // backup previous material color
-            updateColors() // update to the new material color
+            color.backUpColors(materials) // backup previous material color
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
 
         }
         if (!materials.parameters.combine) {
             // update GUI
-            ctrlCombineColor.show()
+            ctrlCombineColor.hide()
             ctrlColorRoof.show()
             ctrlColorLattice.show()
             ctrlColorPosts.show()
             ctrlColorRafters.show()
             ctrlColorBeams.show()
 
-            returnColors() // return material color from backup
+            color.returnColors(materials) // return material color from backup
         }
     });
 
-    const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').onChange((value) => {
-        changeMaterialColor(materials.general, value)
-        updateColors() // update to the new material color
+    const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').hide().onChange((value) => {
+        color.changeMaterialColor(materials.general, value)
+        color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
     });
+
 
     /**
      * Groups
