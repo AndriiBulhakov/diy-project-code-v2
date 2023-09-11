@@ -14,14 +14,34 @@ export default class PatioGroup {
             x = 10
             z = 9
 
+            this.instance.position.z = - (PARAMS.roofDepth / 2 + z)
+
         }
         if (PARAMS.attachment === 'attached') {
             x = 0
-            z = 0
+            if (PARAMS.attachmentType === 'roof') {
+                z = -5.315
+            }
+            if (PARAMS.attachmentType === 'fasciaEave') {
+                z = -5.783
+            }
+            if (PARAMS.attachmentType === 'underEave') {
+                z = -5.315
+            }
+            if (PARAMS.attachmentType === 'wall') {
+                z = -4.379
+            }
+            this.instance.position.z = z
         }
         this.instance.position.x = PARAMS.roofWidth / 2 + x
-        this.instance.position.z = - (PARAMS.roofDepth / 2 + z)
-        this.instance.position.y = 8 / 2
+
+        if (PARAMS.postsHeight === '8 ft') {
+            this.instance.position.y = 8 / 2
+        }
+        if (PARAMS.postsHeight === '10 ft') {
+            this.instance.position.y = 10 / 2
+        }
+
 
     }
 

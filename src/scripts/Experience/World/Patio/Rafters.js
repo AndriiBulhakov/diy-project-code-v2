@@ -9,6 +9,7 @@ export default class Rafters {
 
         this.group = new THREE.Group()
         this.offsetY
+        this.beamsOffset
 
         this.setAsset()
         this.create()
@@ -45,6 +46,12 @@ export default class Rafters {
         }
     }
 
+    checkBeams() {
+        if (PARAMS.beamsType === 'single') this.beamsOffset = PARAMS.beamsSizes.height
+        if (PARAMS.beamsType === 'double') this.beamsOffset = 0
+        this.group.position.y += this.beamsOffset
+    }
+
     setPosition() {
         if (PARAMS.postsHeight === '8 ft') {
             this.group.position.y = PARAMS.postsSizes.height / 2 + PARAMS.raftersSizes.height / 2
@@ -52,6 +59,8 @@ export default class Rafters {
         if (PARAMS.postsHeight === '10 ft') {
             this.group.position.y = 4 * 10 / 8 + PARAMS.raftersSizes.height / 2
         }
+        this.checkBeams()
+        // this.group.position.y += this.beamsOffset
     }
 
     setSize(value) {

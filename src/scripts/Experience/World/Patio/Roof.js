@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import PARAMS from '../../Utils/PARAMS'
 import Materials from '../../Materials.js'
 
+import Rafters from './Rafters'
+
 export default class Roof {
     constructor() {
 
@@ -12,6 +14,8 @@ export default class Roof {
         this.offsetY
         this.visualOffset = 0.005
         this.scaleValue = []
+
+        this.beamsOffset
 
         this.create()
         this.set()
@@ -33,6 +37,12 @@ export default class Roof {
         this.instance.receiveShadow = true
     }
 
+    checkBeams() {
+        if (PARAMS.beamsType === 'single') this.beamsOffset = PARAMS.beamsSizes.height
+        if (PARAMS.beamsType === 'double') this.beamsOffset = 0
+        this.group.position.y += this.beamsOffset
+    }
+
     setPosition() {
         if (PARAMS.postsHeight === '8 ft') {
             this.group.position.y = PARAMS.postsSizes.height / 2 + PARAMS.raftersSizes.height / 2
@@ -40,6 +50,7 @@ export default class Roof {
         if (PARAMS.postsHeight === '10 ft') {
             this.group.position.y = 4 * 10 / 8 + PARAMS.raftersSizes.height / 2
         }
+        this.checkBeams()
     }
 
     setScale(value) {
