@@ -246,7 +246,6 @@ function initModel() {
         rafters.setSize(value)
         roof.updateGeometry()
         lattice.setPosition()
-
         price.update()
 
     })
@@ -270,18 +269,18 @@ function initModel() {
         posts.updateToMaterial(materials.posts)
         beams.update()
         beams.updateToMaterial(materials.beams)
-
         price.update()
-
     })
 
     folderPosts.add(PARAMS, 'postsHeight', ['8 ft', '10 ft']).onChange((value) => {
 
         if (value === '8 ft') {
             patioGroup.instance.position.y = 8 / 2
+            if (PARAMS.attachment === 'attached') setAttachmentHeight()
         }
         if (value === '10 ft') {
             patioGroup.instance.position.y = 10 / 2
+            if (PARAMS.attachment === 'attached') setAttachmentHeight()
         }
 
     })
@@ -614,6 +613,45 @@ function initModel() {
 
         }
     })
+
+    function setAttachmentHeight() {
+
+        let beamsOffset, postsOffset
+        if (PARAMS.beamsType === 'single') beamsOffset = PARAMS.beamsSizes.height / 4
+        if (PARAMS.beamsType === 'double') beamsOffset = 0
+        if (PARAMS.postsHeight === '8 ft') postsOffset = 0
+        if (PARAMS.postsHeight === '10 ft') postsOffset = 0.250
+
+        let y
+        if (PARAMS.attachmentType === 'roof') {
+            y = -0.55 + beamsOffset + postsOffset
+            house.bigRoof.position.y = y
+            house.smallRoof.position.y = y
+            patioGroup.instance.position.z = -5.315
+        }
+        if (PARAMS.attachmentType === 'fasciaEave') {
+            y = -0.293 + beamsOffset + postsOffset
+            house.bigRoof.position.y = y
+            house.smallRoof.position.y = y
+            patioGroup.instance.position.z = -5.783
+        }
+        if (PARAMS.attachmentType === 'underEave') {
+            y = -0.135 + beamsOffset + postsOffset
+            house.bigRoof.position.y = y
+            house.smallRoof.position.y = y
+            patioGroup.instance.position.z = -5.315
+        }
+        if (PARAMS.attachmentType === 'wall') {
+            y = 0.00 + beamsOffset + postsOffset
+            house.bigRoof.position.y = y
+            house.smallRoof.position.y = y
+            patioGroup.instance.position.z = -4.379
+        }
+
+        house.bigMask.scale.y = math.mapRange(y, -0.3, 0.415, 0.01, 1)
+        house.smallMask.scale.y = math.mapRange(y, -0.47, 0.415, 0.3, 1)
+        house.smallMask.position.y = math.mapRange(y, -0.47, 0.415, 2.235, 2.4)
+    }
 
     const attachmentType = folderAttachment.add(PARAMS, 'attachmentType', ['roof', 'fasciaEave', 'underEave', 'wall']).hide().onChange((value) => {
         if (value === 'roof') {
