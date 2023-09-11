@@ -4,12 +4,10 @@ import Manager from './Utils/Manager';
 
 
 export default class Textures {
-    constructor() {
+    constructor(loadingManager) {
 
-        this.manager = new Manager()
-
-        this.textureLoader = new THREE.TextureLoader();
-        this.cubeTextureLoader = new THREE.CubeTextureLoader()
+        this.textureLoader = new THREE.TextureLoader(loadingManager);
+        this.cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager)
 
         /**
          * Patio Textures

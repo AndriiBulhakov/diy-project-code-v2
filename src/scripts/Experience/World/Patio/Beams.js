@@ -7,13 +7,20 @@ export default class Beams {
         this.materials = new Materials()
 
         this.asset
+        this.assetAttached
 
         this.frontGroup = new THREE.Group()
         this.backGroup = new THREE.Group()
+        this.attachedGroup = new THREE.Group()
+        this.attachedGroup.scale.set(0, 0, 0)
 
         this.offsetY, this.offsetZ
 
+        this.beamsOffset
+
         this.create()
+
+
     }
 
     setPosition() {
@@ -22,6 +29,7 @@ export default class Beams {
 
         this.frontGroup.position.set(0, this.offsetY, - this.offsetZ)
         this.backGroup.position.set(0, this.offsetY, this.offsetZ)
+        this.attachedGroup.position.set(0, this.offsetY, PARAMS.roofDepth / 2)
     }
 
     setScale(value) {
@@ -29,6 +37,10 @@ export default class Beams {
         this.backGroup.scale.set(value, value, value)
     }
 
+    setScaleBackGroup(value) {
+        this.frontGroup.scale.set(value, value, value)
+
+    }
     setScaleBackGroup(value) {
         this.backGroup.scale.set(value, value, value)
     }
@@ -45,21 +57,19 @@ export default class Beams {
     create() {
         this.setAsset()
 
-        // const doubleBeamsOffsetZ = ((PARAMS.postsSizes.depthSide * 2 + PARAMS.postsSizes.depthCenter) / 2 + PARAMS.postsSizes.diametr) / 2
         const doubleBeamsOffsetZ = (PARAMS.postsSizes.depthSide * 2 + PARAMS.postsSizes.depthCenter) / 2 + PARAMS.postsSizes.diametr / 2 + PARAMS.beamsSizes.depth / 2
 
         if (PARAMS.beamsType === 'single') {
             const beamBack01 = this.asset.clone()
-            beamBack01.position.set(0, 0, 0)
+            beamBack01.position.set(0, PARAMS.beamsSizes.height, 0)
             this.backGroup.add(beamBack01)
 
             const beamFront01 = this.asset.clone()
-            beamFront01.position.set(0, 0, 0)
+            beamFront01.position.set(0, PARAMS.beamsSizes.height, 0)
             this.frontGroup.add(beamFront01)
         }
 
         if (PARAMS.beamsType === 'double') {
-
             const beamBack01 = this.asset.clone()
             beamBack01.position.set(0, 0, - doubleBeamsOffsetZ)
             this.backGroup.add(beamBack01)
@@ -75,7 +85,17 @@ export default class Beams {
             this.frontGroup.add(beamFront02)
         }
 
+        // Attached beam
+        const beamAttached = this.asset.clone()
+        beamAttached.position.set(0, PARAMS.beamsSizes.height, -PARAMS.beamsSizes.depth / 2)
+        this.attachedGroup.add(beamAttached)
+
         this.setPosition()
+
+        let beamsOffset
+        if (PARAMS.beamsType === 'single') beamsOffset = PARAMS.beamsSizes.height
+        if (PARAMS.beamsType === 'double') beamsOffset = 0
+        this.attachedGroup.position.y += beamsOffset
 
     }
 
@@ -86,6 +106,10 @@ export default class Beams {
 
         while (this.frontGroup.children[0]) {
             this.frontGroup.remove(this.frontGroup.children[0])
+        }
+
+        while (this.attachedGroup.children[0]) {
+            this.attachedGroup.remove(this.attachedGroup.children[0])
         }
     }
 
@@ -104,6 +128,20 @@ export default class Beams {
 
         this.asset.material = value
     }
+
+    // Attached
+
+
+    setScaleAttachedGroup(value) {
+        this.attachedGroup.scale.set(value, value, value)
+    }
+
+    checkBeams() {
+
+    }
+
+
+
 
 
 }

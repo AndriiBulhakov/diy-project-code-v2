@@ -1,8 +1,11 @@
 import * as THREE from 'three';
+<<<<<<< HEAD
 
 import Materials from '../Materials';
 
 
+=======
+>>>>>>> diyUpdates
 
 export default class Manager {
     constructor(progressBarContainer, progressBar) {

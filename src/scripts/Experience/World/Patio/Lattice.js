@@ -8,7 +8,7 @@ export default class Latiice {
     constructor() {
 
         this.materials = new Materials()
-        this.rafters = new Rafters()
+
 
         this.group = new THREE.Group()
 
@@ -19,10 +19,11 @@ export default class Latiice {
     }
 
     setPosition() {
+        this.rafters = new Rafters()
         if (PARAMS.rafterType === '2x6')
             this.group.position.y = this.rafters.group.position.y + PARAMS.raftersSizes.height / 2 + PARAMS.latticeSizes.height / 2
         if (PARAMS.rafterType === '3x8')
-            this.group.position.y = this.rafters.group.position.y + PARAMS.raftersSizes.height / 2 + PARAMS.latticeSizes.height
+            this.group.position.y = this.rafters.group.position.y + PARAMS.raftersSizes.height / 2 + PARAMS.latticeSizes.height / 2
     }
 
     setScale(value) {
