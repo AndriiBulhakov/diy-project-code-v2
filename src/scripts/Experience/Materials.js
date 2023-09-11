@@ -1,10 +1,13 @@
 import * as THREE from 'three';
 import Textures from './Textures.js';
 
-export default class Materials {
-    constructor() {
+import Manager from './Utils/Manager.js';
 
-        this.textures = new Textures()
+export default class Materials {
+    constructor(loadingManager) {
+
+
+        this.textures = new Textures(loadingManager)
 
         // Parameters for GUI 
 
@@ -78,6 +81,12 @@ export default class Materials {
 
         this.floorColor = new THREE.MeshBasicMaterial({
             color: 0xbec9cb
+        })
+
+        this.planeDepth = new THREE.MeshBasicMaterial({
+            color: new THREE.Color(0xbec9cb), //0xbec9cb
+            transparent: true,
+            opacity: 0.7
         })
 
         /**

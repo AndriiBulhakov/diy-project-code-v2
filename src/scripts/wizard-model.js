@@ -9,6 +9,7 @@ import PARAMS from './Experience/Utils/PARAMS';
 import Price from './Experience/Utils/Price';
 import Manager from './Experience/Utils/Manager';
 
+import Color from './Experience/Utils/Color';
 import Textures from './Experience/Textures.js';
 import Materials from './Experience/Materials.js';
 import patioSizes from './Experience/Utils/PatioSizes.js';
@@ -24,10 +25,11 @@ import PatioGroup from './Experience/World/Patio/PatioGroup';
 import ShadowFloor from './Experience/World/ShadowFloor';
 import Floor from './Experience/World/Floor';
 import EnterFloor from './Experience/World/EnterFloor';
+import PlaneDepth from './Experience/World/PlaneDepth';
 
 import DirectionalLight from './Experience/World/DirectionalLight';
 import AreaLight from './Experience/World/AreaLight';
-import { color } from 'canvas-sketch-util';
+
 
 
 
@@ -45,6 +47,7 @@ function initModel() {
      * DOC
      */
 
+    const mouse = { x: 99999, y: 99999 }
     const canvas = document.querySelector(".webgl");
     const widthOffset = 0.95
     const sizes = {
@@ -68,6 +71,14 @@ function initModel() {
     const folderLattice = gui.addFolder('Lattice').close()
     const folderGuides = gui.addFolder('Guides').close()
     const folderPrice = gui.addFolder('Price').close()
+
+    /**
+     * Loader
+     */
+    const progressBar = document.getElementById('progress-bar')
+    const progressBarContainer = document.querySelector(".progress-bar-container")
+
+    const manager = new Manager(progressBarContainer, progressBar)
 
     /**
      * Scene
@@ -253,12 +264,6 @@ function initModel() {
 
     const house = new House()
     sceneCtrl.add(house.instanse, house.enterFloor)
-
-    /**
-     * Loaders
-     */
-
-    const manager = new Manager()
 
     /**
      * Patio
