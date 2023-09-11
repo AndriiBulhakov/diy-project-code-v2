@@ -255,10 +255,20 @@ function initModel() {
      * Groups
      */
 
+    const rotationGroup = new THREE.Group()
+    scene.add(rotationGroup)
+
+    rotationGroup.position.set(5, 5, 0) //target coordinates
+
     // Group for controlling the scene 
     const sceneCtrl = new THREE.Group()
-    scene.add(sceneCtrl)
-    sceneCtrl.position.set(1, 0, -1)
+
+    //free standing
+    sceneCtrl.position.set(9.858 - 5, 0 - 5, 7.986) // sceneCtrl.position(9.858, 0, 7.986) - rotationGroup.position(5, 5, 0)
+    //attached
+    // sceneCtrl.position.set(7.798, 0, 6.207) 
+
+    rotationGroup.add(sceneCtrl)
 
     // Group for controlling PatioGroup
     const patioCtrl = new THREE.Group()
