@@ -27,6 +27,7 @@ body {
   align-items: center;
   /* transform: translateY(-50%);  */
   opacity: 1;
+  z-index: 1;
 }
 
 #progers-bar {
@@ -44,7 +45,7 @@ label {
   top:0;
   left:2.5%;
   outline: none;
-  z-index: -1;
+  z-index: 0;
 }
 
 .content {

@@ -47,10 +47,27 @@ const size12x24Wrapper = () => patioSizes.size12x24();
 function initModel() {
 
     /**
-     * DOC
+     * Hover
      */
 
     const mouse = { x: 99999, y: 99999 }
+
+    window.addEventListener('mousemove', onMouseMove)
+
+    function onMouseMove(event) {
+        mouse.x = event.clientX / sizes.width * 2 - 1
+        mouse.y = - (event.clientY / sizes.height * 2 - 1);
+
+        rotationGroup.rotation.y = math.mapRange(mouse.x, 0, 1, -0.016, 0.016)
+
+        console.log('check');
+    }
+
+    /**
+     * DOC
+     */
+
+
     const canvas = document.querySelector(".webgl");
     const widthOffset = 0.95
     const sizes = {
@@ -106,7 +123,7 @@ function initModel() {
         new THREE.MeshBasicMaterial()
     )
 
-    scene.add(cubeTarger)
+    // scene.add(cubeTarger)
     cubeTarger.position.set(5, 5, 0)
 
 
@@ -1383,20 +1400,7 @@ function initModel() {
 
 
 
-    /**
-     * Hover
-     */
 
-    window.addEventListener('mousemove', onMouseMove)
-
-    function onMouseMove(event) {
-        mouse.x = event.clientX / sizes.width * 2 - 1
-        mouse.y = - (event.clientY / sizes.height * 2 - 1);
-
-        rotationGroup.rotation.y = math.mapRange(mouse.x, 0, 1, -0.016, 0.016)
-
-        console.log('check');
-    }
 }
 
 export default initModel
