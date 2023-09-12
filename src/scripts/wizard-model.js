@@ -452,7 +452,7 @@ function initModel() {
 
     patioTypesSetup()
 
-    folderTypes.add(PARAMS, 'patioType', ['lattice','solid', 'insulated']).name('patioTypes').onChange((value) => {
+    folderTypes.add(PARAMS, 'patioType', ['lattice', 'solid', 'insulated']).name('patioTypes').onChange((value) => {
 
         PARAMS.patioType = value
 
@@ -1411,7 +1411,7 @@ function initModel() {
             .then(res => console.log(JSON.stringify(res, null, 2)));
     };
 
-
+    console.log('test')
 
 
 
