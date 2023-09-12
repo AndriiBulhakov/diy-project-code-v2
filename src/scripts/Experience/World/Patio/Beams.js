@@ -20,6 +20,8 @@ export default class Beams {
 
         this.create()
 
+        this.checkAttachment()
+
 
     }
 
@@ -136,8 +138,15 @@ export default class Beams {
         this.attachedGroup.scale.set(value, value, value)
     }
 
-    checkBeams() {
-
+    checkAttachment() {
+        if (PARAMS.attachment === 'free standing') {
+            this.setScaleBackGroup(1)
+            this.setScaleAttachedGroup(0)
+        }
+        if (PARAMS.attachment === 'attached') {
+            this.setScaleBackGroup(0)
+            this.setScaleAttachedGroup(1)
+        }
     }
 
 

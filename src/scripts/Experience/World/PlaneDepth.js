@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import PARAMS from '../Utils/PARAMS'
 
 import Materials from '../Materials'
 
@@ -10,6 +11,7 @@ export default class PlaneDepth {
 
         this.create()
         this.setPosition()
+        this.checkOpacity()
     }
 
     create() {
@@ -24,6 +26,11 @@ export default class PlaneDepth {
         this.instance.position.x = 7.611
         this.instance.position.y = 2
         this.instance.rotation.y = - Math.PI / 2
+    }
+
+    checkOpacity() {
+        if (PARAMS.attachment === 'free standing') this.instance.material.opacity = 0.7
+        if (PARAMS.attachment === 'attached') this.instance.material.opacity = 0
     }
 
     setOpacity(value) {

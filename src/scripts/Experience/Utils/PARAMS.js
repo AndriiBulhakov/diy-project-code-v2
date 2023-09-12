@@ -1,12 +1,12 @@
 const PARAMS =
 {
-    patioType: 'solid', // solid, lattice, insulated
+    patioType: 'lattice', // solid, lattice, insulated
     patioSizes: '10x10', // '10x10', '11x11', '12x12', '12x16', '12x20', '12x24'
     patioProjection: '10', // '10', '11', '12'
     roofWidth: 10,
     roofDepth: 10,
-    attachment: 'free standing', // 'free standing', 'attached'
-    attachmentType: 'roof', // 'roof', 'fasciaEave', 'underEave', 'wall', 
+    attachment: 'attached', // 'free standing', 'attached'
+    attachmentType: 'wall', // 'roof', 'fasciaEave', 'underEave', 'wall', 
     latticeType: '2x2', // '2x2', '3x2'
     latticeMaxDistance: 0.1667, //2 inch = 0.1667
     latticeSizes: {

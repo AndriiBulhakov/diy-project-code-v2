@@ -56,7 +56,7 @@ export default class House {
                         const offset = (9.858 - 5) / 2 //position of the sceneCtrl
                         this.bigMask.position.y = offset
                         child.position.y -= offset
-                        this.bigMask.scale.y = 0.356
+                        this.bigMask.scale.y = 0.356 + 0.1
 
                         const height = child.geometry.boundingBox.max.y - child.geometry.boundingBox.min.y
                     }
@@ -67,7 +67,7 @@ export default class House {
                         const offset = (9.858 - 5) / 2 //position of the sceneCtrl
                         this.smallMask.position.y = offset
                         child.position.y -= offset
-                        this.smallMask.scale.y = 0.55
+                        this.smallMask.scale.y = 0.55 + 0.25
                         // console.log(this.smallMask.position.y);
                         this.smallMask.position.y -= 0.08
 
