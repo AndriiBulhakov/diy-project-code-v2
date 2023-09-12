@@ -20,6 +20,7 @@ import Roof from './Experience/World/Patio/Roof.js'
 import Rafters from './Experience/World/Patio/Rafters.js';
 import Posts from './Experience/World/Patio/Posts';
 import Beams from './Experience/World/Patio/Beams';
+import AttachedBeam from './Experience/World/Patio/AttachedBeam';
 import Lattice from './Experience/World/Patio/Lattice';
 import PatioGroup from './Experience/World/Patio/PatioGroup';
 
@@ -265,19 +266,6 @@ function initModel() {
         house.bigGroup.position.z = - 0.15 + bigOffsetZ
     }
 
-    // wall
-
-    // house.bigRoof.position.y = 10
-    // house.smallRoof.position.y = 0.165
-    // patioGroup.instance.position.z = -4.379
-
-    // house.bigMask.scale.y = 0.65385
-    // house.smallMask.scale.y = 0.80226
-    // house.smallMask.position.y = 2.35339
-
-
-
-
 
     /**
      * Depth
@@ -321,7 +309,10 @@ function initModel() {
         rafters.setSize(value)
         roof.updateGeometry()
         lattice.setPosition()
+        beams.update()
+        beams.updateToMaterial(materials.beams)
         price.update()
+        setAttachmentHeight()
 
     })
 
@@ -375,6 +366,14 @@ function initModel() {
     const beams = new Beams()
     patioGroup.instance.add(beams.frontGroup, beams.backGroup, beams.attachedGroup)
 
+    /**
+     * Attached Beam
+     */
+
+    const attachedBeam = new AttachedBeam()
+    // patioGroup.instance.add(attachedBeam.instance)
+
+
     // Beams GUI
 
     folderBeams.add(PARAMS, 'beamsType', ['single', 'double']).name('beamsType').onChange((value) => {
@@ -419,6 +418,7 @@ function initModel() {
 
         price.update()
     })
+
 
     /**
      * Lattice
@@ -593,6 +593,7 @@ function initModel() {
     renderer.toneMappingExposure = 1
     renderer.toneMapping = THREE.LinearToneMapping
 
+
     function animate() {
 
         renderer.render(scene, camera);
@@ -664,7 +665,7 @@ function initModel() {
             beams.setScaleBackGroup(0)
             beams.setScaleAttachedGroup(1)
             house.instanse.position.set(0, 0, 0)
-            house.bigGroup.position.z = - 0.15 + bigOffsetZ
+            house.bigGroup.position.z = - 0.15 + bigOffsetZ - 0.073
             enterFloor.instance.position.set(-0.75, 0, -6.5)
             areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
             areaLight.enter.position.set(-8.5, 1.32, -8)
@@ -676,36 +677,38 @@ function initModel() {
     }
     function setAttachmentHeight() {
 
-        let beamsOffset, postsOffset
+        let beamsOffset, postsOffset, raftersOffset
         if (PARAMS.beamsType === 'single') beamsOffset = PARAMS.beamsSizes.height / 4
         if (PARAMS.beamsType === 'double') beamsOffset = 0
         if (PARAMS.postsHeight === '8 ft') postsOffset = 0
         if (PARAMS.postsHeight === '10 ft') postsOffset = 0.250
+        if (PARAMS.rafterType === '2x6') raftersOffset = 0
+        if (PARAMS.rafterType === '3x8') raftersOffset = 0.05
 
         let y
         if (PARAMS.attachmentType === 'roof') {
-            y = -0.55 + beamsOffset + postsOffset
+            y = -0.55 + beamsOffset + postsOffset + raftersOffset
             house.bigRoof.position.y = y
             house.smallRoof.position.y = y
             patioGroup.instance.position.z = -5.315
         }
         if (PARAMS.attachmentType === 'fasciaEave') {
-            y = -0.293 + beamsOffset + postsOffset
+            y = -0.293 + beamsOffset + postsOffset + raftersOffset
             house.bigRoof.position.y = y
             house.smallRoof.position.y = y
             patioGroup.instance.position.z = -5.783
         }
         if (PARAMS.attachmentType === 'underEave') {
-            y = -0.135 + beamsOffset + postsOffset
+            y = -0.135 + beamsOffset + postsOffset + raftersOffset
             house.bigRoof.position.y = y
             house.smallRoof.position.y = y
             patioGroup.instance.position.z = -5.315
         }
         if (PARAMS.attachmentType === 'wall') {
-            y = 0.00 + beamsOffset + postsOffset
+            y = 0.00 + beamsOffset + postsOffset + raftersOffset
             house.bigRoof.position.y = y
             house.smallRoof.position.y = y
-            patioGroup.instance.position.z = -4.379
+            patioGroup.instance.position.z = -4.379 + 0.88
 
         }
 
@@ -760,7 +763,7 @@ function initModel() {
                 attachedCtrlX.hide()
                 attachedCtrlZ.hide()
             }
-            attachmentType.show() // .setValue('wall')
+            attachmentType.show().setValue('wall')
         }
     }
 
@@ -776,18 +779,16 @@ function initModel() {
     })
 
     setAttachmentHeight()
-    // if (PARAMS.attachmentType === 'wall') {
-    //     const y = 0.1
-    //     house.bigRoof.position.y -= y
-    //     house.smallRoof.position.y -= y
-    // }
-    // setAttachmentType('attachment')
+
+
 
     /**
      * Patio Sizes
      */
 
     const classSizes = new ClassSizes()
+
+    setAttachmentType('attached')
 
 
     function updatePatioSize(value) {

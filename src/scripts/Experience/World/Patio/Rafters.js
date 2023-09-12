@@ -24,6 +24,15 @@ export default class Rafters {
         )
         this.asset.receiveShadow = true
         this.asset.castShadow = true
+
+        this.assetAttached = new THREE.Mesh(
+            new THREE.BoxGeometry(PARAMS.roofWidth, PARAMS.raftersSizes.height, PARAMS.raftersSizes.width),
+            this.materials.rafters
+        )
+        this.assetAttached.receiveShadow = true
+        this.assetAttached.castShadow = true
+
+
     }
 
     create() {

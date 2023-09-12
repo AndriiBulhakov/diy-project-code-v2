@@ -12,7 +12,7 @@ export default class Beams {
         this.frontGroup = new THREE.Group()
         this.backGroup = new THREE.Group()
         this.attachedGroup = new THREE.Group()
-        this.attachedGroup.scale.set(0, 0, 0)
+
 
         this.offsetY, this.offsetZ
 
@@ -31,7 +31,9 @@ export default class Beams {
 
         this.frontGroup.position.set(0, this.offsetY, - this.offsetZ)
         this.backGroup.position.set(0, this.offsetY, this.offsetZ)
-        this.attachedGroup.position.set(0, this.offsetY, PARAMS.roofDepth / 2)
+
+        this.offsetAttachedY = PARAMS.postsSizes.height / 2 - PARAMS.raftersSizes.height / 2
+        this.attachedGroup.position.set(0, this.offsetAttachedY, PARAMS.roofDepth / 2)
     }
 
     setScale(value) {
@@ -54,6 +56,14 @@ export default class Beams {
         )
         this.asset.castShadow = true
         this.asset.receiveShadow = true
+
+        this.assetAttached = new THREE.Mesh(
+            new THREE.BoxGeometry(PARAMS.roofWidth, PARAMS.raftersSizes.height, PARAMS.beamsSizes.depth),
+            this.materials.beams
+        )
+        this.assetAttached.castShadow = true
+        this.assetAttached.receiveShadow = true
+
     }
 
     create() {
@@ -88,8 +98,8 @@ export default class Beams {
         }
 
         // Attached beam
-        const beamAttached = this.asset.clone()
-        beamAttached.position.set(0, PARAMS.beamsSizes.height, -PARAMS.beamsSizes.depth / 2)
+        const beamAttached = this.assetAttached.clone()
+        beamAttached.position.set(0, PARAMS.raftersSizes.height, -PARAMS.beamsSizes.depth / 2)
         this.attachedGroup.add(beamAttached)
 
         this.setPosition()
@@ -127,12 +137,14 @@ export default class Beams {
         this.frontGroup.children.forEach((child) => {
             child.material = value
         })
+        this.attachedGroup.children.forEach((child) => {
+            child.material = value
+        })
 
         this.asset.material = value
     }
 
     // Attached
-
 
     setScaleAttachedGroup(value) {
         this.attachedGroup.scale.set(value, value, value)
