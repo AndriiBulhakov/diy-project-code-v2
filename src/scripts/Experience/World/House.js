@@ -39,10 +39,13 @@ export default class House {
         this.setPosition()
 
     }
+    /*
+    'https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/src/static/3Dmodels/house_v03.gltf'
+    */
 
     setHouse() {
         this.gltfLoader.load(
-            'https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/src/static/3Dmodels/house_v03.gltf',
+            '3d_models/house_v04.gltf',
             (gltf) => {
 
                 const children = [...gltf.scene.children]
