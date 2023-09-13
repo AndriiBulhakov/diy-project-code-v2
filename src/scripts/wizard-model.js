@@ -97,7 +97,7 @@ function initModel() {
      */
 
     const price = new Price(folderPrice)
-    price.update()
+    // price.update()
 
     /**
      * Loader
@@ -1479,7 +1479,7 @@ function initModel() {
     };
 
 
-
+    price.update()
 
 
 }
