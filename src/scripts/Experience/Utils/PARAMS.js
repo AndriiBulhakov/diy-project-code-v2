@@ -36,6 +36,9 @@ const PARAMS =
     },
     beamsType: 'single', // 'single', 'double'
     beamsSizeType: '8x3', // '6x2', '8x3'
+    accesories: {
+        fan: true, // 'on', 'off'
+    },
 }
 
 export default PARAMS

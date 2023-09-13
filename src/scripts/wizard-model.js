@@ -17,6 +17,7 @@ import patioSizes from './Experience/Utils/PatioSizes.js';
 import ClassSizes from './Experience/Utils/classSizes';
 
 import House from './Experience/World/House.js'
+import Fan from './Experience/World/Fan';
 import Roof from './Experience/World/Patio/Roof.js'
 import Rafters from './Experience/World/Patio/Rafters.js';
 import Posts from './Experience/World/Patio/Posts';
@@ -88,7 +89,8 @@ function initModel() {
     const folderPosts = gui.addFolder('Posts').close()
     const folderRafters = gui.addFolder('Rafters').close()
     const folderLattice = gui.addFolder('Lattice').close()
-    const folderGuides = gui.addFolder('Guides').close()
+    const folderAccesories = gui.addFolder('Accesories').close()
+    const folderGuides = gui.addFolder('Guides').close().hide()
     const folderPrice = gui.addFolder('Price').close()
 
 
@@ -97,7 +99,7 @@ function initModel() {
      */
 
     const price = new Price(folderPrice)
-    price.update()
+    // price.update()
 
     /**
      * Loader
@@ -267,6 +269,18 @@ function initModel() {
         house.bigGroup.position.z = - 0.15 + bigOffsetZ
     }
 
+    /**
+     * Fan
+     */
+
+    const fan = new Fan(manager.loader)
+    patioGroup.instance.add(fan.instanse)
+
+    let fanStatus = true
+    const ctrlFan = folderAccesories.add(PARAMS.accesories, 'fan', [true, false]).onChange((value) => {
+        PARAMS.accesories.fan = value
+        fan.update()
+    })
 
     /**
      * Depth
@@ -399,6 +413,7 @@ function initModel() {
         roof.setPosition()
         lattice.setPosition()
         posts.update()
+        fan.setPosition()
 
         price.update()
 
@@ -594,14 +609,23 @@ function initModel() {
     renderer.toneMappingExposure = 1
     renderer.toneMapping = THREE.LinearToneMapping
 
+    let time = Date.now();
 
     function animate() {
+
+        const currentTime = Date.now();
+        const deltaTime = currentTime - time;
+        time = currentTime;
+
+        fan.blades.rotation.y += deltaTime * 0.003
 
         renderer.render(scene, camera);
 
         controls.update();
 
         requestAnimationFrame(animate);
+
+
 
     }
 
@@ -631,7 +655,6 @@ function initModel() {
      */
 
 
-
     function setAttachmentType(value) {
         if (value === 'free standing') {
             PARAMS.attachment === 'free standing'
@@ -643,6 +666,10 @@ function initModel() {
             patioGroup.update()
             beams.setScaleBackGroup(1)
             beams.setScaleAttachedGroup(0)
+            fanStatus = PARAMS.accesories.fan
+            PARAMS.accesories.fan = false
+            ctrlFan.hide()
+            fan.update()
             house.setPosition()
             house.bigGroup.position.z = 0
             house.bigRoof.position.y = 0
@@ -665,6 +692,9 @@ function initModel() {
             patioGroup.update()
             beams.setScaleBackGroup(0)
             beams.setScaleAttachedGroup(1)
+            PARAMS.accesories.fan = fanStatus
+            ctrlFan.show()
+            fan.update()
             house.instanse.position.set(0, 0, 0)
             house.bigGroup.position.z = - 0.15 + bigOffsetZ - 0.073
             enterFloor.instance.position.set(-0.75, 0, -6.5)
@@ -1451,35 +1481,7 @@ function initModel() {
 
     // summury
 
-
-    // Monday
-
-    document.getElementById('request-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-        // Retrieve form data from input field
-        const itemName = document.getElementById('Name').value;
-        let query3 = `mutation{ create_item (board_id:1176396712, item_name:${itemName}){ id}}`;
-        // Call a function to send API request with the form data
-        createTableElement(query3);
-    });
-
-    function createTableElement(query) {
-        fetch("https://api.monday.com/v2", {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI0OTMwMjM5NiwidWlkIjo0MTg3NzcwNCwiaWFkIjoiMjAyMy0wNC0wNlQwNzoxMToxMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTY0MDcyNTksInJnbiI6ImV1YzEifQ.6RSZtUamQ50F4VGrpJk3DNYo5gLYlkN3F3DOMrrlm2w'
-            },
-            body: JSON.stringify({
-                'query': query
-            })
-        })
-            .then(res => res.json())
-            .then(res => console.log(JSON.stringify(res, null, 2)));
-    };
-
-
-
+    price.update()
 
 
 }

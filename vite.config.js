@@ -40,6 +40,14 @@ export default defineConfig({
         },
       },
       external: ['jquery'],
+
+      // sourcemap: true,
+      // assetsInlineLimit: 102400,
+      // rollupOptions: {
+      //   output: {
+      //     assetFileNames: '[name][extname]',
+      //   },
+      // },
     },
   },
 })
