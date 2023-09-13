@@ -609,6 +609,9 @@ function initModel() {
     renderer.toneMappingExposure = 1
     renderer.toneMapping = THREE.LinearToneMapping
 
+    renderer.useLegacyLights = true
+
+
     let time = Date.now();
 
     function animate() {
