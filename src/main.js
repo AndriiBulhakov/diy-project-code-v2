@@ -6,3 +6,4 @@ import initModel from './scripts/wizard-model'
 initModel()
 createMap()
 callApi()
+
