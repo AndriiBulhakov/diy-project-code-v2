@@ -851,24 +851,24 @@ function initModel() {
     }
 
     const button10x10 = folderSizes.add(classSizes, 'size10x10').name('10x10').show().onChange((value) => {
-        value = classSizes.size10x10()
+        value = size10x10Wrapper()
         updatePatioSize(value)
         house.bigGroup.position.z = 0
         areaLight.sideWall.position.z = -12.56
 
     })
     const button11x11 = folderSizes.add(classSizes, 'size11x11').name('11x11').show().onChange((value) => {
-        value = classSizes.size11x11()
+        value = size11x11Wrapper()
         updatePatioSize(value)
         // house.bigGroup.postion.z = 1.18
     })
     const button12x12 = folderSizes.add(classSizes, 'size12x12').name('12x12').show().onChange((value) => {
-        value = classSizes.size12x12()
+        value = size12x12Wrapper()
         updatePatioSize(value)
         // house.bigGroup.position.z = 0.91
     })
     const button12x16 = folderSizes.add(classSizes, 'size12x16').name('12x16').hide().onChange((value) => {
-        value = classSizes.size12x16()
+        value = size12x16Wrapper()
         updatePatioSize(value)
 
         house.bigGroup.position.z = - 0.15 + bigOffsetZ // -0.15 - 0.5
@@ -876,7 +876,7 @@ function initModel() {
 
     })
     const button12x20 = folderSizes.add(classSizes, 'size12x20').name('12x20').hide().onChange((value) => {
-        value = classSizes.size12x20()
+        value = size12x20Wrapper()
         updatePatioSize(value)
         house.bigGroup.position.z = -1.2 + bigOffsetZ
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
@@ -884,7 +884,7 @@ function initModel() {
 
     })
     const button12x24 = folderSizes.add(classSizes, 'size12x24').name('12x24').hide().onChange((value) => {
-        value = classSizes.size12x24()
+        value = size12x24Wrapper()
         updatePatioSize(value)
         house.bigGroup.position.z = -2.25 + bigOffsetZ
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
