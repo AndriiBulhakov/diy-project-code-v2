@@ -45,7 +45,7 @@ export default class House {
 
     setHouse() {
         this.gltfLoader.load(
-            '3d_models/house_v04.gltf',
+            'https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/public/3d_models/house_v06.gltf', //'3d_models/house_v04.gltf'
             (gltf) => {
 
                 const children = [...gltf.scene.children]

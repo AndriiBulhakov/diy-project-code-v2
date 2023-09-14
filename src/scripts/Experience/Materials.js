@@ -41,6 +41,7 @@ export default class Materials {
             map: this.textures.adobeTextureColor,
             side: THREE.DoubleSide,
         })
+        this.roof.map.colorSpace = THREE.SRGBColorSpace
 
         this.rafters = new THREE.MeshStandardMaterial({
             color: 'white',

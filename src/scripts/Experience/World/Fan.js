@@ -27,7 +27,7 @@ export default class Fan {
 
   set() {
     this.gltfLoader.load(
-      'https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/src/static/3Dmodels/fan_v04.gltf', //'fan_v04.gltf'
+      'https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/public/3d_models/fan_v05.gltf', //'fan_v04.gltf'
       (gltf) => {
 
         const children = [...gltf.scene.children]
