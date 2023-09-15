@@ -551,10 +551,13 @@ function initModel() {
     const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height)
     scene.add(camera)
 
-    //camera.position.set(-13.768, 2.4486, -17.997)
-    // camera.position.set(-4.155, 3.000, -8.779) 
-    camera.position.set(-5.639, 3.000, -9.184)
-    camera.rotation.set(-3.14, -0.65, -3.14)
+    // camera.position.set(-5.639, 3.000, -9.184)
+    // camera.rotation.set(-3.14, -0.65, -3.14)
+
+    camera.position.set(-1.6317, 2.1172, -6.0516)
+    camera.rotation.set(-3.14, -0.7612, -3.14)
+
+
 
     /**
      * Controls
@@ -564,14 +567,25 @@ function initModel() {
     // controls.enableDamping = true
     controls.enabled = true
     const target = new THREE.Vector3(0, 0, 0)
-    target.set(5, 3, 0)
+    target.set(5, 2, 0)
     controls.target.copy(target)
     controls.update()
     controls.maxPolarAngle = Math.PI / 2
-    // controls.minDistance = 15
-    // controls.maxDistance = 33
+    controls.minDistance = 7.5
+    controls.maxDistance = 15
     controls.minAzimuthAngle = - Math.PI * 0.88
     controls.maxAzimuthAngle = - Math.PI / 1.8
+
+    controls.mouseButtons = {
+        LEFT: THREE.MOUSE.ROTATE,
+        MIDDLE: THREE.MOUSE.DOLLY,
+        RIGHT: null //THREE.MOUSE.PAN
+    }
+
+    controls.panSpeed = 0.1
+
+
+
 
 
     /**
@@ -640,7 +654,6 @@ function initModel() {
         controls.update();
 
         requestAnimationFrame(animate);
-
 
 
     }
