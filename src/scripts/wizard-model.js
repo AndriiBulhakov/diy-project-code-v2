@@ -33,6 +33,7 @@ import PlaneDepth from './Experience/World/PlaneDepth';
 
 import DirectionalLight from './Experience/World/DirectionalLight';
 import AreaLight from './Experience/World/AreaLight';
+import { gaussian } from 'canvas-sketch-util/random';
 
 
 
@@ -554,8 +555,11 @@ function initModel() {
     // camera.position.set(-5.639, 3.000, -9.184)
     // camera.rotation.set(-3.14, -0.65, -3.14)
 
-    camera.position.set(-1.6317, 2.1172, -6.0516)
+    camera.position.set(-2.407, 2.1172, -7.463)
     camera.rotation.set(-3.14, -0.7612, -3.14)
+
+    gui.add(camera.position, 'x', -10, 10, 0.001)
+    gui.add(camera.position, 'z', -10, 10, 0.001)
 
 
 
