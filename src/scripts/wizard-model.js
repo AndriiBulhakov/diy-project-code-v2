@@ -321,13 +321,21 @@ function initModel() {
 
     // Rafters GUI
     folderRafters.add(PARAMS, 'rafterType', ['2x6', '3x8']).name('rafterType').onChange((value) => {
+
         rafters.setSize(value)
+
         roof.updateGeometry()
         lattice.setPosition()
         beams.update()
         beams.updateToMaterial(materials.beams)
         price.update()
-        setAttachmentHeight()
+
+        if (PARAMS.attachment === 'attached') {
+            setAttachmentHeight()
+        }
+
+
+
 
     })
 
@@ -584,7 +592,9 @@ function initModel() {
      */
 
     const areaLight = new AreaLight()
+
     sceneCtrl.add(areaLight.patioBottom, areaLight.patioTop, areaLight.frontWall, areaLight.enter, areaLight.sideWall)
+
     if (PARAMS.attachment === 'free standing') {
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
         areaLight.enter.position.set(-10.08, 1.32, -8)
@@ -593,6 +603,9 @@ function initModel() {
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
         areaLight.enter.position.set(-8.5, 1.32, -8)
     }
+
+
+
 
     /**
      * Renderer
@@ -682,7 +695,7 @@ function initModel() {
             house.smallMask.position.y = 2.4
             enterFloor.instance.position.set(house.instanse.position.x - 0.75, 0, house.instanse.position.z - 6.5)
             areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
-            areaLight.enter.position.set(-10.08, 1.32, -8)
+            areaLight.enter.position.set(-10.7, 1.32, -8)
         }
         if (value === 'attached') {
 
@@ -746,9 +759,9 @@ function initModel() {
 
         }
 
-        house.bigMask.scale.y = math.mapRange(y, -0.3, 0.415, 0.01, 1)
-        house.smallMask.scale.y = math.mapRange(y, -0.47, 0.415, 0.3, 1)
-        house.smallMask.position.y = math.mapRange(y, -0.47, 0.415, 2.235, 2.4)
+        house.bigMask.scale.y = math.mapRange(y, -0.3, 0.415, 0.01, 0.9)
+        house.smallMask.scale.y = math.mapRange(y, -0.47, 0.415, 0.3, 1.128) //(y, -0.47, 0.415, 0.3, 1)
+        house.smallMask.position.y = math.mapRange(y, -0.47, 0.415, 2.235, 2.4) //(y, -0.47, 0.415, 2.235, 2.4)
 
     }
 
@@ -867,6 +880,7 @@ function initModel() {
         updatePatioSize(value)
         // house.bigGroup.position.z = 0.91
     })
+
     const button12x16 = folderSizes.add(classSizes, 'size12x16').name('12x16').hide().onChange((value) => {
         value = size12x16Wrapper()
         updatePatioSize(value)
@@ -888,8 +902,6 @@ function initModel() {
         updatePatioSize(value)
         house.bigGroup.position.z = -2.25 + bigOffsetZ
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
-
-
     })
     folderSizes.add(classSizes, 'doCustom').name('do custom').onChange((value) => {
         if (value) {
@@ -930,6 +942,7 @@ function initModel() {
         const updateSize = [PARAMS.roofDepth, value]
         updatePatioSize(updateSize)
         house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.25)
+        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
     })
     const attachedCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 12, 12, 0.1).name('roofDepth').hide().onChange((value) => {
         const updateSize = [value, PARAMS.roofWidth]

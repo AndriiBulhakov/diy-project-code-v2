@@ -29,7 +29,7 @@ export default class PatioGroup {
                 z = -5.315
             }
             if (PARAMS.attachmentType === 'wall') {
-                z = -4.379
+                z = -4.379 + 0.88
             }
             this.instance.position.z = z
         }
