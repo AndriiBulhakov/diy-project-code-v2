@@ -558,10 +558,8 @@ function initModel() {
     camera.position.set(-2.407, 2.1172, -7.463)
     camera.rotation.set(-3.14, -0.7612, -3.14)
 
-    gui.add(camera.position, 'x', -10, 10, 0.001)
-    gui.add(camera.position, 'z', -10, 10, 0.001)
-
-
+    // gui.add(camera.position, 'x', -10, 10, 0.001)
+    // gui.add(camera.position, 'z', -10, 10, 0.001)
 
     /**
      * Controls
