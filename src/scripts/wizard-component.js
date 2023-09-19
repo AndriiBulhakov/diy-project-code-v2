@@ -135,12 +135,13 @@ function callApi() {
             const [{ postal_code: postalCode, state_code: stateCode, city_en: city }] = firstOutput
 
             outputText.forEach(output => {
-              output.textContent = `${postalCode}, ${stateCode}, ${city}`
               output.classList.remove('is--hidden')
               // check if output has tag name input
               if (output.tagName === 'INPUT') {
                 output.value = `${postalCode}`
                 console.log(output.value)
+              } else {
+                output.textContent = `${postalCode}, ${stateCode}, ${city}`
               }
             });
 
@@ -203,11 +204,12 @@ function callApi() {
       localStorage.removeItem('requestedZipCode')
 
       outputText.forEach(output => {
-        output.textContent = ''
         output.classList.add('is--hidden')
         if (output.tagName === 'INPUT') {
           output.value = ''
           console.log(output.value)
+        } else {
+          output.textContent = ''
         }
       })
 
