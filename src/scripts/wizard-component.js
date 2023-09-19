@@ -137,6 +137,10 @@ function callApi() {
             outputText.forEach(output => {
               output.textContent = `${postalCode}, ${stateCode}, ${city}`
               output.classList.remove('is--hidden')
+              // check if output has tag name input
+              if (output.tagName === 'INPUT') {
+                output.value = `${postalCode}`
+              }
             });
 
             zipErorr.style.display = 'none';
@@ -200,6 +204,9 @@ function callApi() {
       outputText.forEach(output => {
         output.textContent = ''
         output.classList.add('is--hidden')
+        if (output.tagName === 'INPUT') {
+          output.value = ''
+        }
       })
 
       // change input text color
