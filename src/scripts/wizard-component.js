@@ -140,6 +140,7 @@ function callApi() {
               // check if output has tag name input
               if (output.tagName === 'INPUT') {
                 output.value = `${postalCode}`
+                console.log(output.value)
               }
             });
 
@@ -206,6 +207,7 @@ function callApi() {
         output.classList.add('is--hidden')
         if (output.tagName === 'INPUT') {
           output.value = ''
+          console.log(output.value)
         }
       })
 
