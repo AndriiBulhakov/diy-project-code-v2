@@ -1023,6 +1023,12 @@ function initModel() {
     const priceWrapper = document.querySelector('.price-wrapper');
     const checkoutButton = document.querySelector('.checkout-button');
     const requestInfo = document.querySelector('.request-info');
+    // Types
+    const typeSelectWrapper = document.querySelector('.type-selects-wrapper');
+    const latticeSelect = document.querySelector('#tubes');
+    const raftersSelect = document.querySelector('#rafters');
+    // Accessories
+    const accessoriesList = document.querySelector('#patio-accessories');
 
     function checkoutState() {
         requestForm.classList.add('is--hidden');
@@ -1087,6 +1093,7 @@ function initModel() {
     addActiveClassDefault(attachedSizes)
     addActiveClassDefault(freeStandingSizes)
     addActiveClassDefault(installationList)
+    addActiveClassDefault(accessoriesList)
 
     //  ---- Controls events ----
     // Type
@@ -1100,8 +1107,38 @@ function initModel() {
             price.update()
             removeActiveClass(typeList)
             addActiveClass(event.target.parentElement)
+            // if type is lattice, then show type select wrapper, else hide
+            if (typeName === 'Lattice') {
+                typeSelectWrapper.classList.remove('is--hidden')
+            } else {
+                typeSelectWrapper.classList.add('is--hidden')
+            }
         }
+    });
+
+    // on change of rafters select, update folderRafters controllers and update price
+    raftersSelect.addEventListener('change', (event) => {
+        let raftersName = event.target.value
+        folderRafters.controllers.forEach((controller) => {
+            if (controller._name === 'rafterType') {
+                controller.setValue(raftersName)
+            }
+        })
+        price.update()
     })
+    
+    // on change of lattice select, update folderLattice controllers and update price
+    latticeSelect.addEventListener('change', (event) => {
+        let latticeName = event.target.value
+        folderLattice.controllers.forEach((controller) => {
+            if (controller._name === 'latticeType') {
+                controller.setValue(latticeName)
+            }
+        })
+        price.update()
+    })
+
+
 
     // Color
     const colorLists = colorList.querySelectorAll('.button-grid')
@@ -1160,7 +1197,7 @@ function initModel() {
             colorCombine.classList.toggle('is--hidden');
             // if colorToggleWrapper is active, then activate first combine color
             if (colorToggleWrapper.classList.contains('is--active')) {
-                folderColor.controllers[5].setValue('adobe')
+                folderColor.controllers[6].setValue('adobe')
                 // remove active class from all buttons
                 removeActiveClass(colorLists[colorLists.length - 1])
                 // activate first button of last color list
@@ -1333,6 +1370,11 @@ function initModel() {
                 folderPosts.controllers[1].setValue('8 ft')
                 // update value and placeholder of input and textContent of output
                 setInputOutput(postsInput, postsOutput, 'Default')
+                // set default value to the selects
+                postsSelectSquareWide.value = 'Wide 8'
+                postsSelectSquareTall.value = 'Tall 8'
+                postsSelectRoundWide.value = 'Wide 8'
+                postsSelectRoundTall.value = 'Tall 8'
             } else if (postsName.toLowerCase() === 'square') {
                 postsSelectsWrapper.classList.remove('is--hidden')
                 postsSelectsSquare.classList.remove('is--hidden')
@@ -1341,6 +1383,9 @@ function initModel() {
                 folderPosts.controllers[1].setValue('8 ft')
                 // update value and placeholder of input and textContent of output
                 setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
+                // set default value to the selects round
+                postsSelectRoundWide.value = 'Wide 8'
+                postsSelectRoundTall.value = 'Tall 8'
                 postsSelectSquareWide.addEventListener('change', (event) => {
                     let postsWideSize = postsSelectSquareWide.value
 
@@ -1373,6 +1418,9 @@ function initModel() {
                 folderPosts.controllers[1].setValue('8 ft')
                 // update value and placeholder of input and textContent of output
                 setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
+                // set default value to the selects square
+                postsSelectSquareWide.value = 'Wide 8'
+                postsSelectSquareTall.value = 'Tall 8'
                 postsSelectRoundWide.addEventListener('change', (event) => {
                     let postsWideSize = postsSelectRoundWide.value
                     setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
@@ -1403,7 +1451,6 @@ function initModel() {
     function connectInputWithController(input, controller, min, max) {
         input.addEventListener('input', (event) => {
             let value = parseFloat(event.target.value);
-
             if (isNaN(value)) {
                 value = min;
             }
@@ -1413,6 +1460,7 @@ function initModel() {
             } else if (value > max) {
                 value = max;
             }
+
 
             event.target.value = value.toFixed(1);
 
@@ -1503,10 +1551,31 @@ function initModel() {
     });
 
     // Installation
+    const installationText = document.querySelector('#installation-text')
+
     installationList.addEventListener('click', (event) => {
-        if (event.target.classList.contains('button-item')) {
+        if (event.target.classList.contains('trigger-button-item')) {
             removeActiveClass(installationList)
-            addActiveClass(event.target)
+            addActiveClass(event.target.parentElement)
+            installationText.classList.add('is--hidden')
+            
+            if(event.target.parentElement === installationList.querySelectorAll('.button-item')[1]) {
+                installationText.classList.remove('is--hidden')
+            }
+        }
+    });
+
+    // Accessories
+    accessoriesList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('trigger-button-item')) {
+            let fanAttr = event.target.getAttribute('data-fans')
+            removeActiveClass(accessoriesList)
+            addActiveClass(event.target.parentElement)
+            if(fanAttr === 'true') {
+                folderAccesories.controllers[0].setValue(true)
+            } else {
+                folderAccesories.controllers[0].setValue(false)
+            }
         }
     });
 

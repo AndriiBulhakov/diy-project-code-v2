@@ -139,7 +139,6 @@ function callApi() {
               // check if output has tag name input
               if (output.tagName === 'INPUT') {
                 output.value = `${postalCode}`
-                console.log(output.value)
               } else {
                 output.textContent = `${postalCode}, ${stateCode}, ${city}`
               }
@@ -166,7 +165,8 @@ function callApi() {
               // set to the local storage flag that requesteZipCode true
               localStorage.setItem('requestedZipCode', true)
               // change input text color
-              input.style.color = '#FF6B00'
+              input.style.color = '#ffffff'
+              input.style.borderColor = '#ffffff'
               zipErorr.style.display = 'none';
             } else {
               // Postal code is not in the list
