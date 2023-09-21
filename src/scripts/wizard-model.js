@@ -105,10 +105,10 @@ function initModel() {
     /**
      * Loader
      */
-    const progressBar = document.getElementById('progress-bar')
+    // const progressBar = document.getElementById('progress-bar')
     const progressBarContainer = document.querySelector(".progress-bar-container")
 
-    const manager = new Manager(progressBarContainer, progressBar)
+    const manager = new Manager(progressBarContainer)
 
     /**
      * Scene
@@ -1630,6 +1630,14 @@ function initModel() {
             localStorage.setItem(input.name, input.value)
         })
     });
+
+    // Get image by class-name patio-image, get src and set it to the local storage
+    const patioImage = document.querySelector('.patio-image');
+
+    if (patioImage) {
+        const patioImageSrc = patioImage.getAttribute('src');
+        localStorage.setItem('Image', patioImageSrc)
+    }
 
     price.update()
 

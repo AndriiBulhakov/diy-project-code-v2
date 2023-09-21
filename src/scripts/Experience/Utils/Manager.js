@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
 export default class Manager {
-    constructor(progressBarContainer, progressBar) {
+    constructor(progressBarContainer) {
 
         this.progressBarContainer = progressBarContainer
-        this.progressBar = progressBar
+        // this.progressBar = progressBar
 
         this.loader = new THREE.LoadingManager(
             // Loaded
@@ -14,11 +14,11 @@ export default class Manager {
             },
 
             // Progress
-            (url, loaded, total) => {
-                // console.log('progress');
-                this.progressBar.value = (loaded / total) * 100
+            // (url, loaded, total) => {
+            //     // console.log('progress');
+            //     this.progressBar.value = (loaded / total) * 100
 
-            }
+            // }
         )
 
     }
