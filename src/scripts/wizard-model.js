@@ -1058,13 +1058,13 @@ function initModel() {
     }
 
     // set default values to the inputs and outputs
-    setInputOutput(typeInput, typeOutput, 'Solid');
+    setInputOutput(typeInput, typeOutput, 'Lattice 2x2 2x6');
     setInputOutput(colorInput, colorOutput, 'Adobe');
     setInputOutput(attachmentInput, attachmentOutput, 'Free Standing');
     setInputOutput(sizeInput, sizeOutput, '10x10');
     setInputOutput(headerInput, headerOutput, 'Single beam 3x8');
     setInputOutput(postsInput, postsOutput, 'Default');
-    setInputOutput(accessoriesInput, accessoriesOutput, 'None');
+    setInputOutput(accessoriesInput, accessoriesOutput, 'Fan');
     setInputOutput(installationInput, installationOutput, 'Self Installation');
 
     // function for adding active class to the button
@@ -1112,9 +1112,13 @@ function initModel() {
                 typeSelectWrapper.classList.remove('is--hidden')
             } else {
                 typeSelectWrapper.classList.add('is--hidden')
+
             }
         }
     });
+
+    let currentLattice = '2x2';
+    let currentRafter = '2x6';
 
     // on change of rafters select, update folderRafters controllers and update price
     raftersSelect.addEventListener('change', (event) => {
@@ -1122,6 +1126,16 @@ function initModel() {
         folderRafters.controllers.forEach((controller) => {
             if (controller._name === 'rafterType') {
                 controller.setValue(raftersName)
+                currentRafter = raftersName
+                typeInput.forEach((item) => {
+                    item.value = `Lattice tubes:${currentLattice}; rafters:${currentRafter};`
+                    item.placeholder = item.value
+
+                })
+                typeOutput.forEach((item) => {
+                    item.textContent = `Lattice tubes:${currentLattice}; rafters:${currentRafter};`
+                })
+                console.log(typeOutput.textContent)
             }
         })
         price.update()
@@ -1133,6 +1147,14 @@ function initModel() {
         folderLattice.controllers.forEach((controller) => {
             if (controller._name === 'latticeType') {
                 controller.setValue(latticeName)
+                currentLattice = latticeName
+                typeInput.forEach((item) => {
+                    item.value = `Lattice tubes:${currentLattice}; rafters:${currentRafter};`
+                    item.placeholder = item.value
+                })
+                typeOutput.forEach((item) => {
+                    item.textContent = `Lattice tubes:${currentLattice}; rafters:${currentRafter};`
+                })
             }
         })
         price.update()
@@ -1463,8 +1485,21 @@ function initModel() {
 
 
             event.target.value = value.toFixed(1);
-
             controller.setValue(value);
+
+            // if it's free standing inputs then update input and output of size
+            if (input === freeStandingWidthInput || input === freeStandingDepthInput) {
+                let width = parseFloat(freeStandingWidthInput.value)
+                let depth = parseFloat(freeStandingDepthInput.value)
+                let sizeName = `${width}x${depth}`
+                // update value and placeholder of input and textContent of output
+                setInputOutput(sizeInput, sizeOutput, sizeName)
+            } else if (input === attachedWidthInput) {
+                let width = parseFloat(attachedWidthInput.value)
+                let sizeName = `${width}`
+                // update value and placeholder of input and textContent of output
+                setInputOutput(sizeInput, sizeOutput, sizeName)
+            }
         });
     }
 
@@ -1521,6 +1556,8 @@ function initModel() {
                     attachedWidthInput.value = 12.0
                     customSizeHide();
                     controller.setValue(true);
+                    // update value and placeholder of input and textContent of output
+                    setInputOutput(sizeInput, sizeOutput, sizeName)
                     // if local storage requestedZipCode is not false, then call checkoutState function, else call requestState function
                     if (localStorage.getItem('requestedZipCode') !== 'false') {
                         checkoutState();
@@ -1573,13 +1610,26 @@ function initModel() {
             addActiveClass(event.target.parentElement)
             if(fanAttr === 'true') {
                 folderAccesories.controllers[0].setValue(true)
+                // update value and placeholder of input and textContent of output
+                setInputOutput(accessoriesInput, accessoriesOutput, 'Fan')
             } else {
                 folderAccesories.controllers[0].setValue(false)
+                // update value and placeholder of input and textContent of output
+                setInputOutput(accessoriesInput, accessoriesOutput, 'No Fan')
             }
         }
     });
 
-    // summury
+    // set all inputs name and values from request form #wf-form-Request-Form to local storage on click on request trigger button
+    const requestTriggerButton = document.querySelector('.submit-button');
+
+    requestTriggerButton.addEventListener('click', () => {
+        const requestForm = document.querySelector('#wf-form-Request-Form');
+        const requestFormInputs = requestForm.querySelectorAll('input');
+        requestFormInputs.forEach((input) => {
+            localStorage.setItem(input.name, input.value)
+        })
+    });
 
     price.update()
 
