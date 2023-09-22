@@ -1060,7 +1060,7 @@ function initModel() {
     // set default values to the inputs and outputs
     setInputOutput(typeInput, typeOutput, 'Lattice 2x2 2x6');
     setInputOutput(colorInput, colorOutput, 'Adobe');
-    setInputOutput(attachmentInput, attachmentOutput, 'Free Standing');
+    setInputOutput(attachmentInput, attachmentOutput, 'To the wall');
     setInputOutput(sizeInput, sizeOutput, '10x10');
     setInputOutput(headerInput, headerOutput, 'Single beam 3x8');
     setInputOutput(postsInput, postsOutput, 'Default');
@@ -1473,20 +1473,17 @@ function initModel() {
     function connectInputWithController(input, controller, min, max) {
         input.addEventListener('input', (event) => {
             let value = parseFloat(event.target.value);
-            if (isNaN(value)) {
-                value = min;
+            if(event.target.value.length > 1){
+                
+                if (value < min) {
+                    value = min;
+                } else if (value > max) {
+                    value = max;
+                    event.target.value = value.toFixed(1)
+                }
+                
+                controller.setValue(value);
             }
-
-            if (value < min) {
-                value = min;
-            } else if (value > max) {
-                value = max;
-            }
-
-
-            event.target.value = value.toFixed(1);
-            controller.setValue(value);
-
             // if it's free standing inputs then update input and output of size
             if (input === freeStandingWidthInput || input === freeStandingDepthInput) {
                 let width = parseFloat(freeStandingWidthInput.value)
@@ -1506,6 +1503,11 @@ function initModel() {
     connectInputWithController(freeStandingWidthInput, folderSizes.controllers[7], 10, 12)
     connectInputWithController(freeStandingDepthInput, folderSizes.controllers[8], 10, 12)
     connectInputWithController(attachedWidthInput, folderSizes.controllers[9], 12, 24)
+
+    // set to freeWidthInput and freeDepthInput and attachedWidthInput default values
+    freeStandingWidthInput.value = 10.0
+    freeStandingDepthInput.value = 10.0
+    attachedWidthInput.value = 12.0
 
     customSizeHide()
     attachedSizesSettingsHide()
@@ -1595,9 +1597,12 @@ function initModel() {
             removeActiveClass(installationList)
             addActiveClass(event.target.parentElement)
             installationText.classList.add('is--hidden')
+            // update value and placeholder of input and textContent of output
+            setInputOutput(installationInput, installationOutput, 'Self Installation')
             
             if(event.target.parentElement === installationList.querySelectorAll('.button-item')[1]) {
                 installationText.classList.remove('is--hidden')
+                setInputOutput(installationInput, installationOutput, 'Installer')
             }
         }
     });
