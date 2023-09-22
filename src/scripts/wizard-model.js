@@ -1510,7 +1510,7 @@ function initModel() {
     attachedWidthInput.value = 12.0
 
     customSizeHide()
-    attachedSizesSettingsHide()
+    freeStandingSizesSettingsHide()
 
     function customSizeHide() {
         customSizeWrapper.classList.add('is--hidden')
@@ -1588,6 +1588,77 @@ function initModel() {
             priceOutput.innerHTML = `$${event.controller.object.total}`;
         }
     });
+
+    // get localStorage 'default-standing' to set default standing, if it is not set, then set default
+    let defaultStanding = localStorage.getItem('default-standing');
+    let defaultAttachedSize = localStorage.getItem('data-attached');
+    let defaultFreeStandingSize = localStorage.getItem('data-free-standing');
+    if (defaultStanding !== null) {
+        if(defaultStanding === 'free-standing'){
+            folderAttachment.controllers[0].setValue('free standing')
+            freeStandingSize()
+            // update value and placeholder of input and textContent of output
+            setInputOutput(attachmentInput, attachmentOutput, 'Free standing')
+            // rectivate all butons of sizes free standing list
+            freeStandingSizes.querySelectorAll('.button-item').forEach((button) => {
+                button.classList.remove('active')
+            })
+            // reactivate custom size button
+            customSizeButton.classList.remove('active')
+            customSizeHide()
+            removeActiveClass(attachmentList);
+            attachmentList.querySelector('[data-name="Free standing"]').parentElement.classList.add('active')
+            // activate first button of sizes free standing list
+            addActiveClass(freeStandingSizes.querySelectorAll('.button-item')[0])
+            // Loop through the controllers to find a match
+            setDefaultSize(defaultFreeStandingSize)
+            // rectivate all butons of sizes free standing list using 
+            removeActiveClass(sizeList)
+            sizeList.querySelector(`[data-type="${defaultFreeStandingSize}"]`).parentElement.classList.add('active')
+
+        } else if(defaultStanding === 'attached-standing'){
+            folderAttachment.controllers[0].setValue('attached')
+            folderAttachment.controllers[1].setValue('wall')
+            attachedSize()
+            // update value and placeholder of input and textContent of output
+            setInputOutput(attachmentInput, attachmentOutput, 'To the wall')
+            // rectivate all butons of sizes attached list
+            attachedSizes.querySelectorAll('.button-item').forEach((button) => {
+                button.classList.remove('active')
+            })
+            // reactivate custom size button
+            customSizeButton.classList.remove('active')
+            customSizeHide()
+            // activate first button of sizes attached list
+            addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
+
+            setDefaultSize(defaultAttachedSize)
+            // rectivate all butons of sizes attached list using
+            removeActiveClass(sizeList)
+            sizeList.querySelector(`[data-type="${defaultAttachedSize}"]`).parentElement.classList.add('active')
+        }
+    }
+
+    function setDefaultSize(value) {
+        for (const controller of folderSizes.controllers) {
+            const controllerProperty = controller.property.replace('size', '');
+
+            if (controllerProperty === value) {
+                // reset all inputs for sizes
+                freeStandingWidthInput.value = 10.0
+                freeStandingDepthInput.value = 10.0
+                attachedWidthInput.value = 12.0
+                customSizeHide();
+                controller.setValue(true);
+                // update value and placeholder of input and textContent of output
+                setInputOutput(sizeInput, sizeOutput, value)
+                // if local storage requestedZipCode is not false, then call checkoutState function, else call requestState function
+                if (localStorage.getItem('requestedZipCode') !== 'false') {
+                    checkoutState();
+                }
+            }
+        }
+    }
 
     // Installation
     const installationText = document.querySelector('#installation-text')
