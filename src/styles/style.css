@@ -24,14 +24,9 @@ label {
 }
 
 .webgl {
-  position: fixed;
+  position: absolute;
   top:0;
   left:2.5%;
   outline: none;
   z-index: 0;
-}
-
-.content {
-  overflow-y: auto;
-  height: 1000px;
 }
