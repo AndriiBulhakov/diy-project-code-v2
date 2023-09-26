@@ -82,17 +82,17 @@ function initModel() {
 
     const gui = new dat.GUI({ width: 550 }).open()
 
-    const folderTypes = gui.addFolder('Patio types').close().hide()
-    const folderColor = gui.addFolder('Color').close().hide()
+    const folderTypes = gui.addFolder('Patio types').close().show()
+    const folderColor = gui.addFolder('Color').close().show()
     const folderAttachment = gui.addFolder('Attachment').close().show()
     const folderSizes = gui.addFolder('Sizes').close().show()
-    const folderBeams = gui.addFolder('Beams').close().hide()
-    const folderPosts = gui.addFolder('Posts').close().hide()
-    const folderRafters = gui.addFolder('Rafters').close().hide()
-    const folderLattice = gui.addFolder('Lattice').close().hide()
-    const folderAccesories = gui.addFolder('Accesories').close().hide()
+    const folderBeams = gui.addFolder('Beams').close().show()
+    const folderPosts = gui.addFolder('Posts').close().show()
+    const folderRafters = gui.addFolder('Rafters').close().show()
+    const folderLattice = gui.addFolder('Lattice').close().show()
+    const folderAccesories = gui.addFolder('Accesories').close().show()
     const folderGuides = gui.addFolder('Guides').close().hide()
-    const folderPrice = gui.addFolder('Price').close().hide()
+    const folderPrice = gui.addFolder('Price').close().show()
 
 
 
@@ -129,7 +129,7 @@ function initModel() {
     )
 
     // scene.add(cubeTarger)
-    cubeTarger.position.set(5, 5, 0)
+    cubeTarger.position.set(5, 3, 0)
 
 
     /**
@@ -229,6 +229,8 @@ function initModel() {
     if (PARAMS.attachment === 'free standing') sceneCtrl.position.set(9.858 - 5, 0 - 5, 7.986)
     if (PARAMS.attachment === 'attached') sceneCtrl.position.set(7.705 - 5, 0 - 5, 6.170)
 
+    // gui.add(sceneCtrl.position, 'x', -50, 50, 0.001).name('sceneCtrl.position.x')
+    // gui.add(sceneCtrl.position, 'z', -50, 50, 0.001).name('sceneCtrl.position.y')
 
     rotationGroup.add(sceneCtrl)
 
@@ -537,9 +539,6 @@ function initModel() {
     const shadowFloor = new ShadowFloor()
     sceneCtrl.add(shadowFloor.instance)
 
-
-
-
     /**
      * Floor
      */
@@ -553,17 +552,15 @@ function initModel() {
     const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height)
     scene.add(camera)
 
-    //camera.position.set(-13.768, 2.4486, -17.997)
-    // camera.position.set(-4.155, 3.000, -8.779) 
-    camera.position.set(-5.639, 3.000, -9.184)
+    // camera.position.set(-5.639, 3.000, -9.184)
+    camera.position.set(-12.382, 3.000, -12.513)
     camera.rotation.set(-3.14, -0.65, -3.14)
 
 
     // gui.add(camera.position, 'x', -50, 50, 0.001).name('camera.position.x')
     // gui.add(camera.position, 'z', -50, 50, 0.001).name('camera.position.y')
 
-    // gui.add(sceneCtrl.position, 'x', -50, 50, 0.001).name('sceneCtrl.position.x')
-    // gui.add(sceneCtrl.position, 'z', -50, 50, 0.001).name('sceneCtrl.position.y')
+
 
 
 
@@ -578,17 +575,17 @@ function initModel() {
     target.set(5, 3, 0)
     controls.target.copy(target)
     controls.update()
-    // controls.maxPolarAngle = Math.PI / 2
-    // controls.minDistance = 7.5
-    // controls.maxDistance = 15
-    // controls.minAzimuthAngle = - Math.PI * 0.88
-    // controls.maxAzimuthAngle = - Math.PI / 1.8
+    controls.maxPolarAngle = Math.PI / 2
+    // controls.minDistance = 9
+    // controls.maxDistance = 20
+    controls.minAzimuthAngle = - Math.PI * 0.88
+    controls.maxAzimuthAngle = - Math.PI / 1.8
 
-    // controls.mouseButtons = {
-    //     LEFT: THREE.MOUSE.ROTATE,
-    //     MIDDLE: THREE.MOUSE.DOLLY,
-    //     RIGHT: null //THREE.MOUSE.PAN
-    // }
+    controls.mouseButtons = {
+        LEFT: THREE.MOUSE.ROTATE,
+        MIDDLE: THREE.MOUSE.DOLLY,
+        RIGHT: null //THREE.MOUSE.PAN
+    }
 
     controls.mouseButtons = {
         LEFT: THREE.MOUSE.ROTATE,
@@ -598,9 +595,6 @@ function initModel() {
 
     // gui.add(target, 'x', -50, 50, 0.001)
     // gui.add(target, 'z', -50, 50, 0.001)
-
-
-
 
 
 
@@ -674,6 +668,8 @@ function initModel() {
         controls.update();
 
         requestAnimationFrame(animate);
+
+        // console.log(camera.position);
 
 
     }

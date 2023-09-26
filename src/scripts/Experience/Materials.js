@@ -90,6 +90,10 @@ export default class Materials {
             opacity: 0.7
         })
 
+        this.black = new THREE.MeshPhongMaterial({
+            color: 0x909090
+        })
+
         /**
          * House Materials
          */

@@ -45,9 +45,6 @@ export default class PatioGroup {
             this.instance.position.y = 10 / 2
         }
 
-        console.log(this.instance.position);
-
-
     }
 
     update() {

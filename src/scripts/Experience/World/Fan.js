@@ -35,11 +35,11 @@ export default class Fan {
 
           if (child.name === 'lamp') {
             this.lamp.add(child)
-            child.material = this.materials.walls
+            child.material = this.materials.black
           }
           if (child.name === 'blades') {
             this.blades.add(child)
-            child.material = this.materials.walls
+            child.material = this.materials.black
           }
 
           // SHADOW
