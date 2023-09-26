@@ -11,9 +11,11 @@ export default class PatioGroup {
     setPosition() {
         let x, z
         if (PARAMS.attachment === 'free standing') {
-            x = 10
+            x = 15
             z = 9
 
+            // this.instance.position.x = PARAMS.roofWidth / 2 + x
+            this.instance.position.x = x
             this.instance.position.z = - (PARAMS.roofDepth / 2 + z)
 
         }
@@ -31,9 +33,10 @@ export default class PatioGroup {
             if (PARAMS.attachmentType === 'wall') {
                 z = -4.379 + 0.88
             }
+            this.instance.position.x = PARAMS.roofWidth / 2 + x
             this.instance.position.z = z
         }
-        this.instance.position.x = PARAMS.roofWidth / 2 + x
+
 
         if (PARAMS.postsHeight === '8 ft') {
             this.instance.position.y = 8 / 2
@@ -41,6 +44,8 @@ export default class PatioGroup {
         if (PARAMS.postsHeight === '10 ft') {
             this.instance.position.y = 10 / 2
         }
+
+        console.log(this.instance.position);
 
 
     }

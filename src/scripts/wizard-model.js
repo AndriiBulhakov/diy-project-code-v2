@@ -921,7 +921,7 @@ function initModel() {
     folderSizes.add(classSizes, 'doCustom').name('do custom').onChange((value) => {
         if (value) {
             if (PARAMS.attachment === 'free standing') {
-                freeStandingCtrlX.show().setValue(10)
+                freeStandingCtrlX.show().setValue(12)
                 freeStandingCtrlZ.show().setValue(10)
 
                 attachedCtrlX.hide()
@@ -943,7 +943,7 @@ function initModel() {
             attachedCtrlZ.hide()
         }
     })
-    const freeStandingCtrlX = folderSizes.add(PARAMS, 'roofWidth', 10, 12, 0.1).name('roofWidth').hide().onChange((value) => {
+    const freeStandingCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidth').hide().onChange((value) => {
         const updateSize = [PARAMS.roofDepth, value]
         updatePatioSize(updateSize)
         // house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.25)
@@ -1140,7 +1140,7 @@ function initModel() {
         })
         price.update()
     })
-    
+
     // on change of lattice select, update folderLattice controllers and update price
     latticeSelect.addEventListener('change', (event) => {
         let latticeName = event.target.value
@@ -1473,15 +1473,15 @@ function initModel() {
     function connectInputWithController(input, controller, min, max) {
         input.addEventListener('input', (event) => {
             let value = parseFloat(event.target.value);
-            if(event.target.value.length > 1){
-                
+            if (event.target.value.length > 1) {
+
                 if (value < min) {
                     value = min;
                 } else if (value > max) {
                     value = max;
                     event.target.value = value.toFixed(1)
                 }
-                
+
                 controller.setValue(value);
             }
             // if it's free standing inputs then update input and output of size
@@ -1594,7 +1594,7 @@ function initModel() {
     let defaultAttachedSize = localStorage.getItem('data-attached');
     let defaultFreeStandingSize = localStorage.getItem('data-free-standing');
     if (defaultStanding !== null) {
-        if(defaultStanding === 'free-standing'){
+        if (defaultStanding === 'free-standing') {
             folderAttachment.controllers[0].setValue('free standing')
             freeStandingSize()
             // update value and placeholder of input and textContent of output
@@ -1616,7 +1616,7 @@ function initModel() {
             removeActiveClass(sizeList)
             sizeList.querySelector(`[data-type="${defaultFreeStandingSize}"]`).parentElement.classList.add('active')
 
-        } else if(defaultStanding === 'attached-standing'){
+        } else if (defaultStanding === 'attached-standing') {
             folderAttachment.controllers[0].setValue('attached')
             folderAttachment.controllers[1].setValue('wall')
             attachedSize()
@@ -1670,8 +1670,8 @@ function initModel() {
             installationText.classList.add('is--hidden')
             // update value and placeholder of input and textContent of output
             setInputOutput(installationInput, installationOutput, 'Self Installation')
-            
-            if(event.target.parentElement === installationList.querySelectorAll('.button-item')[1]) {
+
+            if (event.target.parentElement === installationList.querySelectorAll('.button-item')[1]) {
                 installationText.classList.remove('is--hidden')
                 setInputOutput(installationInput, installationOutput, 'Installer')
             }
@@ -1684,7 +1684,7 @@ function initModel() {
             let fanAttr = event.target.getAttribute('data-fans')
             removeActiveClass(accessoriesList)
             addActiveClass(event.target.parentElement)
-            if(fanAttr === 'true') {
+            if (fanAttr === 'true') {
                 folderAccesories.controllers[0].setValue(true)
                 // update value and placeholder of input and textContent of output
                 setInputOutput(accessoriesInput, accessoriesOutput, 'Fan')
