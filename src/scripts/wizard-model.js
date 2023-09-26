@@ -33,7 +33,7 @@ import PlaneDepth from './Experience/World/PlaneDepth';
 
 import DirectionalLight from './Experience/World/DirectionalLight';
 import AreaLight from './Experience/World/AreaLight';
-import { gaussian } from 'canvas-sketch-util/random';
+
 
 
 
@@ -82,17 +82,20 @@ function initModel() {
 
     const gui = new dat.GUI({ width: 550 }).open()
 
-    const folderTypes = gui.addFolder('Patio types').close()
-    const folderColor = gui.addFolder('Color').close()
+    const folderTypes = gui.addFolder('Patio types').close().hide()
+    const folderColor = gui.addFolder('Color').close().hide()
     const folderAttachment = gui.addFolder('Attachment').close().show()
-    const folderSizes = gui.addFolder('Sizes').close()
-    const folderBeams = gui.addFolder('Beams').close()
-    const folderPosts = gui.addFolder('Posts').close()
-    const folderRafters = gui.addFolder('Rafters').close()
-    const folderLattice = gui.addFolder('Lattice').close()
-    const folderAccesories = gui.addFolder('Accesories').close()
+    const folderSizes = gui.addFolder('Sizes').close().show()
+    const folderBeams = gui.addFolder('Beams').close().hide()
+    const folderPosts = gui.addFolder('Posts').close().hide()
+    const folderRafters = gui.addFolder('Rafters').close().hide()
+    const folderLattice = gui.addFolder('Lattice').close().hide()
+    const folderAccesories = gui.addFolder('Accesories').close().hide()
     const folderGuides = gui.addFolder('Guides').close().hide()
-    const folderPrice = gui.addFolder('Price').close()
+    const folderPrice = gui.addFolder('Price').close().hide()
+
+
+
 
 
     /**
@@ -226,10 +229,6 @@ function initModel() {
     if (PARAMS.attachment === 'free standing') sceneCtrl.position.set(9.858 - 5, 0 - 5, 7.986)
     if (PARAMS.attachment === 'attached') sceneCtrl.position.set(7.705 - 5, 0 - 5, 6.170)
 
-    //free standing
-    // sceneCtrl.position(9.858, 0, 7.986) - rotationGroup.position(5, 5, 0)
-    //attached
-    // sceneCtrl.position.set(7.798, 0, 6.207) 
 
     rotationGroup.add(sceneCtrl)
 
@@ -539,6 +538,8 @@ function initModel() {
     sceneCtrl.add(shadowFloor.instance)
 
 
+
+
     /**
      * Floor
      */
@@ -552,14 +553,19 @@ function initModel() {
     const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height)
     scene.add(camera)
 
-    // camera.position.set(-5.639, 3.000, -9.184)
-    // camera.rotation.set(-3.14, -0.65, -3.14)
+    //camera.position.set(-13.768, 2.4486, -17.997)
+    // camera.position.set(-4.155, 3.000, -8.779) 
+    camera.position.set(-5.639, 3.000, -9.184)
+    camera.rotation.set(-3.14, -0.65, -3.14)
 
-    camera.position.set(-2.407, 2.1172, -7.463)
-    camera.rotation.set(-3.14, -0.7612, -3.14)
 
-    // gui.add(camera.position, 'x', -10, 10, 0.001)
-    // gui.add(camera.position, 'z', -10, 10, 0.001)
+    // gui.add(camera.position, 'x', -50, 50, 0.001).name('camera.position.x')
+    // gui.add(camera.position, 'z', -50, 50, 0.001).name('camera.position.y')
+
+    // gui.add(sceneCtrl.position, 'x', -50, 50, 0.001).name('sceneCtrl.position.x')
+    // gui.add(sceneCtrl.position, 'z', -50, 50, 0.001).name('sceneCtrl.position.y')
+
+
 
     /**
      * Controls
@@ -569,22 +575,34 @@ function initModel() {
     // controls.enableDamping = true
     controls.enabled = true
     const target = new THREE.Vector3(0, 0, 0)
-    target.set(5, 2, 0)
+    target.set(5, 3, 0)
     controls.target.copy(target)
     controls.update()
-    controls.maxPolarAngle = Math.PI / 2
-    controls.minDistance = 7.5
-    controls.maxDistance = 15
-    controls.minAzimuthAngle = - Math.PI * 0.88
-    controls.maxAzimuthAngle = - Math.PI / 1.8
+    // controls.maxPolarAngle = Math.PI / 2
+    // controls.minDistance = 7.5
+    // controls.maxDistance = 15
+    // controls.minAzimuthAngle = - Math.PI * 0.88
+    // controls.maxAzimuthAngle = - Math.PI / 1.8
+
+    // controls.mouseButtons = {
+    //     LEFT: THREE.MOUSE.ROTATE,
+    //     MIDDLE: THREE.MOUSE.DOLLY,
+    //     RIGHT: null //THREE.MOUSE.PAN
+    // }
 
     controls.mouseButtons = {
         LEFT: THREE.MOUSE.ROTATE,
         MIDDLE: THREE.MOUSE.DOLLY,
-        RIGHT: null //THREE.MOUSE.PAN
+        RIGHT: THREE.MOUSE.PAN
     }
 
-    controls.panSpeed = 0.1
+    // gui.add(target, 'x', -50, 50, 0.001)
+    // gui.add(target, 'z', -50, 50, 0.001)
+
+
+
+
+
 
 
 
@@ -690,7 +708,7 @@ function initModel() {
         if (value === 'free standing') {
             PARAMS.attachment === 'free standing'
 
-            planeDepth.setOpacity(0.7)
+            planeDepth.setOpacity(0.3)
             sceneCtrl.position.set(9.858 - 5, 0 - 5, 7.986)  //control position of the scene
             const setSize = classSizes.size10x10()
             updatePatioSize(setSize)
@@ -737,6 +755,8 @@ function initModel() {
         }
 
     }
+
+
     function setAttachmentHeight() {
 
         let beamsOffset, postsOffset, raftersOffset
@@ -900,14 +920,14 @@ function initModel() {
         value = size12x16Wrapper()
         updatePatioSize(value)
 
-        house.bigGroup.position.z = - 0.15 + bigOffsetZ // -0.15 - 0.5
+        house.bigGroup.position.z = - 0.15 - 0.07 + bigOffsetZ // -0.15 - 0.5
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
 
     })
     const button12x20 = folderSizes.add(classSizes, 'size12x20').name('12x20').hide().onChange((value) => {
         value = size12x20Wrapper()
         updatePatioSize(value)
-        house.bigGroup.position.z = -1.2 + bigOffsetZ
+        house.bigGroup.position.z = -1.2 - 0.07 + bigOffsetZ
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
 
 
@@ -915,7 +935,7 @@ function initModel() {
     const button12x24 = folderSizes.add(classSizes, 'size12x24').name('12x24').hide().onChange((value) => {
         value = size12x24Wrapper()
         updatePatioSize(value)
-        house.bigGroup.position.z = -2.25 + bigOffsetZ
+        house.bigGroup.position.z = -2.25 - 0.07 + bigOffsetZ
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
     })
     folderSizes.add(classSizes, 'doCustom').name('do custom').onChange((value) => {
@@ -956,7 +976,7 @@ function initModel() {
     const attachedCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidth').hide().onChange((value) => {
         const updateSize = [PARAMS.roofDepth, value]
         updatePatioSize(updateSize)
-        house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.25)
+        house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.238) - 0.39
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
     })
     const attachedCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 12, 12, 0.1).name('roofDepth').hide().onChange((value) => {
