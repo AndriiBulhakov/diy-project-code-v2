@@ -78,7 +78,7 @@ function initModel() {
     // if window.innerWidth < 479 px update sizes width and height of the sizes object
     if (window.innerWidth < 479) {
         sizes.width = window.innerWidth
-        sizes.height = window.innerHeight * 0.5
+        sizes.height = window.innerHeight * 0.4
     }
 
     /**
@@ -691,7 +691,7 @@ function initModel() {
         // screen width > 479 px update sizes width and height of the sizes object
         if (window.innerWidth < 479) {
             sizes.width = window.innerWidth
-            sizes.height = window.innerHeight * 0.5
+            sizes.height = window.innerHeight * 0.4
         }
 
         //Update camera
