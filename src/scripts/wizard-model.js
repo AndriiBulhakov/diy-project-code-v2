@@ -1525,12 +1525,12 @@ function initModel() {
         });
     }
 
-    connectInputWithController(freeStandingWidthInput, folderSizes.controllers[7], 10, 12)
+    connectInputWithController(freeStandingWidthInput, folderSizes.controllers[7], 12, 24)
     connectInputWithController(freeStandingDepthInput, folderSizes.controllers[8], 10, 12)
     connectInputWithController(attachedWidthInput, folderSizes.controllers[9], 12, 24)
 
     // set to freeWidthInput and freeDepthInput and attachedWidthInput default values
-    freeStandingWidthInput.value = 10.0
+    freeStandingWidthInput.value = 12.0
     freeStandingDepthInput.value = 10.0
     attachedWidthInput.value = 12.0
 
@@ -1578,7 +1578,7 @@ function initModel() {
 
                 if (controllerProperty === sizeName) {
                     // reset all inputs for sizes
-                    freeStandingWidthInput.value = 10.0
+                    freeStandingWidthInput.value = 12.0
                     freeStandingDepthInput.value = 10.0
                     attachedWidthInput.value = 12.0
                     customSizeHide();
@@ -1670,7 +1670,7 @@ function initModel() {
 
             if (controllerProperty === value) {
                 // reset all inputs for sizes
-                freeStandingWidthInput.value = 10.0
+                freeStandingWidthInput.value = 12.0
                 freeStandingDepthInput.value = 10.0
                 attachedWidthInput.value = 12.0
                 customSizeHide();
