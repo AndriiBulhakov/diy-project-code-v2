@@ -72,8 +72,13 @@ function initModel() {
     const canvas = document.querySelector(".webgl");
     const widthOffset = 0.95
     const sizes = {
-        width: window.innerWidth * widthOffset,
-        height: window.innerHeight
+        width: (window.innerWidth * widthOffset)  * 0.72,
+        height: window.innerHeight - 9.920
+    }
+    // if window.innerWidth < 479 px update sizes width and height of the sizes object
+    if (window.innerWidth < 479) {
+        sizes.width = window.innerWidth
+        sizes.height = window.innerHeight * 0.5
     }
 
     /**
@@ -93,10 +98,6 @@ function initModel() {
     const folderAccesories = gui.addFolder('Accesories').close().show()
     const folderGuides = gui.addFolder('Guides').close().hide()
     const folderPrice = gui.addFolder('Price').close().show()
-
-
-
-
 
     /**
      * Patio Price
@@ -643,6 +644,8 @@ function initModel() {
         canvas: canvas,
         antialias: true
     })
+    
+
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.shadowMap.enabled = true
@@ -682,8 +685,14 @@ function initModel() {
 
     window.addEventListener('resize', () => {
         // Update sizes
-        sizes.width = innerWidth * widthOffset
-        sizes.height = innerHeight
+        sizes.width = (window.innerWidth * widthOffset)  * 0.68
+        sizes.height = window.innerHeight - 9.920
+
+        // screen width > 479 px update sizes width and height of the sizes object
+        if (window.innerWidth < 479) {
+            sizes.width = window.innerWidth
+            sizes.height = window.innerHeight * 0.5
+        }
 
         //Update camera
         camera.aspect = sizes.width / sizes.height;
