@@ -72,7 +72,7 @@ function initModel() {
     const canvas = document.querySelector(".webgl");
     const widthOffset = 0.95
     const sizes = {
-        width: (window.innerWidth * widthOffset)  * 0.72,
+        width: window.innerWidth - 487,
         height: window.innerHeight - 9.920
     }
     // if window.innerWidth < 479 px update sizes width and height of the sizes object
@@ -685,13 +685,15 @@ function initModel() {
 
     window.addEventListener('resize', () => {
         // Update sizes
-        sizes.width = (window.innerWidth * widthOffset)  * 0.68
-        sizes.height = window.innerHeight - 9.920
+        sizes.width = window.innerWidth - 487;
+        sizes.height = window.innerHeight - 9.920;
 
         // screen width > 479 px update sizes width and height of the sizes object
         if (window.innerWidth < 479) {
-            sizes.width = window.innerWidth
-            sizes.height = window.innerHeight * 0.4
+            sizes.width = window.innerWidth;
+            sizes.height = window.innerHeight * 0.4;
+        } else if (window.innerWidth < 992) {
+            sizes.width = window.innerWidth - 388;
         }
 
         //Update camera
