@@ -577,8 +577,8 @@ function initModel() {
     controls.target.copy(target)
     controls.update()
     controls.maxPolarAngle = Math.PI / 2
-    // controls.minDistance = 9
-    // controls.maxDistance = 20
+    controls.minDistance = 15
+    controls.maxDistance = 21
     controls.minAzimuthAngle = - Math.PI * 0.88
     controls.maxAzimuthAngle = - Math.PI / 1.8
 
