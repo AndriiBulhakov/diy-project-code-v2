@@ -722,8 +722,8 @@ function initModel() {
             patioGroup.update()
             beams.setScaleBackGroup(1)
             beams.setScaleAttachedGroup(0)
-            fanStatus = PARAMS.accesories.fan
-            PARAMS.accesories.fan = false
+            // fanStatus = PARAMS.accesories.fan
+            // PARAMS.accesories.fan = false
             ctrlFan.hide()
             fan.update()
             house.setPosition()
@@ -748,7 +748,7 @@ function initModel() {
             patioGroup.update()
             beams.setScaleBackGroup(0)
             beams.setScaleAttachedGroup(1)
-            PARAMS.accesories.fan = fanStatus
+            // PARAMS.accesories.fan = fanStatus
             ctrlFan.show()
             fan.update()
             house.instanse.position.set(0, 0, 0)
