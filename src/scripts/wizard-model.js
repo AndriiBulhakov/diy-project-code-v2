@@ -1284,6 +1284,10 @@ function initModel() {
     }
 
     // Attachment
+    const attachmentImageInput = document.querySelector('.patio-image-input');
+    const attachedImage = 'https://uploads-ssl.webflow.com/642e62f5ba9679c13f59f5e1/6526c54f932e6e80d8672878_attached-min.jpg';
+    const freeStandingImage = 'https://uploads-ssl.webflow.com/642e62f5ba9679c13f59f5e1/6526c4df72011401910ad876_free-standing-min.jpg';
+    console.log(attachmentImageInput)
     attachmentList.addEventListener('click', (event) => {
         if (event.target.classList.contains('trigger-button-item')) {
             let attachmentName = event.target.getAttribute('data-name')
@@ -1294,6 +1298,8 @@ function initModel() {
                 freeStandingSize()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // set imageInpout valeu free standing image
+                attachmentImageInput.value = freeStandingImage;
                 // rectivate all butons of sizes free standing list
                 freeStandingSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
@@ -1309,6 +1315,8 @@ function initModel() {
                 attachedSize()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // set imageInpout valeu attached image
+                attachmentImageInput.value = attachedImage;
                 // rectivate all butons of sizes attached list
                 attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
@@ -1324,6 +1332,8 @@ function initModel() {
                 attachedSize()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // set imageInpout valeu attached image
+                attachmentImageInput.value = attachedImage;
                 // rectivate all butons of sizes attached list
                 attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
@@ -1339,6 +1349,8 @@ function initModel() {
                 attachedSize()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // set imageInpout valeu attached image
+                attachmentImageInput.value = attachedImage;
                 // rectivate all butons of sizes attached list
                 attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
@@ -1354,6 +1366,8 @@ function initModel() {
                 attachedSize()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
+                // set imageInpout valeu attached image
+                attachmentImageInput.value = attachedImage;
                 // rectivate all butons of sizes attached list
                 attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
@@ -1626,10 +1640,13 @@ function initModel() {
             freeStandingSize()
             // update value and placeholder of input and textContent of output
             setInputOutput(attachmentInput, attachmentOutput, 'Free standing')
+            
             // rectivate all butons of sizes free standing list
             freeStandingSizes.querySelectorAll('.button-item').forEach((button) => {
                 button.classList.remove('active')
             })
+            // set imageInpout valeu free standing image
+            attachmentImageInput.value = freeStandingImage
             // reactivate custom size button
             customSizeButton.classList.remove('active')
             customSizeHide()
@@ -1653,6 +1670,8 @@ function initModel() {
             attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                 button.classList.remove('active')
             })
+            // set imageInpout valeu attached image
+            attachmentImageInput.value = attachedImage
             // reactivate custom size button
             customSizeButton.classList.remove('active')
             customSizeHide()

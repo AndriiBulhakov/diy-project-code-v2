@@ -236,7 +236,7 @@ export default class Price {
     }
 
     total() {
-        // add total roof price and total posts price to summury const and add 8% tax for this summury
+        // add total roof price and total posts price to summury const and add 8% tax for this summary
         const summary = (this.component.totalRoof + this.component.totalPosts) * 1.08
         const summaryWithDelivery = summary + 250
         this.numberGUI.total.setValue(`${summaryWithDelivery.toFixed(2)}`)
