@@ -283,6 +283,9 @@ function initModel() {
     const ctrlFan = folderAccesories.add(PARAMS.accesories, 'fan', [true, false]).onChange((value) => {
         PARAMS.accesories.fan = value
         fan.update()
+        // set price of accesories
+        price.update()
+
     })
 
     /**
@@ -722,8 +725,8 @@ function initModel() {
             patioGroup.update()
             beams.setScaleBackGroup(1)
             beams.setScaleAttachedGroup(0)
-            // fanStatus = PARAMS.accesories.fan
-            // PARAMS.accesories.fan = false
+            fanStatus = PARAMS.accesories.fan
+            PARAMS.accesories.fan = false
             ctrlFan.hide()
             fan.update()
             house.setPosition()
@@ -748,7 +751,8 @@ function initModel() {
             patioGroup.update()
             beams.setScaleBackGroup(0)
             beams.setScaleAttachedGroup(1)
-            // PARAMS.accesories.fan = fanStatus
+            PARAMS.accesories.fan = fanStatus
+            PARAMS.accesories.fan = false
             ctrlFan.show()
             fan.update()
             house.instanse.position.set(0, 0, 0)
@@ -1056,6 +1060,7 @@ function initModel() {
     const raftersSelect = document.querySelector('#rafters');
     // Accessories
     const accessoriesList = document.querySelector('#patio-accessories');
+    const accessoriesElem = document.querySelector('[data-name="Fan beam"]');
 
     function checkoutState() {
         requestForm.classList.add('is--hidden');
@@ -1091,7 +1096,7 @@ function initModel() {
     setInputOutput(sizeInput, sizeOutput, '10x10');
     setInputOutput(headerInput, headerOutput, 'Single beam 3x8');
     setInputOutput(postsInput, postsOutput, 'Default');
-    setInputOutput(accessoriesInput, accessoriesOutput, 'Fan');
+    setInputOutput(accessoriesInput, accessoriesOutput, 'No Fan beam');
     setInputOutput(installationInput, installationOutput, 'Self Installation');
 
     // function for adding active class to the button
@@ -1120,7 +1125,7 @@ function initModel() {
     addActiveClassDefault(attachedSizes)
     addActiveClassDefault(freeStandingSizes)
     addActiveClassDefault(installationList)
-    addActiveClassDefault(accessoriesList)
+    // addActiveClassDefault(accessoriesList)
 
     //  ---- Controls events ----
     // Type
@@ -1162,7 +1167,6 @@ function initModel() {
                 typeOutput.forEach((item) => {
                     item.textContent = `Lattice tubes:${currentLattice}; rafters:${currentRafter};`
                 })
-                console.log(typeOutput.textContent)
             }
         })
         price.update()
@@ -1283,19 +1287,27 @@ function initModel() {
         })
     }
 
+    function defaultAttachment(){
+        folderAttachment.controllers[0].setValue('attached')
+        folderAttachment.controllers[1].setValue('wall')
+    }
+
     // Attachment
     const attachmentImageInput = document.querySelector('.patio-image-input');
     const attachedImage = 'https://uploads-ssl.webflow.com/642e62f5ba9679c13f59f5e1/6526c54f932e6e80d8672878_attached-min.jpg';
     const freeStandingImage = 'https://uploads-ssl.webflow.com/642e62f5ba9679c13f59f5e1/6526c4df72011401910ad876_free-standing-min.jpg';
-    console.log(attachmentImageInput)
     attachmentList.addEventListener('click', (event) => {
         if (event.target.classList.contains('trigger-button-item')) {
             let attachmentName = event.target.getAttribute('data-name')
             removeActiveClass(attachmentList)
             addActiveClass(event.target.parentElement)
             if (attachmentName.toLowerCase() === 'free standing') {
+                defaultAttachment()
+                sizesDefaultValues()
                 folderAttachment.controllers[0].setValue('free standing')
                 freeStandingSize()
+                // reset accesorries
+                accessoriesElem.parentElement.classList.remove('active')
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
                 // set imageInpout valeu free standing image
@@ -1310,13 +1322,15 @@ function initModel() {
                 // activate first button of sizes free standing list
                 addActiveClass(freeStandingSizes.querySelectorAll('.button-item')[0])
             } else if (attachmentName.toLowerCase() === 'to the wall') {
-                folderAttachment.controllers[0].setValue('attached')
-                folderAttachment.controllers[1].setValue('wall')
+                sizesDefaultValues()
+                defaultAttachment()
                 attachedSize()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
                 // set imageInpout valeu attached image
                 attachmentImageInput.value = attachedImage;
+                // reset accesorries
+                accessoriesElem.parentElement.classList.remove('active')
                 // rectivate all butons of sizes attached list
                 attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
@@ -1327,13 +1341,18 @@ function initModel() {
                 // activate first button of sizes attached list
                 addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
             } else if (attachmentName.toLowerCase() === 'to facia/eave') {
+                defaultAttachment()
+                sizesDefaultValues()
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('fasciaEave')
                 attachedSize()
+                sizesDefaultValues()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
                 // set imageInpout valeu attached image
                 attachmentImageInput.value = attachedImage;
+                // reset accesorries
+                accessoriesElem.parentElement.classList.remove('active')
                 // rectivate all butons of sizes attached list
                 attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
@@ -1344,6 +1363,8 @@ function initModel() {
                 // activate first button of sizes attached list
                 addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
             } else if (attachmentName.toLowerCase() === 'to under eave') {
+                defaultAttachment()
+                sizesDefaultValues()
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('underEave')
                 attachedSize()
@@ -1351,6 +1372,8 @@ function initModel() {
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
                 // set imageInpout valeu attached image
                 attachmentImageInput.value = attachedImage;
+                // reset accesorries
+                accessoriesElem.parentElement.classList.remove('active')
                 // rectivate all butons of sizes attached list
                 attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
@@ -1361,6 +1384,8 @@ function initModel() {
                 // activate first button of sizes attached list
                 addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
             } else if (attachmentName.toLowerCase() === 'to the roof') {
+                defaultAttachment()
+                sizesDefaultValues()
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('roof')
                 attachedSize()
@@ -1368,6 +1393,8 @@ function initModel() {
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
                 // set imageInpout valeu attached image
                 attachmentImageInput.value = attachedImage;
+                // reset accesorries
+                accessoriesElem.parentElement.classList.remove('active')
                 // rectivate all butons of sizes attached list
                 attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
@@ -1546,12 +1573,15 @@ function initModel() {
     connectInputWithController(attachedWidthInput, folderSizes.controllers[9], 12, 24)
 
     // set to freeWidthInput and freeDepthInput and attachedWidthInput default values
-    freeStandingWidthInput.value = 12.0
-    freeStandingDepthInput.value = 10.0
-    attachedWidthInput.value = 12.0
+    function sizesDefaultValues() {
+        freeStandingWidthInput.value = 12.0
+        freeStandingDepthInput.value = 10.0
+        attachedWidthInput.value = 12.0
+    }
 
     customSizeHide()
     freeStandingSizesSettingsHide()
+    sizesDefaultValues()
 
     function customSizeHide() {
         customSizeWrapper.classList.add('is--hidden')
@@ -1594,11 +1624,9 @@ function initModel() {
 
                 if (controllerProperty === sizeName) {
                     // reset all inputs for sizes
-                    freeStandingWidthInput.value = 12.0
-                    freeStandingDepthInput.value = 10.0
-                    attachedWidthInput.value = 12.0
-                    customSizeHide();
-                    controller.setValue(true);
+                    sizesDefaultValues()
+                    customSizeHide()
+                    controller.setValue(true)
                     // update value and placeholder of input and textContent of output
                     setInputOutput(sizeInput, sizeOutput, sizeName)
                     // if local storage requestedZipCode is not false, then call checkoutState function, else call requestState function
@@ -1727,20 +1755,18 @@ function initModel() {
     // Accessories
     accessoriesList.addEventListener('click', (event) => {
         if (event.target.classList.contains('trigger-button-item')) {
-            let fanAttr = event.target.getAttribute('data-fans')
-            removeActiveClass(accessoriesList)
-            addActiveClass(event.target.parentElement)
-            if (fanAttr === 'true') {
-                folderAccesories.controllers[0].setValue(true)
-                // update value and placeholder of input and textContent of output
-                setInputOutput(accessoriesInput, accessoriesOutput, 'Fan')
-            } else {
-                folderAccesories.controllers[0].setValue(false)
-                // update value and placeholder of input and textContent of output
-                setInputOutput(accessoriesInput, accessoriesOutput, 'No Fan')
-            }
+            const parentElement = event.target.parentElement;
+            parentElement.classList.toggle('active');
+    
+            const isActive = parentElement.classList.contains('active');
+            folderAccesories.controllers[0].setValue(isActive);
+    
+            // update value and placeholder of input and textContent of output
+            const outputText = isActive ? 'Fan beam' : 'No Fan beam';
+            setInputOutput(accessoriesInput, accessoriesOutput, outputText);
         }
     });
+
 
     // set all inputs name and values from request form #wf-form-Request-Form to local storage on click on request trigger button
     const requestTriggerButton = document.querySelector('.submit-button');

@@ -200,6 +200,14 @@ export default class Price {
         }
     }
 
+    accessories() {
+        if(PARAMS.accesories.fan === true) {
+            this.component.accesories = 285
+        }else {
+            this.component.accesories = 0
+        }
+    }
+
     totalRoof() {
         const area = PARAMS.roofWidth * PARAMS.roofDepth
         this.component.totalRoof = (this.component.roof + this.component.attachment + this.component.rafters + this.component.beams) * area
@@ -237,7 +245,7 @@ export default class Price {
 
     total() {
         // add total roof price and total posts price to summury const and add 8% tax for this summary
-        const summary = (this.component.totalRoof + this.component.totalPosts) * 1.08
+        const summary = (this.component.totalRoof + this.component.totalPosts + this.component.accesories) * 1.08
         const summaryWithDelivery = summary + 250
         this.numberGUI.total.setValue(`${summaryWithDelivery.toFixed(2)}`)
     }
@@ -249,6 +257,7 @@ export default class Price {
         this.beams()
         this.totalRoof()
         this.posts()
+        this.accessories()
         this.total()
     }
 
