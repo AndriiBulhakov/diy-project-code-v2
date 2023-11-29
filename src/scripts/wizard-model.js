@@ -54,7 +54,7 @@ function initModel()
      * Hover
      */
 
-    const mouse = { x: 99999, y: 99998 }
+    const mouse = { x: 99999, y: 9999 }
 
     window.addEventListener('mousemove', onMouseMove)
 
@@ -197,11 +197,11 @@ function initModel()
         {
             // update GUI
             ctrlCombineColor.show()
-            ctrlColorRoof.hide()
-            ctrlColorLattice.hide()
-            ctrlColorPosts.hide()
-            ctrlColorRafters.hide()
-            ctrlColorBeams.hide()
+            ctrlColorRoof.show()
+            ctrlColorLattice.show()
+            ctrlColorPosts.show()
+            ctrlColorRafters.show()
+            ctrlColorBeams.show()
 
             color.backUpColors(materials) // backup previous material color
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
@@ -210,7 +210,7 @@ function initModel()
         if (!materials.parameters.combine)
         {
             // update GUI
-            ctrlCombineColor.hide()
+            ctrlCombineColor.show()
             ctrlColorRoof.show()
             ctrlColorLattice.show()
             ctrlColorPosts.show()
@@ -221,10 +221,14 @@ function initModel()
         }
     });
 
-    const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').hide().onChange((value) =>
+    const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').show().onChange((value) =>
     {
-        color.changeMaterialColor(materials.general, value)
-        color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+        if (materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.general, value)
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+        }
+
     });
 
 
@@ -359,9 +363,6 @@ function initModel()
             setAttachmentHeight()
         }
 
-
-
-
     })
 
     folderRafters.add(PARAMS, 'rafterMaxDistance', 0.4, 2, 0.1).name('rafterMaxDistance (ft)').onChange((value) =>
@@ -433,6 +434,7 @@ function initModel()
 
     folderBeams.add(PARAMS, 'beamsType', ['single', 'double']).name('beamsType').onChange((value) =>
     {
+        console.log(posts.frontGroup.children[0].children[0].material.map.name);
         if (value === 'single')
         {
             ctrlBeamsSizes.hide().reset()
@@ -461,6 +463,10 @@ function initModel()
 
         price.update()
 
+        console.log(posts.frontGroup.children[0].children[0].material.map.name);
+
+
+
     })
 
     const ctrlBeamsSizes = folderBeams.add(PARAMS, 'beamsSizeType', ['6x2', '8x3']).name('beamsSizes').hide().onChange((value) =>
@@ -478,6 +484,7 @@ function initModel()
 
         beams.update()
         beams.updateToMaterial(materials.beams)
+        posts.updateToMaterial(materials.posts)
 
         price.update()
     })
@@ -536,7 +543,7 @@ function initModel()
             {
                 ctrlColorRoof.show()
             }
-            ctrlColorLattice.hide()
+            ctrlColorLattice.show()
 
             roof.setScale(1)
             lattice.setScale(0)
@@ -544,7 +551,7 @@ function initModel()
         }
         if (PARAMS.patioType === 'lattice')
         {
-            ctrlColorRoof.hide()
+            ctrlColorRoof.show()
             if (!materials.parameters.combine)
             {
                 ctrlColorLattice.show()
@@ -764,192 +771,176 @@ function initModel()
      * Patio attachment
      */
 
+    const classSizes = new ClassSizes()
 
-    function setAttachmentType(value)
+    // Functions for set a type of an attachment
+
+    function setFreeStanding()
     {
-        if (value === 'free standing')
-        {
-            PARAMS.attachment === 'free standing'
+        PARAMS.attachment = 'free standing'
 
-            planeDepth.setOpacity(0.3)
-            sceneCtrl.position.set(9.858 - 5, 0 - 5, 7.986)  //control position of the scene
-            const setSize = classSizes.size10x10()
-            updatePatioSize(setSize)
-            patioGroup.update()
-            beams.setScaleBackGroup(1)
-            beams.setScaleAttachedGroup(0)
-            fanStatus = PARAMS.accesories.fan
-            PARAMS.accesories.fan = false
-            ctrlFan.hide()
-            fan.update()
-            house.setPosition()
-            house.bigGroup.position.z = 0
-            house.bigRoof.position.y = 0
-            house.smallRoof.position.y = 0
-            house.bigMask.scale.y = 0.356
-            house.smallMask.scale.y = 0.75
-            house.smallMask.position.y = 2.4
-            enterFloor.instance.position.set(house.instanse.position.x - 0.75, 0, house.instanse.position.z - 6.5)
-            areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
-            areaLight.enter.position.set(-10.7, 1.32, -8)
-        }
-        if (value === 'attached')
-        {
-
-            PARAMS.attachment === 'attached'
-
-            planeDepth.setOpacity(0)
-            sceneCtrl.position.set(7.705 - 5, 0 - 5, 6.170) //control position of the scene
-            const setSize = classSizes.size12x16()
-            updatePatioSize(setSize)
-            patioGroup.update()
-            beams.setScaleBackGroup(0)
-            beams.setScaleAttachedGroup(1)
-            PARAMS.accesories.fan = fanStatus
-            PARAMS.accesories.fan = false
-            ctrlFan.show()
-            fan.update()
-            house.instanse.position.set(0, 0, 0)
-            house.bigGroup.position.z = - 0.15 + bigOffsetZ - 0.073
-            enterFloor.instance.position.set(-0.75, 0, -6.5)
-            areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
-            areaLight.enter.position.set(-8.5, 1.32, -8)
-            posts.delete()
-            posts.createFront()
-            posts.updateToMaterial(materials.posts)
-        }
-
+        planeDepth.setOpacity(0.3)
+        sceneCtrl.position.set(9.858 - 5, 0 - 5, 7.986)  //control position of the scene
+        const setSize = classSizes.size10x10()
+        updatePatioSize(setSize)
+        patioGroup.update()
+        beams.setScaleBackGroup(1)
+        beams.setScaleAttachedGroup(0)
+        fanStatus = PARAMS.accesories.fan
+        PARAMS.accesories.fan = false
+        ctrlFan.hide()
+        fan.update()
+        house.setPosition()
+        house.bigGroup.position.z = 0
+        house.bigRoof.position.y = 0
+        house.smallRoof.position.y = 0
+        house.bigMask.scale.y = 0.356
+        house.smallMask.scale.y = 0.75
+        house.smallMask.position.y = 2.4
+        enterFloor.instance.position.set(house.instanse.position.x - 0.75, 0, house.instanse.position.z - 6.5)
+        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        areaLight.enter.position.set(-10.7, 1.32, -8)
     }
 
+    function setAttached()
+    {
+        PARAMS.attachment = 'attached'
+
+        planeDepth.setOpacity(0)
+        sceneCtrl.position.set(7.705 - 5, 0 - 5, 6.170) //control position of the scene
+        const setSize = classSizes.size12x16()
+        updatePatioSize(setSize)
+        patioGroup.update()
+        beams.setScaleBackGroup(0)
+        beams.setScaleAttachedGroup(1)
+        PARAMS.accesories.fan = fanStatus
+        PARAMS.accesories.fan = false
+        ctrlFan.show()
+        fan.update()
+        house.instanse.position.set(0, 0, 0)
+        house.bigGroup.position.z = - 0.15 + bigOffsetZ - 0.073
+        enterFloor.instance.position.set(-0.75, 0, -6.5)
+        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        areaLight.enter.position.set(-8.5, 1.32, -8)
+        posts.delete()
+        posts.createFront()
+        posts.updateToMaterial(materials.posts)
+    }
+
+    setAttached() // start from the attached patio
+
+    // Functions for set a type of 'roof', 'fasciaEave', 'underEave', 'wall'
 
     function setAttachmentHeight()
     {
-
-        let beamsOffset, postsOffset, raftersOffset
-        if (PARAMS.beamsType === 'single') beamsOffset = PARAMS.beamsSizes.height / 4
-        if (PARAMS.beamsType === 'double') beamsOffset = 0
-        if (PARAMS.postsHeight === '8 ft') postsOffset = 0
-        if (PARAMS.postsHeight === '10 ft') postsOffset = 0.250
-        if (PARAMS.rafterType === '2x6') raftersOffset = 0
-        if (PARAMS.rafterType === '3x8') raftersOffset = 0.05
-
-        let y
-        if (PARAMS.attachmentType === 'roof')
+        if (PARAMS.attachment === 'attached')
         {
-            y = -0.55 + beamsOffset + postsOffset + raftersOffset
-            house.bigRoof.position.y = y
-            house.smallRoof.position.y = y
-            patioGroup.instance.position.z = -5.315
-        }
-        if (PARAMS.attachmentType === 'fasciaEave')
-        {
-            y = -0.293 + beamsOffset + postsOffset + raftersOffset
-            house.bigRoof.position.y = y
-            house.smallRoof.position.y = y
-            patioGroup.instance.position.z = -5.783
-        }
-        if (PARAMS.attachmentType === 'underEave')
-        {
-            y = -0.135 + beamsOffset + postsOffset + raftersOffset
-            house.bigRoof.position.y = y
-            house.smallRoof.position.y = y
-            patioGroup.instance.position.z = -5.315
-        }
-        if (PARAMS.attachmentType === 'wall')
-        {
-            y = 0.00 + beamsOffset + postsOffset + raftersOffset
-            house.bigRoof.position.y = y
-            house.smallRoof.position.y = y
-            patioGroup.instance.position.z = -4.379 + 0.88
+            let beamsOffset, postsOffset, raftersOffset
+            if (PARAMS.beamsType === 'single') beamsOffset = PARAMS.beamsSizes.height / 4
+            if (PARAMS.beamsType === 'double') beamsOffset = 0
+            if (PARAMS.postsHeight === '8 ft') postsOffset = 0
+            if (PARAMS.postsHeight === '10 ft') postsOffset = 0.250
+            if (PARAMS.rafterType === '2x6') raftersOffset = 0
+            if (PARAMS.rafterType === '3x8') raftersOffset = 0.05
 
+            let y
+            if (PARAMS.attachmentType === 'roof')
+            {
+                y = -0.55 + beamsOffset + postsOffset + raftersOffset
+                house.bigRoof.position.y = y
+                house.smallRoof.position.y = y
+                patioGroup.instance.position.z = -5.315
+            }
+            if (PARAMS.attachmentType === 'fasciaEave')
+            {
+                y = -0.293 + beamsOffset + postsOffset + raftersOffset
+                house.bigRoof.position.y = y
+                house.smallRoof.position.y = y
+                patioGroup.instance.position.z = -5.783
+            }
+            if (PARAMS.attachmentType === 'underEave')
+            {
+                y = -0.135 + beamsOffset + postsOffset + raftersOffset
+                house.bigRoof.position.y = y
+                house.smallRoof.position.y = y
+                patioGroup.instance.position.z = -5.315
+            }
+            if (PARAMS.attachmentType === 'wall')
+            {
+                y = 0.00 + beamsOffset + postsOffset + raftersOffset
+                house.bigRoof.position.y = y
+                house.smallRoof.position.y = y
+                patioGroup.instance.position.z = -4.379 + 0.88
+
+            }
+
+            house.bigMask.scale.y = math.mapRange(y, -0.3, 0.415, 0.01, 0.9)
+            house.smallMask.scale.y = math.mapRange(y, -0.47, 0.415, 0.3, 1.128) //(y, -0.47, 0.415, 0.3, 1)
+            house.smallMask.position.y = math.mapRange(y, -0.47, 0.415, 2.235, 2.4) //(y, -0.47, 0.415, 2.235, 2.4)
         }
 
-        house.bigMask.scale.y = math.mapRange(y, -0.3, 0.415, 0.01, 0.9)
-        house.smallMask.scale.y = math.mapRange(y, -0.47, 0.415, 0.3, 1.128) //(y, -0.47, 0.415, 0.3, 1)
-        house.smallMask.position.y = math.mapRange(y, -0.47, 0.415, 2.235, 2.4) //(y, -0.47, 0.415, 2.235, 2.4)
+
+
 
     }
-
-    function folderAttachmentStatus(value)
-    {
-        if (value === 'free standing')
-        {
-
-            button10x10.show()
-            button11x11.show()
-            button12x12.show()
-            button12x16.hide()
-            button12x20.hide()
-            button12x24.hide()
-
-            if (classSizes.doCustom)
-            {
-                freeStandingCtrlX.show().setValue(10)
-                freeStandingCtrlZ.show().setValue(10)
-                attachedCtrlX.hide()
-                attachedCtrlZ.hide()
-            }
-            if (!classSizes.doCustom)
-            {
-                freeStandingCtrlX.hide()
-                freeStandingCtrlZ.hide()
-                attachedCtrlX.hide()
-                attachedCtrlZ.hide()
-            }
-            attachmentType.hide()
-        }
-
-        if (value === 'attached')
-        {
-            // GUI
-            button10x10.hide()
-            button11x11.hide()
-            button12x12.hide()
-            button12x16.show()
-            button12x20.show()
-            button12x24.show()
-            if (classSizes.doCustom)
-            {
-                freeStandingCtrlX.hide()
-                freeStandingCtrlZ.hide()
-                attachedCtrlX.show().setValue(12)
-                attachedCtrlZ.hide().setValue(12)
-            }
-            if (!classSizes.doCustom)
-            {
-                freeStandingCtrlX.hide()
-                freeStandingCtrlZ.hide()
-                attachedCtrlX.hide()
-                attachedCtrlZ.hide()
-            }
-            attachmentType.show().setValue('wall')
-        }
-    }
-
-    folderAttachment.add(PARAMS, 'attachment', ['free standing', 'attached']).onChange((value) =>
-    {
-        folderAttachmentStatus(value)
-
-        setAttachmentType(value)
-    })
-
-    const attachmentType = folderAttachment.add(PARAMS, 'attachmentType', ['roof', 'fasciaEave', 'underEave', 'wall']).hide().onChange((value) =>
-    {
-        PARAMS.attachmentType = value
-        setAttachmentHeight()
-    })
-
     setAttachmentHeight()
+
+    // Attachments' buttons for UI
+
+    const objectAttachmets = {}
+    objectAttachmets.attached = () =>
+    {
+        setAttached()
+    }
+    objectAttachmets.freeStanding = () =>
+    {
+        setFreeStanding()
+    }
+    objectAttachmets.roof = () =>
+    {
+        PARAMS.attachmentType = 'roof'
+        setAttachmentHeight()
+    }
+    objectAttachmets.fasciaEave = () =>
+    {
+        PARAMS.attachmentType = 'fasciaEave'
+        setAttachmentHeight()
+    }
+    objectAttachmets.underEave = () =>
+    {
+        PARAMS.attachmentType = 'underEave'
+        setAttachmentHeight()
+    }
+    objectAttachmets.wall = () =>
+    {
+        PARAMS.attachmentType = 'wall'
+        setAttachmentHeight()
+    }
+
+    // Attachments' DAT-GUI
+
+    folderAttachment.add(objectAttachmets, 'attached').name('attached').onChange(() =>
+    {
+
+    })
+
+    folderAttachment.add(objectAttachmets, 'freeStanding').name('freeStanding').onChange(() =>
+    {
+
+    })
+
+    folderAttachment.add(objectAttachmets, 'roof').name('roof')
+    folderAttachment.add(objectAttachmets, 'fasciaEave').name('fasciaEave')
+    folderAttachment.add(objectAttachmets, 'underEave').name('underEave')
+    folderAttachment.add(objectAttachmets, 'wall').name('wall')
+
+
 
 
 
     /**
      * Patio Sizes
      */
-
-    const classSizes = new ClassSizes()
-
-    setAttachmentType('attached')
 
 
     function updatePatioSize(value)
@@ -980,49 +971,74 @@ function initModel()
 
     const button10x10 = folderSizes.add(classSizes, 'size10x10').name('10x10').show().onChange((value) =>
     {
-        value = size10x10Wrapper()
-        updatePatioSize(value)
-        house.bigGroup.position.z = 0
-        areaLight.sideWall.position.z = -12.56
+        if (PARAMS.attachment === 'free standing')
+        {
+            value = size10x10Wrapper()
+            updatePatioSize(value)
+            house.bigGroup.position.z = 0
+            areaLight.sideWall.position.z = -12.56
+        }
+
 
     })
     const button11x11 = folderSizes.add(classSizes, 'size11x11').name('11x11').show().onChange((value) =>
     {
-        value = size11x11Wrapper()
-        updatePatioSize(value)
-        // house.bigGroup.postion.z = 1.18
+        if (PARAMS.attachment === 'free standing')
+        {
+            value = size11x11Wrapper()
+            updatePatioSize(value)
+            // house.bigGroup.postion.z = 1.18
+        }
+
     })
     const button12x12 = folderSizes.add(classSizes, 'size12x12').name('12x12').show().onChange((value) =>
     {
-        value = size12x12Wrapper()
-        updatePatioSize(value)
-        // house.bigGroup.position.z = 0.91
-    })
-
-    const button12x16 = folderSizes.add(classSizes, 'size12x16').name('12x16').hide().onChange((value) =>
-    {
-        value = size12x16Wrapper()
-        updatePatioSize(value)
-
-        house.bigGroup.position.z = - 0.15 - 0.07 + bigOffsetZ // -0.15 - 0.5
-        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        if (PARAMS.attachment === 'free standing')
+        {
+            value = size12x12Wrapper()
+            updatePatioSize(value)
+            // house.bigGroup.position.z = 0.91
+        }
 
     })
-    const button12x20 = folderSizes.add(classSizes, 'size12x20').name('12x20').hide().onChange((value) =>
+
+    const button12x16 = folderSizes.add(classSizes, 'size12x16').name('12x16').show().onChange((value) =>
     {
-        value = size12x20Wrapper()
-        updatePatioSize(value)
-        house.bigGroup.position.z = -1.2 - 0.07 + bigOffsetZ
-        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        if (PARAMS.attachment === 'attached')
+        {
+            value = size12x16Wrapper()
+            updatePatioSize(value)
+
+            house.bigGroup.position.z = - 0.15 - 0.07 + bigOffsetZ // -0.15 - 0.5
+            areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        }
 
 
     })
-    const button12x24 = folderSizes.add(classSizes, 'size12x24').name('12x24').hide().onChange((value) =>
+    const button12x20 = folderSizes.add(classSizes, 'size12x20').name('12x20').show().onChange((value) =>
     {
-        value = size12x24Wrapper()
-        updatePatioSize(value)
-        house.bigGroup.position.z = -2.25 - 0.07 + bigOffsetZ
-        areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        if (PARAMS.attachment === 'attached')
+        {
+            value = size12x20Wrapper()
+            updatePatioSize(value)
+            house.bigGroup.position.z = -1.2 - 0.07 + bigOffsetZ
+            areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        }
+
+
+
+
+    })
+    const button12x24 = folderSizes.add(classSizes, 'size12x24').name('12x24').show().onChange((value) =>
+    {
+        if (PARAMS.attachment === 'attached')
+        {
+            value = size12x24Wrapper()
+            updatePatioSize(value)
+            house.bigGroup.position.z = -2.25 - 0.07 + bigOffsetZ
+            areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
+        }
+
     })
     folderSizes.add(classSizes, 'doCustom').name('do custom').onChange((value) =>
     {
@@ -1089,8 +1105,6 @@ function initModel()
         const value = classSizes.size12x16()
         updatePatioSize(value)
     }
-
-    folderAttachmentStatus(PARAMS.attachment)
 
     /*
         Controls
