@@ -1457,7 +1457,9 @@ function initModel()
             {
                 defaultAttachment()
                 sizesDefaultValues()
-                folderAttachment.controllers[0].setValue('free standing')
+                // set folderAttachement freeStanding
+                setFreeStanding()
+                
                 freeStandingSize()
                 // reset accesorries
                 accessoriesElem.parentElement.classList.remove('active')
@@ -1480,6 +1482,9 @@ function initModel()
                 sizesDefaultValues()
                 defaultAttachment()
                 attachedSize()
+                setAttached()
+                PARAMS.attachmentType = 'wall'
+                setAttachmentHeight()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
                 // set imageInpout valeu attached image
@@ -1500,8 +1505,9 @@ function initModel()
             {
                 defaultAttachment()
                 sizesDefaultValues()
-                folderAttachment.controllers[0].setValue('attached')
-                folderAttachment.controllers[1].setValue('fasciaEave')
+                setAttached()
+                PARAMS.attachmentType = 'fasciaEave'
+                setAttachmentHeight()
                 attachedSize()
                 sizesDefaultValues()
                 // update value and placeholder of input and textContent of output
@@ -1527,6 +1533,9 @@ function initModel()
                 folderAttachment.controllers[0].setValue('attached')
                 folderAttachment.controllers[1].setValue('underEave')
                 attachedSize()
+                setAttached()
+                PARAMS.attachmentType = 'underEave'
+                setAttachmentHeight()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
                 // set imageInpout valeu attached image
@@ -1547,8 +1556,9 @@ function initModel()
             {
                 defaultAttachment()
                 sizesDefaultValues()
-                folderAttachment.controllers[0].setValue('attached')
-                folderAttachment.controllers[1].setValue('roof')
+                setAttached()
+                PARAMS.attachmentType = 'roof'
+                setAttachmentHeight()
                 attachedSize()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(attachmentInput, attachmentOutput, attachmentName)
