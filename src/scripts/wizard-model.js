@@ -92,7 +92,7 @@ function initModel()
 
     const folderTypes = gui.addFolder('Patio types').close().show()
     const folderColor = gui.addFolder('Color').close().show()
-    const folderAttachment = gui.addFolder('Attachment').close().show()
+    const folderAttachment = gui.addFolder('Attachment').open().show()
     const folderSizes = gui.addFolder('Sizes').close().show()
     const folderBeams = gui.addFolder('Beams').close().show()
     const folderPosts = gui.addFolder('Posts').close().show()
@@ -833,6 +833,7 @@ function initModel()
 
     function setAttachmentHeight()
     {
+
         if (PARAMS.attachment === 'attached')
         {
             let beamsOffset, postsOffset, raftersOffset
@@ -898,41 +899,47 @@ function initModel()
     }
     objectAttachmets.roof = () =>
     {
+        setAttached()
         PARAMS.attachmentType = 'roof'
         setAttachmentHeight()
     }
     objectAttachmets.fasciaEave = () =>
     {
+        setAttached()
         PARAMS.attachmentType = 'fasciaEave'
         setAttachmentHeight()
     }
     objectAttachmets.underEave = () =>
     {
+        setAttached()
         PARAMS.attachmentType = 'underEave'
         setAttachmentHeight()
     }
     objectAttachmets.wall = () =>
     {
+        setAttached()
         PARAMS.attachmentType = 'wall'
         setAttachmentHeight()
     }
 
     // Attachments' DAT-GUI
 
-    folderAttachment.add(objectAttachmets, 'attached').name('attached').onChange(() =>
-    {
+    // folderAttachment.add(objectAttachmets, 'attached').name('attached').onChange(() =>
+    // {
 
-    })
+    // })
 
+
+    folderAttachment.add(objectAttachmets, 'wall').name('wall')
+    folderAttachment.add(objectAttachmets, 'underEave').name('underEave')
+    folderAttachment.add(objectAttachmets, 'fasciaEave').name('fasciaEave')
+    folderAttachment.add(objectAttachmets, 'roof').name('roof')
     folderAttachment.add(objectAttachmets, 'freeStanding').name('freeStanding').onChange(() =>
     {
 
     })
 
-    folderAttachment.add(objectAttachmets, 'roof').name('roof')
-    folderAttachment.add(objectAttachmets, 'fasciaEave').name('fasciaEave')
-    folderAttachment.add(objectAttachmets, 'underEave').name('underEave')
-    folderAttachment.add(objectAttachmets, 'wall').name('wall')
+
 
 
 
