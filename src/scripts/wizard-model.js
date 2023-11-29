@@ -1438,8 +1438,9 @@ function initModel()
 
     function defaultAttachment()
     {
-        folderAttachment.controllers[0].setValue('attached')
-        folderAttachment.controllers[1].setValue('wall')
+        setAttached()
+        PARAMS.attachmentType = 'wall'
+        setAttachmentHeight()
     }
 
     // Attachment
@@ -1884,7 +1885,7 @@ function initModel()
     {
         if (defaultStanding === 'free-standing')
         {
-            folderAttachment.controllers[0].setValue('free standing')
+            setFreeStanding()
             freeStandingSize()
             // update value and placeholder of input and textContent of output
             setInputOutput(attachmentInput, attachmentOutput, 'Free standing')
@@ -1911,8 +1912,9 @@ function initModel()
 
         } else if (defaultStanding === 'attached-standing')
         {
-            folderAttachment.controllers[0].setValue('attached')
-            folderAttachment.controllers[1].setValue('wall')
+            setAttached()
+            PARAMS.attachmentType = 'wall'
+            setAttachmentHeight()
             attachedSize()
             // update value and placeholder of input and textContent of output
             setInputOutput(attachmentInput, attachmentOutput, 'To the wall')
