@@ -91,7 +91,13 @@ function initModel()
     const gui = new dat.GUI({ width: 550 }).open()
 
     const folderTypes = gui.addFolder('Patio types').close().show()
-    const folderColor = gui.addFolder('Color').close().show()
+    const folderColor = gui.addFolder('Color').open().show()
+    const folderColorRoof = folderColor.addFolder('ColorRoof').close().show()
+    const folderColorLattice = folderColor.addFolder('ColorLattice').close().show()
+    const folderColorPosts = folderColor.addFolder('ColorPosts').close().show()
+    const folderColorRafters = folderColor.addFolder('ColorRafters').close().show()
+    const folderColorBeams = folderColor.addFolder('ColorBeams').close().show()
+
     const folderAttachment = gui.addFolder('Attachment').open().show()
     const folderSizes = gui.addFolder('Sizes').close().show()
     const folderBeams = gui.addFolder('Beams').close().show()
@@ -160,37 +166,376 @@ function initModel()
      * Color GUI
      */
 
-    console.log('check');
-
-    const ctrlColorRoof = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRoof').onChange((value) =>
+    // Roof colors
+    folderColorRoof.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
     {
-        color.changeMaterialColor(materials.roof, value)
-        roof.updateToMaterial(materials.roof)
-    });
-
-    const ctrlColorLattice = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorLattice').onChange((value) =>
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.roof, 'adobe')
+            roof.updateToMaterial(materials.roof)
+        }
+    })
+    folderColorRoof.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
     {
-        color.changeMaterialColor(materials.lattice, value)
-        lattice.updateToMaterial(materials.lattice)
-    });
-
-    const ctrlColorPosts = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorPosts').onChange((value) =>
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.roof, 'almond')
+            roof.updateToMaterial(materials.roof)
+        }
+    })
+    folderColorRoof.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
     {
-        color.changeMaterialColor(materials.posts, value)
-        posts.updateToMaterial(materials.posts)
-    });
-
-    const ctrlColorRafters = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRafters').onChange((value) =>
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.roof, 'belge')
+            roof.updateToMaterial(materials.roof)
+        }
+    })
+    folderColorRoof.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
     {
-        color.changeMaterialColor(materials.rafters, value)
-        rafters.updateToMaterial(materials.rafters)
-    });
-
-    const ctrlColorBeams = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorBeams').onChange((value) =>
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.roof, 'brown')
+            roof.updateToMaterial(materials.roof)
+        }
+    })
+    folderColorRoof.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
     {
-        color.changeMaterialColor(materials.beams, value)
-        beams.updateToMaterial(materials.beams)
-    });
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.roof, 'cameo')
+            roof.updateToMaterial(materials.roof)
+        }
+    })
+    folderColorRoof.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.roof, 'champagne')
+            roof.updateToMaterial(materials.roof)
+        }
+    })
+    folderColorRoof.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.roof, 'desert')
+            roof.updateToMaterial(materials.roof)
+        }
+    })
+    folderColorRoof.add(color.colorFunctions, 'white').name('white').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.roof, 'white')
+            roof.updateToMaterial(materials.roof)
+        }
+    })
+
+    // Lattice colors
+    folderColorLattice.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.lattice, 'adobe')
+            lattice.updateToMaterial(materials.lattice)
+        }
+    })
+    folderColorLattice.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.lattice, 'almond')
+            lattice.updateToMaterial(materials.lattice)
+        }
+    })
+    folderColorLattice.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.lattice, 'belge')
+            lattice.updateToMaterial(materials.lattice)
+        }
+    })
+    folderColorLattice.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.lattice, 'brown')
+            lattice.updateToMaterial(materials.lattice)
+        }
+    })
+    folderColorLattice.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.lattice, 'cameo')
+            lattice.updateToMaterial(materials.lattice)
+        }
+    })
+    folderColorLattice.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.lattice, 'champagne')
+            lattice.updateToMaterial(materials.lattice)
+        }
+    })
+    folderColorLattice.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.lattice, 'desert')
+            lattice.updateToMaterial(materials.lattice)
+        }
+    })
+    folderColorLattice.add(color.colorFunctions, 'white').name('white').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.lattice, 'white')
+            lattice.updateToMaterial(materials.lattice)
+        }
+    })
+
+    // Posts colors
+    folderColorPosts.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.posts, 'adobe')
+            posts.updateToMaterial(materials.posts)
+        }
+    })
+    folderColorPosts.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.posts, 'almond')
+            posts.updateToMaterial(materials.posts)
+        }
+    })
+    folderColorPosts.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.posts, 'belge')
+            posts.updateToMaterial(materials.posts)
+        }
+    })
+    folderColorPosts.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.posts, 'brown')
+            posts.updateToMaterial(materials.posts)
+        }
+    })
+    folderColorPosts.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.posts, 'cameo')
+            posts.updateToMaterial(materials.posts)
+        }
+    })
+    folderColorPosts.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.posts, 'champagne')
+            posts.updateToMaterial(materials.posts)
+        }
+    })
+    folderColorPosts.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.posts, 'desert')
+            posts.updateToMaterial(materials.posts)
+        }
+    })
+    folderColorPosts.add(color.colorFunctions, 'white').name('white').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.posts, 'white')
+            posts.updateToMaterial(materials.posts)
+        }
+    })
+
+    // Rafters colors
+    folderColorRafters.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.rafters, 'adobe')
+            rafters.updateToMaterial(materials.rafters)
+        }
+    })
+    folderColorRafters.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.rafters, 'almond')
+            rafters.updateToMaterial(materials.rafters)
+        }
+    })
+    folderColorRafters.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.rafters, 'belge')
+            rafters.updateToMaterial(materials.rafters)
+        }
+    })
+    folderColorRafters.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.rafters, 'brown')
+            rafters.updateToMaterial(materials.rafters)
+        }
+    })
+    folderColorRafters.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.rafters, 'cameo')
+            rafters.updateToMaterial(materials.rafters)
+        }
+    })
+    folderColorRafters.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.rafters, 'champagne')
+            rafters.updateToMaterial(materials.rafters)
+        }
+    })
+    folderColorRafters.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.rafters, 'desert')
+            rafters.updateToMaterial(materials.rafters)
+        }
+    })
+    folderColorRafters.add(color.colorFunctions, 'white').name('white').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.rafters, 'white')
+            rafters.updateToMaterial(materials.rafters)
+        }
+    })
+
+    // Beams colors
+    folderColorBeams.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.beams, 'adobe')
+            beams.updateToMaterial(materials.beams)
+        }
+    })
+    folderColorBeams.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.beams, 'almond')
+            beams.updateToMaterial(materials.beams)
+        }
+    })
+    folderColorBeams.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.beams, 'belge')
+            beams.updateToMaterial(materials.beams)
+        }
+    })
+    folderColorBeams.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.beams, 'brown')
+            beams.updateToMaterial(materials.beams)
+        }
+    })
+    folderColorBeams.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.beams, 'cameo')
+            beams.updateToMaterial(materials.beams)
+        }
+    })
+    folderColorBeams.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.beams, 'champagne')
+            beams.updateToMaterial(materials.beams)
+        }
+    })
+    folderColorBeams.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.beams, 'desert')
+            beams.updateToMaterial(materials.beams)
+        }
+    })
+    folderColorBeams.add(color.colorFunctions, 'white').name('white').onChange(() =>
+    {
+        if (!materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.beams, 'white')
+            beams.updateToMaterial(materials.beams)
+        }
+    })
+
+
+    // const ctrlColorRoof = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRoof').onChange((value) =>
+    // {
+    //     color.changeMaterialColor(materials.roof, value)
+    //     roof.updateToMaterial(materials.roof)
+    // });
+
+    // const ctrlColorLattice = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorLattice').onChange((value) =>
+    // {
+    //     color.changeMaterialColor(materials.lattice, value)
+    //     lattice.updateToMaterial(materials.lattice)
+    // });
+
+    // const ctrlColorPosts = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorPosts').onChange((value) =>
+    // {
+    //     color.changeMaterialColor(materials.posts, value)
+    //     posts.updateToMaterial(materials.posts)
+    // });
+
+    // const ctrlColorRafters = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRafters').onChange((value) =>
+    // {
+    //     color.changeMaterialColor(materials.rafters, value)
+    //     rafters.updateToMaterial(materials.rafters)
+    // });
+
+    // const ctrlColorBeams = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorBeams').onChange((value) =>
+    // {
+    //     color.changeMaterialColor(materials.beams, value)
+    //     beams.updateToMaterial(materials.beams)
+    // });
+
+    // const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').show().onChange((value) =>
+    // {
+    //     if (materials.parameters.combine)
+    //     {
+    //         color.changeMaterialColor(materials.general, value)
+    //         color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+    //     }
+
+    // });
 
     folderColor.add(materials.parameters, 'combine').name('combine').onChange((value) =>
     {
@@ -198,12 +543,14 @@ function initModel()
         if (materials.parameters.combine)
         {
             // update GUI
-            ctrlCombineColor.show()
-            ctrlColorRoof.show()
-            ctrlColorLattice.show()
-            ctrlColorPosts.show()
-            ctrlColorRafters.show()
-            ctrlColorBeams.show()
+            // ctrlCombineColor.show()
+            // ctrlColorRoof.show()
+            // ctrlColorLattice.show()
+            // ctrlColorPosts.show()
+            // ctrlColorRafters.show()
+            // ctrlColorBeams.show()
+
+            folderColorCombine.open()
 
             color.backUpColors(materials) // backup previous material color
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
@@ -212,26 +559,89 @@ function initModel()
         if (!materials.parameters.combine)
         {
             // update GUI
-            ctrlCombineColor.show()
-            ctrlColorRoof.show()
-            ctrlColorLattice.show()
-            ctrlColorPosts.show()
-            ctrlColorRafters.show()
-            ctrlColorBeams.show()
+            // ctrlCombineColor.show()
+            // ctrlColorRoof.show()
+            // ctrlColorLattice.show()
+            // ctrlColorPosts.show()
+            // ctrlColorRafters.show()
+            // ctrlColorBeams.show()
+
+            folderColorCombine.close()
 
             color.returnColors(materials) // return material color from backup
         }
     });
 
-    const ctrlCombineColor = folderColor.add(materials.parameters, 'combineValue', materials.colorArray).name('combineValue').show().onChange((value) =>
+    const folderColorCombine = folderColor.addFolder('ColorCombine').close().show()
+
+    // Combine colors
+    folderColorCombine.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
     {
         if (materials.parameters.combine)
         {
-            color.changeMaterialColor(materials.general, value)
+            color.changeMaterialColor(materials.general, 'adobe')
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
         }
+    })
+    folderColorCombine.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
+    {
+        if (materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.general, 'almond')
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+        }
+    })
+    folderColorCombine.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
+    {
+        if (materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.general, 'belge')
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+        }
+    })
+    folderColorCombine.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
+    {
+        if (materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.general, 'brown')
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+        }
+    })
+    folderColorCombine.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
+    {
+        if (materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.general, 'cameo')
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+        }
+    })
+    folderColorCombine.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
+    {
+        if (materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.general, 'champagne')
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+        }
+    })
+    folderColorCombine.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
+    {
+        if (materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.general, 'desert')
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+        }
+    })
+    folderColorCombine.add(color.colorFunctions, 'white').name('white').onChange(() =>
+    {
+        if (materials.parameters.combine)
+        {
+            color.changeMaterialColor(materials.general, 'white')
+            color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
+        }
+    })
 
-    });
+
+
 
 
     /**
@@ -543,9 +953,9 @@ function initModel()
         {
             if (!materials.parameters.combine)
             {
-                ctrlColorRoof.show()
+                // ctrlColorRoof.show()
             }
-            ctrlColorLattice.show()
+            // ctrlColorLattice.show()
 
             roof.setScale(1)
             lattice.setScale(0)
@@ -553,10 +963,10 @@ function initModel()
         }
         if (PARAMS.patioType === 'lattice')
         {
-            ctrlColorRoof.show()
+            // ctrlColorRoof.show()
             if (!materials.parameters.combine)
             {
-                ctrlColorLattice.show()
+                // ctrlColorLattice.show()
             }
 
             roof.setScale(0)
@@ -567,9 +977,9 @@ function initModel()
         {
             if (!materials.parameters.combine)
             {
-                ctrlColorRoof.show()
+                // ctrlColorRoof.show()
             }
-            ctrlColorLattice.hide()
+            // ctrlColorLattice.hide()
 
             roof.setScale(1)
             lattice.setScale(0)

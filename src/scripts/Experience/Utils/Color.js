@@ -1,49 +1,108 @@
 import * as THREE from 'three'
 
 import Textures from '../Textures'
+import Materials from '../Materials'
 
 
-export default class Color {
-    constructor() {
+export default class Color
+{
+    constructor()
+    {
         this.textures = new Textures()
+        this.materials = new Materials()
+
+        this.setColorFunctions()
+
+
     }
 
-    changeMaterialColor(material, value) {
-        if (value === 'adobe') {
+    setColorFunctions()
+    {
+        this.colorFunctions = {}
+
+        this.colorFunctions.adobe = () =>
+        {
+            this.materials.map = this.textures.adobeTextureColor
+        }
+        this.colorFunctions.almond = () =>
+        {
+            this.materials.map = this.textures.almondTextureColor
+        }
+        this.colorFunctions.belge = () =>
+        {
+            this.materials.map = this.textures.belgeTextureColor
+        }
+        this.colorFunctions.brown = () =>
+        {
+            this.materials.map = this.textures.brownTextureColor
+        }
+        this.colorFunctions.cameo = () =>
+        {
+            this.materials.map = this.textures.cameoTextureColor
+        }
+        this.colorFunctions.champagne = () =>
+        {
+            this.materials.map = this.textures.champagneTextureColor
+        }
+        this.colorFunctions.desert = () =>
+        {
+            this.materials.map = this.textures.desertTextureColor
+        }
+        this.colorFunctions.white = () =>
+        {
+            this.materials.map = this.textures.whiteTextureColor
+        }
+    }
+
+
+
+
+    changeMaterialColor(material, value)
+    {
+        if (value === 'adobe')
+        {
             material.map = this.textures.adobeTextureColor
         }
 
-        if (value === 'almond') {
+        if (value === 'almond')
+        {
             material.map = this.textures.almondTextureColor
         }
 
-        if (value === 'belge') {
+        if (value === 'belge')
+        {
             material.map = this.textures.belgeTextureColor
         }
 
-        if (value === 'brown') {
+        if (value === 'brown')
+        {
             material.map = this.textures.brownTextureColor
         }
 
-        if (value === 'cameo') {
+        if (value === 'cameo')
+        {
             material.map = this.textures.cameoTextureColor
         }
 
-        if (value === 'champagne') {
+        if (value === 'champagne')
+        {
             material.map = this.textures.champagneTextureColor
         }
 
-        if (value === 'desert') {
+        if (value === 'desert')
+        {
             material.map = this.textures.desertTextureColor
         }
 
-        if (value === 'white') {
+        if (value === 'white')
+        {
             material.map = this.textures.whiteTextureColor
         }
 
     }
 
-    backUpColors(materials) {
+    backUpColors(materials)
+    {
         // backup colors
         materials.colorBackup.roofColor = materials.roof.map
         materials.colorBackup.raftersColor = materials.rafters.map
@@ -52,7 +111,8 @@ export default class Color {
         materials.colorBackup.latticeColor = materials.lattice.map
     }
 
-    updateColors(materials, roof, rafters, beams, posts, lattice) {
+    updateColors(materials, roof, rafters, beams, posts, lattice)
+    {
         //update colors
         materials.roof.map = materials.general.map;
         materials.rafters.map = materials.general.map;
@@ -68,7 +128,8 @@ export default class Color {
 
     }
 
-    returnColors(materials) {
+    returnColors(materials)
+    {
         // return colors from backup
         materials.roof.map = materials.colorBackup.roofColor;
         materials.rafters.map = materials.colorBackup.raftersColor;
