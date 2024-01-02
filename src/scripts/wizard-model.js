@@ -160,6 +160,8 @@ function initModel()
      * Color GUI
      */
 
+    console.log('check');
+
     const ctrlColorRoof = folderColor.add(materials.parameters, 'colorName', materials.colorArray).name('colorRoof').onChange((value) =>
     {
         color.changeMaterialColor(materials.roof, value)
@@ -1460,7 +1462,7 @@ function initModel()
                 sizesDefaultValues()
                 // set folderAttachement freeStanding
                 setFreeStanding()
-                
+
                 freeStandingSize()
                 // reset accesorries
                 accessoriesElem.parentElement.classList.remove('active')
