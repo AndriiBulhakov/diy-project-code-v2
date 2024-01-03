@@ -62,14 +62,14 @@ export default class Beams
             this.materials.beams
         )
         this.asset.castShadow = true
-        this.asset.receiveShadow = true
+        this.asset.receiveShadow = false
 
         this.assetAttached = new THREE.Mesh(
             new THREE.BoxGeometry(PARAMS.roofWidth, PARAMS.raftersSizes.height, PARAMS.beamsSizes.depth),
             this.materials.beams
         )
         this.assetAttached.castShadow = true
-        this.assetAttached.receiveShadow = true
+        this.assetAttached.receiveShadow = false
 
     }
 
