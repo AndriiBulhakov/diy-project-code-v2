@@ -2,8 +2,10 @@ import * as THREE from 'three'
 import PARAMS from '../../Utils/PARAMS'
 import Materials from '../../Materials.js'
 
-export default class Beams {
-    constructor() {
+export default class Beams
+{
+    constructor()
+    {
         this.materials = new Materials()
 
         this.asset
@@ -25,7 +27,8 @@ export default class Beams {
 
     }
 
-    setPosition() {
+    setPosition()
+    {
         this.offsetY = PARAMS.postsSizes.height / 2 - PARAMS.beamsSizes.height / 2
         this.offsetZ = PARAMS.roofDepth / 2 - 1
 
@@ -36,20 +39,24 @@ export default class Beams {
         this.attachedGroup.position.set(0, this.offsetAttachedY, PARAMS.roofDepth / 2)
     }
 
-    setScale(value) {
+    setScale(value)
+    {
         this.frontGroup.scale.set(value, value, value)
         this.backGroup.scale.set(value, value, value)
     }
 
-    setScaleBackGroup(value) {
+    setScaleBackGroup(value)
+    {
         this.frontGroup.scale.set(value, value, value)
 
     }
-    setScaleBackGroup(value) {
+    setScaleBackGroup(value)
+    {
         this.backGroup.scale.set(value, value, value)
     }
 
-    setAsset() {
+    setAsset()
+    {
         this.asset = new THREE.Mesh(
             new THREE.BoxGeometry(PARAMS.roofWidth, PARAMS.beamsSizes.height, PARAMS.beamsSizes.depth),
             this.materials.beams
@@ -66,12 +73,14 @@ export default class Beams {
 
     }
 
-    create() {
+    create()
+    {
         this.setAsset()
 
         const doubleBeamsOffsetZ = (PARAMS.postsSizes.depthSide * 2 + PARAMS.postsSizes.depthCenter) / 2 + PARAMS.postsSizes.diametr / 2 + PARAMS.beamsSizes.depth / 2
 
-        if (PARAMS.beamsType === 'single') {
+        if (PARAMS.beamsType === 'single')
+        {
             const beamBack01 = this.asset.clone()
             beamBack01.position.set(0, PARAMS.beamsSizes.height, 0)
             this.backGroup.add(beamBack01)
@@ -81,19 +90,30 @@ export default class Beams {
             this.frontGroup.add(beamFront01)
         }
 
-        if (PARAMS.beamsType === 'double') {
+        if (PARAMS.beamsType === 'double')
+        {
+            let zBeamsOffset
+            if (PARAMS.beamsSizeType === '8x3')
+            {
+                zBeamsOffset = doubleBeamsOffsetZ
+            }
+            if (PARAMS.beamsSizeType === '6x2')
+            {
+                zBeamsOffset = doubleBeamsOffsetZ + 0.2 * doubleBeamsOffsetZ
+            }
+
             const beamBack01 = this.asset.clone()
-            beamBack01.position.set(0, 0, - doubleBeamsOffsetZ)
+            beamBack01.position.set(0, 0, - zBeamsOffset)
             this.backGroup.add(beamBack01)
             const beamBack02 = this.asset.clone()
-            beamBack02.position.set(0, 0, doubleBeamsOffsetZ)
+            beamBack02.position.set(0, 0, zBeamsOffset)
             this.backGroup.add(beamBack02)
 
             const beamFront01 = this.asset.clone()
-            beamFront01.position.set(0, 0, - doubleBeamsOffsetZ)
+            beamFront01.position.set(0, 0, - zBeamsOffset)
             this.frontGroup.add(beamFront01)
             const beamFront02 = this.asset.clone()
-            beamFront02.position.set(0, 0, doubleBeamsOffsetZ)
+            beamFront02.position.set(0, 0, zBeamsOffset)
             this.frontGroup.add(beamFront02)
         }
 
@@ -111,33 +131,42 @@ export default class Beams {
 
     }
 
-    delete() {
-        while (this.backGroup.children[0]) {
+    delete()
+    {
+        while (this.backGroup.children[0])
+        {
             this.backGroup.remove(this.backGroup.children[0])
         }
 
-        while (this.frontGroup.children[0]) {
+        while (this.frontGroup.children[0])
+        {
             this.frontGroup.remove(this.frontGroup.children[0])
         }
 
-        while (this.attachedGroup.children[0]) {
+        while (this.attachedGroup.children[0])
+        {
             this.attachedGroup.remove(this.attachedGroup.children[0])
         }
     }
 
-    update() {
+    update()
+    {
         this.delete()
         this.create()
     }
 
-    updateToMaterial(value) {
-        this.backGroup.children.forEach((child) => {
+    updateToMaterial(value)
+    {
+        this.backGroup.children.forEach((child) =>
+        {
             child.material = value
         })
-        this.frontGroup.children.forEach((child) => {
+        this.frontGroup.children.forEach((child) =>
+        {
             child.material = value
         })
-        this.attachedGroup.children.forEach((child) => {
+        this.attachedGroup.children.forEach((child) =>
+        {
             child.material = value
         })
 
@@ -146,16 +175,20 @@ export default class Beams {
 
     // Attached
 
-    setScaleAttachedGroup(value) {
+    setScaleAttachedGroup(value)
+    {
         this.attachedGroup.scale.set(value, value, value)
     }
 
-    checkAttachment() {
-        if (PARAMS.attachment === 'free standing') {
+    checkAttachment()
+    {
+        if (PARAMS.attachment === 'free standing')
+        {
             this.setScaleBackGroup(1)
             this.setScaleAttachedGroup(0)
         }
-        if (PARAMS.attachment === 'attached') {
+        if (PARAMS.attachment === 'attached')
+        {
             this.setScaleBackGroup(0)
             this.setScaleAttachedGroup(1)
         }
