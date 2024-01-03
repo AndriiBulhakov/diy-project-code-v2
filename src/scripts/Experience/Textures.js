@@ -19,7 +19,7 @@ export default class Textures
         'https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/src/static/textures/colors/adobe.png'
         */
 
-        this.adobeTextureColor = this.textureLoader.load('https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/src/static/textures/colors/adobe-test.png')
+        this.adobeTextureColor = this.textureLoader.load('https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/src/static/textures/colors/adobe.png')
         this.adobeTextureColor.repeat.x = 2
         this.adobeTextureColor.repeat.y = 2
         this.adobeTextureColor.wrapS = THREE.RepeatWrapping
