@@ -291,6 +291,7 @@ export default class Posts
         this.setGeometry()
         this.update()
 
+
     }
 
     update()
@@ -301,6 +302,7 @@ export default class Posts
             this.create()
         if (PARAMS.attachment === 'attached')
             this.createFront()
+
     }
 
     updateToMaterial(value)

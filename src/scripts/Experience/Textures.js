@@ -3,8 +3,10 @@ import * as THREE from 'three';
 import Manager from './Utils/Manager';
 
 
-export default class Textures {
-    constructor(loadingManager) {
+export default class Textures
+{
+    constructor(loadingManager)
+    {
 
         this.textureLoader = new THREE.TextureLoader(loadingManager);
         this.cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager)
@@ -17,7 +19,7 @@ export default class Textures {
         'https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/src/static/textures/colors/adobe.png'
         */
 
-        this.adobeTextureColor = this.textureLoader.load('https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/src/static/textures/colors/adobe.png')
+        this.adobeTextureColor = this.textureLoader.load('https://raw.githubusercontent.com/AndriiBulhakov/diy-project-code-v2/main/src/static/textures/colors/adobe-test.png')
         this.adobeTextureColor.repeat.x = 2
         this.adobeTextureColor.repeat.y = 2
         this.adobeTextureColor.wrapS = THREE.RepeatWrapping
