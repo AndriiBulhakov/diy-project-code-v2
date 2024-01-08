@@ -1603,7 +1603,7 @@ function initModel()
         requestInfo.classList.remove('is--hidden');
     }
 
-    // function for settin value and placeholder to the input and textContent to the output
+    // function for setting value and placeholder to the input and textContent to the output
     function setInputOutput(input, output, value)
     {
         input.forEach((item) =>
@@ -1619,8 +1619,8 @@ function initModel()
 
     // set default values to the inputs and outputs
     setInputOutput(typeInput, typeOutput, 'Lattice 2x2 2x6');
-    setInputOutput(colorInput, colorOutput, 'Adobe');
     setInputOutput(attachmentInput, attachmentOutput, 'To the wall');
+    setInputOutput(colorInput, colorOutput, 'Adobe');
     setInputOutput(sizeInput, sizeOutput, '10x10');
     setInputOutput(headerInput, headerOutput, 'Single beam 3x8');
     setInputOutput(postsInput, postsOutput, 'Default');
@@ -1755,6 +1755,18 @@ function initModel()
         })
     });
 
+    function replaceWords(str, replacementIndex, newWord) {
+        const words = str.split(', ');
+        const replacedWords = words.map((word, index) => {
+            if (index === replacementIndex - 1) {
+            const originalWord = word.split(': ')[0];
+            return `${originalWord}: ${newWord}`;
+            }
+            return word;
+        });
+        return replacedWords.join(', ');
+    }
+
     colorList.addEventListener('click', (event) =>
     {
         if (event.target.classList.contains('trigger-button-item'))
@@ -1764,36 +1776,52 @@ function initModel()
             let colorName = event.target.getAttribute('data-name').toLowerCase()
             if (colorType === 'colorRoof' || colorAddType === 'colorLattice')
             {
-                colorChanger(colorType, colorAddType, colorName)
+                color.changeMaterialColor(materials.lattice, colorName)
+                // get current value of color input and output
+                let currentValue = colorInput[0].value
+
+                // replace color name in current value and output
+                replaceWords(currentValue, 3, colorName)
+                setInputOutput(colorInput, colorOutput, replaceWords(currentValue, 1, colorName))
+                
             } else if (colorType === 'colorBeams')
             {
-                colorChanger(colorType, colorAddType, colorName)
+                color.changeMaterialColor(materials.beams, colorName)
+                // get current value of color input and output
+                let currentValue = colorInput[0].value
+
+                // replace color name in current value and output
+                replaceWords(currentValue, 2, colorName)
+                setInputOutput(colorInput, colorOutput, replaceWords(currentValue, 2, colorName))
+
             } else if (colorType === 'colorPosts')
             {
-                colorChanger(colorType, colorAddType, colorName)
+                color.changeMaterialColor(materials.posts, colorName)
+                // get current value of color input and output
+                let currentValue = colorInput[0].value
+
+                // replace color name in current value and output
+                replaceWords(currentValue, 3, colorName)
+                setInputOutput(colorInput, colorOutput, replaceWords(currentValue, 3, colorName))
+
             } else if (colorType === 'colorRafters')
             {
-                colorChanger(colorType, colorAddType, colorName)
+                color.changeMaterialColor(materials.rafters, colorName)
+                // get current value of color input and output
+                let currentValue = colorInput[0].value
+
+                // replace color name in current value and output
+                replaceWords(currentValue, 4, colorName)
+                setInputOutput(colorInput, colorOutput, replaceWords(currentValue, 4, colorName))
+
             } else if (colorType === 'combineValue')
             {
-                colorChanger(colorType, colorAddType, colorName)
-                // update value and placeholder of input and textContent of output
-                setInputOutput(colorInput, colorOutput, colorName)
+                color.changeMaterialColor(materials.general, colorName)
+                color.updateColors(materials, roof, rafters, beams, posts, lattice)
+                setInputOutput(colorInput, colorOutput, event.target.getAttribute('data-name'))
             }
         }
     })
-
-    function colorChanger(colorType, colorAddType, colorName)
-    {
-        folderColor.controllers.forEach((controller) =>
-        {
-
-            if (controller._name === colorType || controller._name === colorAddType)
-            {
-                controller.setValue(colorName)
-            }
-        })
-    }
 
     // color toggle
     const colorToggleWrapper = document.querySelector('.color-combine-wrapper');
@@ -1812,19 +1840,27 @@ function initModel()
             // if colorToggleWrapper is active, then activate first combine color
             if (colorToggleWrapper.classList.contains('is--active'))
             {
-                folderColor.controllers[6].setValue('adobe')
+                
+                // update value and placeholder of input and textContent of output
+                setInputOutput(colorInput, colorOutput, 'Adobe')
+                color.changeMaterialColor(materials.lattice, 'adobe')
+                color.changeMaterialColor(materials.beams, 'adobe')
+                color.changeMaterialColor(materials.posts, 'adobe')
+                color.changeMaterialColor(materials.rafters, 'adobe')
+                color.changeMaterialColor(materials.general, 'adobe')
                 // remove active class from all buttons
                 removeActiveClass(colorLists[colorLists.length - 1])
                 // activate first button of last color list
                 colorLists[colorLists.length - 1].querySelectorAll('.button-item')[0].classList.add('active')
             } else
             {
-                // if colorToggleWrapper is not active, then activate first color of each list besides last one
-                folderColor.controllers[0].setValue('adobe')
-                folderColor.controllers[1].setValue('adobe')
-                folderColor.controllers[2].setValue('adobe')
-                folderColor.controllers[3].setValue('adobe')
-                folderColor.controllers[4].setValue('adobe')
+                // if colorToggleWrapper is not active, then change input and output values to default
+                setInputOutput(colorInput, colorOutput, 'Roof: adobe, Beams: adobe, Posts: adobe, Rafters: adobe')
+                color.changeMaterialColor(materials.lattice, 'adobe')
+                color.changeMaterialColor(materials.beams, 'adobe')
+                color.changeMaterialColor(materials.posts, 'adobe')
+                color.changeMaterialColor(materials.rafters, 'adobe')
+                color.changeMaterialColor(materials.general, 'adobe')
                 // remove active class from all buttons
                 removeActiveClass(colorLists[0])
                 removeActiveClass(colorLists[1])
