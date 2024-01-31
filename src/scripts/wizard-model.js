@@ -1094,6 +1094,8 @@ function initModel()
     const areaLight = new AreaLight()
 
     sceneCtrl.add(areaLight.patioBottom, areaLight.patioTop, areaLight.frontWall, areaLight.enter, areaLight.sideWall)
+    // Helpers
+    // sceneCtrl.add(areaLight.patioBottomHelper, areaLight.patioTopHelper, areaLight.frontWallHelper, areaLight.enterHelper, areaLight.sideWallHelper)
 
     if (PARAMS.attachment === 'free standing')
     {
@@ -1308,34 +1310,118 @@ function initModel()
     objectAttachmets.attached = () =>
     {
         setAttached()
+
+        if (classSizes.doCustom)
+        {
+
+            // UI
+
+            freeStandingCtrlX.hide()
+            freeStandingCtrlZ.hide()
+
+            attachedCtrlX.show().setValue(12)
+            attachedCtrlZ.hide().setValue(10)
+        }
+
+        areaLight.sideWall.position.z = -13.083
     }
     objectAttachmets.freeStanding = () =>
     {
         setFreeStanding()
+
+        if (classSizes.doCustom)
+        {
+
+            // UI
+
+            freeStandingCtrlX.show().setValue(12)
+            freeStandingCtrlZ.show().setValue(10)
+
+            attachedCtrlX.hide()
+            attachedCtrlZ.hide()
+        }
+
+        areaLight.sideWall.position.z = -10.7
     }
     objectAttachmets.roof = () =>
     {
         setAttached()
         PARAMS.attachmentType = 'roof'
         setAttachmentHeight()
+
+        if (classSizes.doCustom)
+        {
+
+            // UI
+
+            freeStandingCtrlX.hide()
+            freeStandingCtrlZ.hide()
+
+            attachedCtrlX.show().setValue(12)
+            attachedCtrlZ.hide().setValue(10)
+        }
+
+        areaLight.sideWall.position.z = -13.083
     }
     objectAttachmets.fasciaEave = () =>
     {
         setAttached()
         PARAMS.attachmentType = 'fasciaEave'
         setAttachmentHeight()
+
+        if (classSizes.doCustom)
+        {
+
+            // UI
+
+            freeStandingCtrlX.hide()
+            freeStandingCtrlZ.hide()
+
+            attachedCtrlX.show().setValue(12)
+            attachedCtrlZ.hide().setValue(10)
+        }
+
+        areaLight.sideWall.position.z = -13.083
     }
     objectAttachmets.underEave = () =>
     {
         setAttached()
         PARAMS.attachmentType = 'underEave'
         setAttachmentHeight()
+
+        if (classSizes.doCustom)
+        {
+
+            // UI
+
+            freeStandingCtrlX.hide()
+            freeStandingCtrlZ.hide()
+
+            attachedCtrlX.show().setValue(12)
+            attachedCtrlZ.hide().setValue(10)
+        }
+
+        areaLight.sideWall.position.z = -13.083
     }
     objectAttachmets.wall = () =>
     {
         setAttached()
         PARAMS.attachmentType = 'wall'
         setAttachmentHeight()
+
+        if (classSizes.doCustom)
+        {
+
+            // UI
+
+            freeStandingCtrlX.hide()
+            freeStandingCtrlZ.hide()
+
+            attachedCtrlX.show().setValue(12)
+            attachedCtrlZ.hide().setValue(10)
+        }
+        areaLight.sideWall.position.z = -13.083
+
     }
 
     // Attachments' DAT-GUI
@@ -1400,6 +1486,7 @@ function initModel()
             updatePatioSize(value)
             house.bigGroup.position.z = 0
             areaLight.sideWall.position.z = -12.56
+            areaLight.enter.position.x = -10.7
         }
 
 
@@ -1410,6 +1497,7 @@ function initModel()
         {
             value = size11x11Wrapper()
             updatePatioSize(value)
+            areaLight.enter.position.x = -10.7
             // house.bigGroup.postion.z = 1.18
         }
 
@@ -1420,6 +1508,7 @@ function initModel()
         {
             value = size12x12Wrapper()
             updatePatioSize(value)
+            areaLight.enter.position.x = -10.7
             // house.bigGroup.position.z = 0.91
         }
 
@@ -1431,6 +1520,7 @@ function initModel()
         {
             value = size12x16Wrapper()
             updatePatioSize(value)
+            areaLight.enter.position.x = -10.7
         }
         if (PARAMS.attachment === 'attached')
         {
@@ -1442,6 +1532,7 @@ function initModel()
         }
 
 
+
     })
     const button12x20 = folderSizes.add(classSizes, 'size12x20').name('12x20').show().onChange((value) =>
     {
@@ -1449,6 +1540,7 @@ function initModel()
         {
             value = size12x20Wrapper()
             updatePatioSize(value)
+            areaLight.enter.position.x = -10.7
         }
 
         if (PARAMS.attachment === 'attached')
@@ -1469,6 +1561,7 @@ function initModel()
         {
             value = size12x24Wrapper()
             updatePatioSize(value)
+            areaLight.enter.position.x = -10.7
         }
 
         if (PARAMS.attachment === 'attached')
@@ -1498,7 +1591,7 @@ function initModel()
                 freeStandingCtrlZ.hide()
 
                 attachedCtrlX.show().setValue(12)
-                attachedCtrlZ.hide()
+                attachedCtrlZ.hide().setValue(10)
             }
 
         }
@@ -1510,26 +1603,28 @@ function initModel()
             attachedCtrlZ.hide()
         }
     })
-    const freeStandingCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidth').hide().onChange((value) =>
+    const freeStandingCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidthFree').hide().onChange((value) =>
     {
         const updateSize = [PARAMS.roofDepth, value]
         updatePatioSize(updateSize)
         // house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.25)
     })
-    const freeStandingCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 10, 12, 0.1).name('roofDepth').hide().onChange((value) =>
+    const freeStandingCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 10, 24, 0.1).name('roofDepthFree').hide().onChange((value) =>
     {
         const updateSize = [value, PARAMS.roofWidth]
         updatePatioSize(updateSize)
+        console.log(areaLight.enter.position.x);
+        areaLight.enter.position.x = math.mapRange(value, 10, 24, -10.7, -14)
     })
 
-    const attachedCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidth').hide().onChange((value) =>
+    const attachedCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidthAttached').hide().onChange((value) =>
     {
         const updateSize = [PARAMS.roofDepth, value]
         updatePatioSize(updateSize)
         house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.238) - 0.39
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
     })
-    const attachedCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 12, 12, 0.1).name('roofDepth').hide().onChange((value) =>
+    const attachedCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 12, 12, 0.1).name('roofDepthAttached').hide().onChange((value) =>
     {
         const updateSize = [value, PARAMS.roofWidth]
         updatePatioSize(updateSize)

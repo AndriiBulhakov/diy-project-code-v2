@@ -118,6 +118,11 @@ export default class Posts
                     totalWidth = PARAMS.roofWidth
                     this.maxDistance = 7.667 // 7.8 ft
                 }
+                if (PARAMS.roofDepth > 12 && PARAMS.roofDepth <= 24)
+                {
+                    totalWidth = PARAMS.roofWidth - 2
+                    this.maxDistance = 7.667 // 9.2 ft
+                }
             }
             if (this.postsStatus === '02')
             {
@@ -136,6 +141,11 @@ export default class Posts
                     totalWidth = PARAMS.roofWidth
                     this.maxDistance = 10.417 // 10.5 ft
                 }
+                if (PARAMS.roofDepth > 12 && PARAMS.roofDepth <= 24)
+                {
+                    totalWidth = PARAMS.roofWidth - 2
+                    this.maxDistance = 10.417 // 9.2 ft
+                }
             }
         }
 
@@ -152,6 +162,11 @@ export default class Posts
                 this.maxDistance = 9.667 // 9.8 ft
             }
             if (PARAMS.roofDepth === 12)
+            {
+                totalWidth = PARAMS.roofWidth - 2
+                this.maxDistance = 9.167 // 9.2 ft
+            }
+            if (PARAMS.roofDepth > 12 && PARAMS.roofDepth <= 24)
             {
                 totalWidth = PARAMS.roofWidth - 2
                 this.maxDistance = 9.167 // 9.2 ft
