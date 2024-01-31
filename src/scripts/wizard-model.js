@@ -47,8 +47,7 @@ const size12x24Wrapper = () => patioSizes.size12x24();
 
 
 
-function initModel()
-{
+function initModel() {
 
     /**
      * Hover
@@ -58,8 +57,7 @@ function initModel()
 
     window.addEventListener('mousemove', onMouseMove)
 
-    function onMouseMove(event)
-    {
+    function onMouseMove(event) {
         mouse.x = event.clientX / sizes.width * 2 - 1
         mouse.y = - (event.clientY / sizes.height * 2 - 1);
 
@@ -78,8 +76,7 @@ function initModel()
         height: window.innerHeight - 9.920
     }
     // if window.innerWidth < 479 px update sizes width and height of the sizes object
-    if (window.innerWidth < 479)
-    {
+    if (window.innerWidth < 479) {
         sizes.width = window.innerWidth
         sizes.height = window.innerHeight * 0.4
     }
@@ -167,330 +164,250 @@ function initModel()
      */
 
     // Roof colors
-    folderColorRoof.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRoof.add(color.colorFunctions, 'adobe').name('adobe').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.roof, 'adobe')
             roof.updateToMaterial(materials.roof)
         }
     })
-    folderColorRoof.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRoof.add(color.colorFunctions, 'almond').name('almond').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.roof, 'almond')
             roof.updateToMaterial(materials.roof)
         }
     })
-    folderColorRoof.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRoof.add(color.colorFunctions, 'belge').name('belge').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.roof, 'belge')
             roof.updateToMaterial(materials.roof)
         }
     })
-    folderColorRoof.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRoof.add(color.colorFunctions, 'brown').name('brown').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.roof, 'brown')
             roof.updateToMaterial(materials.roof)
         }
     })
-    folderColorRoof.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRoof.add(color.colorFunctions, 'cameo').name('cameo').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.roof, 'cameo')
             roof.updateToMaterial(materials.roof)
         }
     })
-    folderColorRoof.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRoof.add(color.colorFunctions, 'champagne').name('champagne').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.roof, 'champagne')
             roof.updateToMaterial(materials.roof)
         }
     })
-    folderColorRoof.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRoof.add(color.colorFunctions, 'desert').name('desert').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.roof, 'desert')
             roof.updateToMaterial(materials.roof)
         }
     })
-    folderColorRoof.add(color.colorFunctions, 'white').name('white').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRoof.add(color.colorFunctions, 'white').name('white').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.roof, 'white')
             roof.updateToMaterial(materials.roof)
         }
     })
 
     // Lattice colors
-    folderColorLattice.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorLattice.add(color.colorFunctions, 'adobe').name('adobe').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.lattice, 'adobe')
             lattice.updateToMaterial(materials.lattice)
         }
     })
-    folderColorLattice.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorLattice.add(color.colorFunctions, 'almond').name('almond').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.lattice, 'almond')
             lattice.updateToMaterial(materials.lattice)
         }
     })
-    folderColorLattice.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorLattice.add(color.colorFunctions, 'belge').name('belge').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.lattice, 'belge')
             lattice.updateToMaterial(materials.lattice)
         }
     })
-    folderColorLattice.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorLattice.add(color.colorFunctions, 'brown').name('brown').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.lattice, 'brown')
             lattice.updateToMaterial(materials.lattice)
         }
     })
-    folderColorLattice.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorLattice.add(color.colorFunctions, 'cameo').name('cameo').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.lattice, 'cameo')
             lattice.updateToMaterial(materials.lattice)
         }
     })
-    folderColorLattice.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorLattice.add(color.colorFunctions, 'champagne').name('champagne').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.lattice, 'champagne')
             lattice.updateToMaterial(materials.lattice)
         }
     })
-    folderColorLattice.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorLattice.add(color.colorFunctions, 'desert').name('desert').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.lattice, 'desert')
             lattice.updateToMaterial(materials.lattice)
         }
     })
-    folderColorLattice.add(color.colorFunctions, 'white').name('white').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorLattice.add(color.colorFunctions, 'white').name('white').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.lattice, 'white')
             lattice.updateToMaterial(materials.lattice)
         }
     })
 
     // Posts colors
-    folderColorPosts.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorPosts.add(color.colorFunctions, 'adobe').name('adobe').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.posts, 'adobe')
             posts.updateToMaterial(materials.posts)
         }
     })
-    folderColorPosts.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorPosts.add(color.colorFunctions, 'almond').name('almond').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.posts, 'almond')
             posts.updateToMaterial(materials.posts)
         }
     })
-    folderColorPosts.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorPosts.add(color.colorFunctions, 'belge').name('belge').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.posts, 'belge')
             posts.updateToMaterial(materials.posts)
         }
     })
-    folderColorPosts.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorPosts.add(color.colorFunctions, 'brown').name('brown').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.posts, 'brown')
             posts.updateToMaterial(materials.posts)
         }
     })
-    folderColorPosts.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorPosts.add(color.colorFunctions, 'cameo').name('cameo').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.posts, 'cameo')
             posts.updateToMaterial(materials.posts)
         }
     })
-    folderColorPosts.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorPosts.add(color.colorFunctions, 'champagne').name('champagne').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.posts, 'champagne')
             posts.updateToMaterial(materials.posts)
         }
     })
-    folderColorPosts.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorPosts.add(color.colorFunctions, 'desert').name('desert').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.posts, 'desert')
             posts.updateToMaterial(materials.posts)
         }
     })
-    folderColorPosts.add(color.colorFunctions, 'white').name('white').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorPosts.add(color.colorFunctions, 'white').name('white').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.posts, 'white')
             posts.updateToMaterial(materials.posts)
         }
     })
 
     // Rafters colors
-    folderColorRafters.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRafters.add(color.colorFunctions, 'adobe').name('adobe').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.rafters, 'adobe')
             rafters.updateToMaterial(materials.rafters)
         }
     })
-    folderColorRafters.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRafters.add(color.colorFunctions, 'almond').name('almond').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.rafters, 'almond')
             rafters.updateToMaterial(materials.rafters)
         }
     })
-    folderColorRafters.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRafters.add(color.colorFunctions, 'belge').name('belge').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.rafters, 'belge')
             rafters.updateToMaterial(materials.rafters)
         }
     })
-    folderColorRafters.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRafters.add(color.colorFunctions, 'brown').name('brown').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.rafters, 'brown')
             rafters.updateToMaterial(materials.rafters)
         }
     })
-    folderColorRafters.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRafters.add(color.colorFunctions, 'cameo').name('cameo').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.rafters, 'cameo')
             rafters.updateToMaterial(materials.rafters)
         }
     })
-    folderColorRafters.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRafters.add(color.colorFunctions, 'champagne').name('champagne').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.rafters, 'champagne')
             rafters.updateToMaterial(materials.rafters)
         }
     })
-    folderColorRafters.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRafters.add(color.colorFunctions, 'desert').name('desert').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.rafters, 'desert')
             rafters.updateToMaterial(materials.rafters)
         }
     })
-    folderColorRafters.add(color.colorFunctions, 'white').name('white').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorRafters.add(color.colorFunctions, 'white').name('white').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.rafters, 'white')
             rafters.updateToMaterial(materials.rafters)
         }
     })
 
     // Beams colors
-    folderColorBeams.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorBeams.add(color.colorFunctions, 'adobe').name('adobe').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.beams, 'adobe')
             beams.updateToMaterial(materials.beams)
         }
     })
-    folderColorBeams.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorBeams.add(color.colorFunctions, 'almond').name('almond').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.beams, 'almond')
             beams.updateToMaterial(materials.beams)
         }
     })
-    folderColorBeams.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorBeams.add(color.colorFunctions, 'belge').name('belge').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.beams, 'belge')
             beams.updateToMaterial(materials.beams)
         }
     })
-    folderColorBeams.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorBeams.add(color.colorFunctions, 'brown').name('brown').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.beams, 'brown')
             beams.updateToMaterial(materials.beams)
         }
     })
-    folderColorBeams.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorBeams.add(color.colorFunctions, 'cameo').name('cameo').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.beams, 'cameo')
             beams.updateToMaterial(materials.beams)
         }
     })
-    folderColorBeams.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorBeams.add(color.colorFunctions, 'champagne').name('champagne').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.beams, 'champagne')
             beams.updateToMaterial(materials.beams)
         }
     })
-    folderColorBeams.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorBeams.add(color.colorFunctions, 'desert').name('desert').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.beams, 'desert')
             beams.updateToMaterial(materials.beams)
         }
     })
-    folderColorBeams.add(color.colorFunctions, 'white').name('white').onChange(() =>
-    {
-        if (!materials.parameters.combine)
-        {
+    folderColorBeams.add(color.colorFunctions, 'white').name('white').onChange(() => {
+        if (!materials.parameters.combine) {
             color.changeMaterialColor(materials.beams, 'white')
             beams.updateToMaterial(materials.beams)
         }
@@ -537,11 +454,9 @@ function initModel()
 
     // });
 
-    folderColor.add(materials.parameters, 'combine').name('combine').onChange((value) =>
-    {
+    folderColor.add(materials.parameters, 'combine').name('combine').onChange((value) => {
         materials.parameters.combine = value
-        if (materials.parameters.combine)
-        {
+        if (materials.parameters.combine) {
             // update GUI
             // ctrlCombineColor.show()
             // ctrlColorRoof.show()
@@ -556,8 +471,7 @@ function initModel()
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
 
         }
-        if (!materials.parameters.combine)
-        {
+        if (!materials.parameters.combine) {
             // update GUI
             // ctrlCombineColor.show()
             // ctrlColorRoof.show()
@@ -575,66 +489,50 @@ function initModel()
     const folderColorCombine = folderColor.addFolder('ColorCombine').close().show()
 
     // Combine colors
-    folderColorCombine.add(color.colorFunctions, 'adobe').name('adobe').onChange(() =>
-    {
-        if (materials.parameters.combine)
-        {
+    folderColorCombine.add(color.colorFunctions, 'adobe').name('adobe').onChange(() => {
+        if (materials.parameters.combine) {
             color.changeMaterialColor(materials.general, 'adobe')
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
         }
     })
-    folderColorCombine.add(color.colorFunctions, 'almond').name('almond').onChange(() =>
-    {
-        if (materials.parameters.combine)
-        {
+    folderColorCombine.add(color.colorFunctions, 'almond').name('almond').onChange(() => {
+        if (materials.parameters.combine) {
             color.changeMaterialColor(materials.general, 'almond')
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
         }
     })
-    folderColorCombine.add(color.colorFunctions, 'belge').name('belge').onChange(() =>
-    {
-        if (materials.parameters.combine)
-        {
+    folderColorCombine.add(color.colorFunctions, 'belge').name('belge').onChange(() => {
+        if (materials.parameters.combine) {
             color.changeMaterialColor(materials.general, 'belge')
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
         }
     })
-    folderColorCombine.add(color.colorFunctions, 'brown').name('brown').onChange(() =>
-    {
-        if (materials.parameters.combine)
-        {
+    folderColorCombine.add(color.colorFunctions, 'brown').name('brown').onChange(() => {
+        if (materials.parameters.combine) {
             color.changeMaterialColor(materials.general, 'brown')
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
         }
     })
-    folderColorCombine.add(color.colorFunctions, 'cameo').name('cameo').onChange(() =>
-    {
-        if (materials.parameters.combine)
-        {
+    folderColorCombine.add(color.colorFunctions, 'cameo').name('cameo').onChange(() => {
+        if (materials.parameters.combine) {
             color.changeMaterialColor(materials.general, 'cameo')
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
         }
     })
-    folderColorCombine.add(color.colorFunctions, 'champagne').name('champagne').onChange(() =>
-    {
-        if (materials.parameters.combine)
-        {
+    folderColorCombine.add(color.colorFunctions, 'champagne').name('champagne').onChange(() => {
+        if (materials.parameters.combine) {
             color.changeMaterialColor(materials.general, 'champagne')
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
         }
     })
-    folderColorCombine.add(color.colorFunctions, 'desert').name('desert').onChange(() =>
-    {
-        if (materials.parameters.combine)
-        {
+    folderColorCombine.add(color.colorFunctions, 'desert').name('desert').onChange(() => {
+        if (materials.parameters.combine) {
             color.changeMaterialColor(materials.general, 'desert')
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
         }
     })
-    folderColorCombine.add(color.colorFunctions, 'white').name('white').onChange(() =>
-    {
-        if (materials.parameters.combine)
-        {
+    folderColorCombine.add(color.colorFunctions, 'white').name('white').onChange(() => {
+        if (materials.parameters.combine) {
             color.changeMaterialColor(materials.general, 'white')
             color.updateColors(materials, roof, rafters, beams, posts, lattice) // update to the new material color
         }
@@ -686,8 +584,7 @@ function initModel()
     const house = new House(manager.loader)
     sceneCtrl.add(house.instanse, house.enterFloor)
     const bigOffsetZ = - 0.3
-    if (PARAMS.attachment === 'free standing')
-    {
+    if (PARAMS.attachment === 'free standing') {
         house.setPosition()
         house.bigGroup.position.z = 0
         house.bigRoof.position.y = 0
@@ -696,8 +593,7 @@ function initModel()
         house.smallMask.scale.y = 0.75
         house.smallMask.position.y = 2.4
     }
-    if (PARAMS.attachment === 'attached')
-    {
+    if (PARAMS.attachment === 'attached') {
         house.instanse.position.set(0, 0, 0)
         house.bigGroup.position.z = - 0.15 + bigOffsetZ
     }
@@ -710,8 +606,7 @@ function initModel()
     patioGroup.instance.add(fan.instanse)
 
     let fanStatus = true
-    const ctrlFan = folderAccesories.add(PARAMS.accesories, 'fan', [true, false]).onChange((value) =>
-    {
+    const ctrlFan = folderAccesories.add(PARAMS.accesories, 'fan', [true, false]).onChange((value) => {
         PARAMS.accesories.fan = value
         fan.update()
         // set price of accesories
@@ -731,12 +626,10 @@ function initModel()
      */
     const enterFloor = new EnterFloor()
     sceneCtrl.add(enterFloor.instance)
-    if (PARAMS.attachment === 'free standing')
-    {
+    if (PARAMS.attachment === 'free standing') {
         enterFloor.instance.position.set(house.instanse.position.x - 0.75, 0, house.instanse.position.z - 6.5)
     }
-    if (PARAMS.attachment === 'attached')
-    {
+    if (PARAMS.attachment === 'attached') {
         enterFloor.instance.position.set(-0.75, 0, -6.5)
     }
 
@@ -759,8 +652,7 @@ function initModel()
     patioGroup.instance.add(rafters.group)
 
     // Rafters GUI
-    folderRafters.add(PARAMS, 'rafterType', ['2x6', '3x8']).name('rafterType').onChange((value) =>
-    {
+    folderRafters.add(PARAMS, 'rafterType', ['2x6', '3x8']).name('rafterType').onChange((value) => {
 
         rafters.setSize(value)
 
@@ -770,15 +662,13 @@ function initModel()
         beams.updateToMaterial(materials.beams)
         price.update()
 
-        if (PARAMS.attachment === 'attached')
-        {
+        if (PARAMS.attachment === 'attached') {
             setAttachmentHeight()
         }
 
     })
 
-    folderRafters.add(PARAMS, 'rafterMaxDistance', 0.4, 2, 0.1).name('rafterMaxDistance (ft)').onChange((value) =>
-    {
+    folderRafters.add(PARAMS, 'rafterMaxDistance', 0.4, 2, 0.1).name('rafterMaxDistance (ft)').onChange((value) => {
         PARAMS.rafterMaxDistance = value
         rafters.update()
         rafters.updateToMaterial(materials.rafters)
@@ -790,20 +680,17 @@ function initModel()
 
     const posts = new Posts()
     patioGroup.instance.add(posts.backGroup, posts.frontGroup)
-    if (PARAMS.attachment === 'free standing')
-    {
+    if (PARAMS.attachment === 'free standing') {
         //nothing
     }
-    if (PARAMS.attachment === 'attached')
-    {
+    if (PARAMS.attachment === 'attached') {
         posts.delete()
         posts.createFront()
         posts.updateToMaterial(materials.posts)
     }
 
     // Posts GUI
-    folderPosts.add(PARAMS, 'postsType', ['default', '8x8', '10x10', 'D=8', 'D=10']).onChange((value) =>
-    {
+    folderPosts.add(PARAMS, 'postsType', ['default', '8x8', '10x10', 'D=8', 'D=10']).onChange((value) => {
         posts.updateType(value)
         posts.updateToMaterial(materials.posts)
         beams.update()
@@ -811,16 +698,13 @@ function initModel()
         price.update()
     })
 
-    folderPosts.add(PARAMS, 'postsHeight', ['8 ft', '10 ft']).onChange((value) =>
-    {
+    folderPosts.add(PARAMS, 'postsHeight', ['8 ft', '10 ft']).onChange((value) => {
 
-        if (value === '8 ft')
-        {
+        if (value === '8 ft') {
             patioGroup.instance.position.y = 8 / 2
             if (PARAMS.attachment === 'attached') setAttachmentHeight()
         }
-        if (value === '10 ft')
-        {
+        if (value === '10 ft') {
             patioGroup.instance.position.y = 10 / 2
             if (PARAMS.attachment === 'attached') setAttachmentHeight()
         }
@@ -844,24 +728,20 @@ function initModel()
 
     // Beams GUI
 
-    folderBeams.add(PARAMS, 'beamsType', ['single', 'double']).name('beamsType').onChange((value) =>
-    {
+    folderBeams.add(PARAMS, 'beamsType', ['single', 'double']).name('beamsType').onChange((value) => {
         console.log(posts.frontGroup.children[0].children[0].material.map.name);
-        if (value === 'single')
-        {
+        if (value === 'single') {
             ctrlBeamsSizes.hide().reset()
             PARAMS.beamsSizes.width = 0.66
             PARAMS.beamsSizes.depth = 0.25
         }
-        if (value === 'double')
-        {
+        if (value === 'double') {
             ctrlBeamsSizes.show()
         }
 
         PARAMS.beamsType === value
 
-        if (PARAMS.attachment === 'attached')
-        {
+        if (PARAMS.attachment === 'attached') {
             setAttachmentHeight()
         }
 
@@ -882,15 +762,12 @@ function initModel()
 
     })
 
-    const ctrlBeamsSizes = folderBeams.add(PARAMS, 'beamsSizeType', ['6x2', '8x3']).name('beamsSizes').hide().onChange((value) =>
-    {
-        if (value === '8x3')
-        {
+    const ctrlBeamsSizes = folderBeams.add(PARAMS, 'beamsSizeType', ['6x2', '8x3']).name('beamsSizes').hide().onChange((value) => {
+        if (value === '8x3') {
             PARAMS.beamsSizes.height = 0.66
             PARAMS.beamsSizes.depth = 0.25
         }
-        if (value === '6x2')
-        {
+        if (value === '6x2') {
             PARAMS.beamsSizes.height = 0.5
             PARAMS.beamsSizes.depth = 0.1667
         }
@@ -912,16 +789,13 @@ function initModel()
 
     // Lattice GUI
 
-    folderLattice.add(PARAMS, 'latticeType', ['2x2', '3x2']).name('latticeType').onChange((value) =>
-    {
+    folderLattice.add(PARAMS, 'latticeType', ['2x2', '3x2']).name('latticeType').onChange((value) => {
         PARAMS.latticeType = value
-        if (PARAMS.latticeType === '2x2')
-        {
+        if (PARAMS.latticeType === '2x2') {
             PARAMS.latticeSizes.height = 0.1667
             PARAMS.latticeSizes.depth = 0.1667
         }
-        if (PARAMS.latticeType === '3x2')
-        {
+        if (PARAMS.latticeType === '3x2') {
             PARAMS.latticeSizes.height = 0.1667 // 2 inch
             PARAMS.latticeSizes.depth = 0.25 // 3 inch
         }
@@ -933,8 +807,7 @@ function initModel()
 
     })
 
-    folderLattice.add(PARAMS, 'latticeMaxDistance', 0, 2, 0.0001).name('latticeMaxDistance (ft)').onChange((value) =>
-    {
+    folderLattice.add(PARAMS, 'latticeMaxDistance', 0, 2, 0.0001).name('latticeMaxDistance (ft)').onChange((value) => {
 
         PARAMS.latticeMaxDistance = value
 
@@ -947,13 +820,10 @@ function initModel()
      * Patio types
      */
 
-    function patioTypesSetup()
-    {
+    function patioTypesSetup() {
 
-        if (PARAMS.patioType === 'solid')
-        {
-            if (!materials.parameters.combine)
-            {
+        if (PARAMS.patioType === 'solid') {
+            if (!materials.parameters.combine) {
                 // ctrlColorRoof.show()
             }
             // ctrlColorLattice.show()
@@ -963,11 +833,9 @@ function initModel()
             posts.update()
             posts.updateToMaterial(materials.posts)
         }
-        if (PARAMS.patioType === 'lattice')
-        {
+        if (PARAMS.patioType === 'lattice') {
             // ctrlColorRoof.show()
-            if (!materials.parameters.combine)
-            {
+            if (!materials.parameters.combine) {
                 // ctrlColorLattice.show()
             }
 
@@ -976,10 +844,8 @@ function initModel()
             posts.update()
             posts.updateToMaterial(materials.posts)
         }
-        if (PARAMS.patioType === 'insulated')
-        {
-            if (!materials.parameters.combine)
-            {
+        if (PARAMS.patioType === 'insulated') {
+            if (!materials.parameters.combine) {
                 // ctrlColorRoof.show()
             }
             // ctrlColorLattice.hide()
@@ -993,8 +859,7 @@ function initModel()
 
     patioTypesSetup()
 
-    folderTypes.add(PARAMS, 'patioType', ['solid', 'lattice', 'insulated']).name('patioTypes').onChange((value) =>
-    {
+    folderTypes.add(PARAMS, 'patioType', ['solid', 'lattice', 'insulated']).name('patioTypes').onChange((value) => {
 
         PARAMS.patioType = value
 
@@ -1097,13 +962,11 @@ function initModel()
     // Helpers
     // sceneCtrl.add(areaLight.patioBottomHelper, areaLight.patioTopHelper, areaLight.frontWallHelper, areaLight.enterHelper, areaLight.sideWallHelper)
 
-    if (PARAMS.attachment === 'free standing')
-    {
+    if (PARAMS.attachment === 'free standing') {
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
         areaLight.enter.position.set(-10.08, 1.32, -8)
     }
-    if (PARAMS.attachment === 'attached')
-    {
+    if (PARAMS.attachment === 'attached') {
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
         areaLight.enter.position.set(-8.5, 1.32, -8)
     }
@@ -1133,8 +996,7 @@ function initModel()
 
     let time = Date.now();
 
-    function animate()
-    {
+    function animate() {
 
         const currentTime = Date.now();
         const deltaTime = currentTime - time;
@@ -1159,19 +1021,16 @@ function initModel()
      * Resizes
      */
 
-    window.addEventListener('resize', () =>
-    {
+    window.addEventListener('resize', () => {
         // Update sizes
         sizes.width = window.innerWidth - 487;
         sizes.height = window.innerHeight - 9.920;
 
         // screen width > 479 px update sizes width and height of the sizes object
-        if (window.innerWidth < 479)
-        {
+        if (window.innerWidth < 479) {
             sizes.width = window.innerWidth;
             sizes.height = window.innerHeight * 0.4;
-        } else if (window.innerWidth < 992)
-        {
+        } else if (window.innerWidth < 992) {
             sizes.width = window.innerWidth - 388;
         }
 
@@ -1193,8 +1052,7 @@ function initModel()
 
     // Functions for set a type of an attachment
 
-    function setFreeStanding()
-    {
+    function setFreeStanding() {
         PARAMS.attachment = 'free standing'
 
         planeDepth.setOpacity(0.3)
@@ -1220,8 +1078,7 @@ function initModel()
         areaLight.enter.position.set(-10.7, 1.32, -8)
     }
 
-    function setAttached()
-    {
+    function setAttached() {
         PARAMS.attachment = 'attached'
 
         planeDepth.setOpacity(0)
@@ -1249,11 +1106,9 @@ function initModel()
 
     // Functions for set a type of 'roof', 'fasciaEave', 'underEave', 'wall'
 
-    function setAttachmentHeight()
-    {
+    function setAttachmentHeight() {
 
-        if (PARAMS.attachment === 'attached')
-        {
+        if (PARAMS.attachment === 'attached') {
             let beamsOffset, postsOffset, raftersOffset
             if (PARAMS.beamsType === 'single') beamsOffset = PARAMS.beamsSizes.height / 4
             if (PARAMS.beamsType === 'double') beamsOffset = 0
@@ -1263,29 +1118,25 @@ function initModel()
             if (PARAMS.rafterType === '3x8') raftersOffset = 0.05
 
             let y
-            if (PARAMS.attachmentType === 'roof')
-            {
+            if (PARAMS.attachmentType === 'roof') {
                 y = -0.55 + beamsOffset + postsOffset + raftersOffset
                 house.bigRoof.position.y = y
                 house.smallRoof.position.y = y
                 patioGroup.instance.position.z = -5.315
             }
-            if (PARAMS.attachmentType === 'fasciaEave')
-            {
+            if (PARAMS.attachmentType === 'fasciaEave') {
                 y = -0.293 + beamsOffset + postsOffset + raftersOffset
                 house.bigRoof.position.y = y
                 house.smallRoof.position.y = y
                 patioGroup.instance.position.z = -5.783
             }
-            if (PARAMS.attachmentType === 'underEave')
-            {
+            if (PARAMS.attachmentType === 'underEave') {
                 y = -0.135 + beamsOffset + postsOffset + raftersOffset
                 house.bigRoof.position.y = y
                 house.smallRoof.position.y = y
                 patioGroup.instance.position.z = -5.315
             }
-            if (PARAMS.attachmentType === 'wall')
-            {
+            if (PARAMS.attachmentType === 'wall') {
                 y = 0.00 + beamsOffset + postsOffset + raftersOffset
                 house.bigRoof.position.y = y
                 house.smallRoof.position.y = y
@@ -1307,12 +1158,10 @@ function initModel()
     // Attachments' buttons for UI
 
     const objectAttachmets = {}
-    objectAttachmets.attached = () =>
-    {
+    objectAttachmets.attached = () => {
         setAttached()
 
-        if (classSizes.doCustom)
-        {
+        if (classSizes.doCustom) {
 
             // UI
 
@@ -1325,12 +1174,10 @@ function initModel()
 
         areaLight.sideWall.position.z = -13.083
     }
-    objectAttachmets.freeStanding = () =>
-    {
+    objectAttachmets.freeStanding = () => {
         setFreeStanding()
 
-        if (classSizes.doCustom)
-        {
+        if (classSizes.doCustom) {
 
             // UI
 
@@ -1343,14 +1190,12 @@ function initModel()
 
         areaLight.sideWall.position.z = -10.7
     }
-    objectAttachmets.roof = () =>
-    {
+    objectAttachmets.roof = () => {
         setAttached()
         PARAMS.attachmentType = 'roof'
         setAttachmentHeight()
 
-        if (classSizes.doCustom)
-        {
+        if (classSizes.doCustom) {
 
             // UI
 
@@ -1363,14 +1208,12 @@ function initModel()
 
         areaLight.sideWall.position.z = -13.083
     }
-    objectAttachmets.fasciaEave = () =>
-    {
+    objectAttachmets.fasciaEave = () => {
         setAttached()
         PARAMS.attachmentType = 'fasciaEave'
         setAttachmentHeight()
 
-        if (classSizes.doCustom)
-        {
+        if (classSizes.doCustom) {
 
             // UI
 
@@ -1383,14 +1226,12 @@ function initModel()
 
         areaLight.sideWall.position.z = -13.083
     }
-    objectAttachmets.underEave = () =>
-    {
+    objectAttachmets.underEave = () => {
         setAttached()
         PARAMS.attachmentType = 'underEave'
         setAttachmentHeight()
 
-        if (classSizes.doCustom)
-        {
+        if (classSizes.doCustom) {
 
             // UI
 
@@ -1403,14 +1244,12 @@ function initModel()
 
         areaLight.sideWall.position.z = -13.083
     }
-    objectAttachmets.wall = () =>
-    {
+    objectAttachmets.wall = () => {
         setAttached()
         PARAMS.attachmentType = 'wall'
         setAttachmentHeight()
 
-        if (classSizes.doCustom)
-        {
+        if (classSizes.doCustom) {
 
             // UI
 
@@ -1436,8 +1275,7 @@ function initModel()
     folderAttachment.add(objectAttachmets, 'underEave').name('underEave')
     folderAttachment.add(objectAttachmets, 'fasciaEave').name('fasciaEave')
     folderAttachment.add(objectAttachmets, 'roof').name('roof')
-    folderAttachment.add(objectAttachmets, 'freeStanding').name('freeStanding').onChange(() =>
-    {
+    folderAttachment.add(objectAttachmets, 'freeStanding').name('freeStanding').onChange(() => {
 
     })
 
@@ -1452,8 +1290,7 @@ function initModel()
      */
 
 
-    function updatePatioSize(value)
-    {
+    function updatePatioSize(value) {
 
         PARAMS.roofDepth = value[0]
         PARAMS.roofWidth = value[1]
@@ -1478,10 +1315,8 @@ function initModel()
 
     }
 
-    const button10x10 = folderSizes.add(classSizes, 'size10x10').name('10x10').show().onChange((value) =>
-    {
-        if (PARAMS.attachment === 'free standing')
-        {
+    const button10x10 = folderSizes.add(classSizes, 'size10x10').name('10x10').show().onChange((value) => {
+        if (PARAMS.attachment === 'free standing') {
             value = size10x10Wrapper()
             updatePatioSize(value)
             house.bigGroup.position.z = 0
@@ -1491,10 +1326,8 @@ function initModel()
 
 
     })
-    const button11x11 = folderSizes.add(classSizes, 'size11x11').name('11x11').show().onChange((value) =>
-    {
-        if (PARAMS.attachment === 'free standing')
-        {
+    const button11x11 = folderSizes.add(classSizes, 'size11x11').name('11x11').show().onChange((value) => {
+        if (PARAMS.attachment === 'free standing') {
             value = size11x11Wrapper()
             updatePatioSize(value)
             areaLight.enter.position.x = -10.7
@@ -1502,10 +1335,8 @@ function initModel()
         }
 
     })
-    const button12x12 = folderSizes.add(classSizes, 'size12x12').name('12x12').show().onChange((value) =>
-    {
-        if (PARAMS.attachment === 'free standing')
-        {
+    const button12x12 = folderSizes.add(classSizes, 'size12x12').name('12x12').show().onChange((value) => {
+        if (PARAMS.attachment === 'free standing') {
             value = size12x12Wrapper()
             updatePatioSize(value)
             areaLight.enter.position.x = -10.7
@@ -1514,16 +1345,13 @@ function initModel()
 
     })
 
-    const button12x16 = folderSizes.add(classSizes, 'size12x16').name('12x16').show().onChange((value) =>
-    {
-        if (PARAMS.attachment === 'free standing')
-        {
+    const button12x16 = folderSizes.add(classSizes, 'size12x16').name('12x16').show().onChange((value) => {
+        if (PARAMS.attachment === 'free standing') {
             value = size12x16Wrapper()
             updatePatioSize(value)
             areaLight.enter.position.x = -10.7
         }
-        if (PARAMS.attachment === 'attached')
-        {
+        if (PARAMS.attachment === 'attached') {
             value = size12x16Wrapper()
             updatePatioSize(value)
 
@@ -1534,17 +1362,14 @@ function initModel()
 
 
     })
-    const button12x20 = folderSizes.add(classSizes, 'size12x20').name('12x20').show().onChange((value) =>
-    {
-        if (PARAMS.attachment === 'free standing')
-        {
+    const button12x20 = folderSizes.add(classSizes, 'size12x20').name('12x20').show().onChange((value) => {
+        if (PARAMS.attachment === 'free standing') {
             value = size12x20Wrapper()
             updatePatioSize(value)
             areaLight.enter.position.x = -10.7
         }
 
-        if (PARAMS.attachment === 'attached')
-        {
+        if (PARAMS.attachment === 'attached') {
             value = size12x20Wrapper()
             updatePatioSize(value)
             house.bigGroup.position.z = -1.2 - 0.07 + bigOffsetZ
@@ -1555,17 +1380,14 @@ function initModel()
 
 
     })
-    const button12x24 = folderSizes.add(classSizes, 'size12x24').name('12x24').show().onChange((value) =>
-    {
-        if (PARAMS.attachment === 'free standing')
-        {
+    const button12x24 = folderSizes.add(classSizes, 'size12x24').name('12x24').show().onChange((value) => {
+        if (PARAMS.attachment === 'free standing') {
             value = size12x24Wrapper()
             updatePatioSize(value)
             areaLight.enter.position.x = -10.7
         }
 
-        if (PARAMS.attachment === 'attached')
-        {
+        if (PARAMS.attachment === 'attached') {
             value = size12x24Wrapper()
             updatePatioSize(value)
             house.bigGroup.position.z = -2.25 - 0.07 + bigOffsetZ
@@ -1573,20 +1395,16 @@ function initModel()
         }
 
     })
-    folderSizes.add(classSizes, 'doCustom').name('do custom').onChange((value) =>
-    {
-        if (value)
-        {
-            if (PARAMS.attachment === 'free standing')
-            {
+    folderSizes.add(classSizes, 'doCustom').name('do custom').onChange((value) => {
+        if (value) {
+            if (PARAMS.attachment === 'free standing') {
                 freeStandingCtrlX.show().setValue(12)
                 freeStandingCtrlZ.show().setValue(10)
 
                 attachedCtrlX.hide()
                 attachedCtrlZ.hide()
             }
-            if (PARAMS.attachment === 'attached')
-            {
+            if (PARAMS.attachment === 'attached') {
                 freeStandingCtrlX.hide()
                 freeStandingCtrlZ.hide()
 
@@ -1595,48 +1413,41 @@ function initModel()
             }
 
         }
-        if (!value)
-        {
+        if (!value) {
             freeStandingCtrlX.hide()
             freeStandingCtrlZ.hide()
             attachedCtrlX.hide()
             attachedCtrlZ.hide()
         }
     })
-    const freeStandingCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidthFree').hide().onChange((value) =>
-    {
+    const freeStandingCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidthFree').hide().onChange((value) => {
         const updateSize = [PARAMS.roofDepth, value]
         updatePatioSize(updateSize)
         // house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.25)
     })
-    const freeStandingCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 10, 24, 0.1).name('roofDepthFree').hide().onChange((value) =>
-    {
+    const freeStandingCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 10, 24, 0.1).name('roofDepthFree').hide().onChange((value) => {
         const updateSize = [value, PARAMS.roofWidth]
         updatePatioSize(updateSize)
         console.log(areaLight.enter.position.x);
         areaLight.enter.position.x = math.mapRange(value, 10, 24, -10.7, -14)
     })
 
-    const attachedCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidthAttached').hide().onChange((value) =>
-    {
+    const attachedCtrlX = folderSizes.add(PARAMS, 'roofWidth', 12, 24, 0.1).name('roofWidthAttached').hide().onChange((value) => {
         const updateSize = [PARAMS.roofDepth, value]
         updatePatioSize(updateSize)
         house.bigGroup.position.z = math.mapRange(value, 10, 24, 1.45, -2.238) - 0.39
         areaLight.sideWall.position.z = -12.56 + house.bigGroup.position.z
     })
-    const attachedCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 12, 12, 0.1).name('roofDepthAttached').hide().onChange((value) =>
-    {
+    const attachedCtrlZ = folderSizes.add(PARAMS, 'roofDepth', 12, 12, 0.1).name('roofDepthAttached').hide().onChange((value) => {
         const updateSize = [value, PARAMS.roofWidth]
         updatePatioSize(updateSize)
     })
 
-    if (PARAMS.attachment === 'free standing')
-    {
+    if (PARAMS.attachment === 'free standing') {
         const value = classSizes.size10x10()
         updatePatioSize(value)
     }
-    if (PARAMS.attachment === 'attached')
-    {
+    if (PARAMS.attachment === 'attached') {
         const value = classSizes.size12x16()
         updatePatioSize(value)
     }
@@ -1697,8 +1508,7 @@ function initModel()
     const accessoriesList = document.querySelector('#patio-accessories');
     const accessoriesElem = document.querySelector('[data-name="Fan beam"]');
 
-    function checkoutState()
-    {
+    function checkoutState() {
         requestForm.classList.add('is--hidden');
         checkoutForm.classList.remove('is--hidden');
         priceWrapper.classList.remove('is--hidden');
@@ -1706,8 +1516,7 @@ function initModel()
         requestInfo.classList.add('is--hidden');
     }
 
-    function requestState()
-    {
+    function requestState() {
         requestForm.classList.remove('is--hidden');
         checkoutForm.classList.add('is--hidden');
         priceWrapper.classList.add('is--hidden');
@@ -1716,15 +1525,12 @@ function initModel()
     }
 
     // function for setting value and placeholder to the input and textContent to the output
-    function setInputOutput(input, output, value)
-    {
-        input.forEach((item) =>
-        {
+    function setInputOutput(input, output, value) {
+        input.forEach((item) => {
             item.value = value;
             item.placeholder = value;
         })
-        output.forEach((item) =>
-        {
+        output.forEach((item) => {
             item.textContent = value;
         })
     }
@@ -1740,23 +1546,19 @@ function initModel()
     setInputOutput(installationInput, installationOutput, 'Self Installation');
 
     // function for adding active class to the button
-    function addActiveClass(button)
-    {
+    function addActiveClass(button) {
         button.classList.add('active')
     }
 
     // function for removing active class from all buttons in list
-    function removeActiveClass(list)
-    {
-        list.querySelectorAll('.button-item').forEach((button) =>
-        {
+    function removeActiveClass(list) {
+        list.querySelectorAll('.button-item').forEach((button) => {
             button.classList.remove('active')
         })
     }
 
     // function for adding active class to the each first button by default
-    function addActiveClassDefault(list)
-    {
+    function addActiveClassDefault(list) {
         list.querySelectorAll('.button-item')[0].classList.add('active');
     }
 
@@ -1773,10 +1575,8 @@ function initModel()
 
     //  ---- Controls events ----
     // Type
-    typeList.addEventListener('click', (event) =>
-    {
-        if (event.target.classList.contains('trigger-button-item'))
-        {
+    typeList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('trigger-button-item')) {
             let typeName = event.target.getAttribute('data-name')
             PARAMS.patioType = typeName.toLowerCase()
             patioTypesSetup()
@@ -1786,11 +1586,9 @@ function initModel()
             removeActiveClass(typeList)
             addActiveClass(event.target.parentElement)
             // if type is lattice, then show type select wrapper, else hide
-            if (typeName === 'Lattice')
-            {
+            if (typeName === 'Lattice') {
                 typeSelectWrapper.classList.remove('is--hidden')
-            } else
-            {
+            } else {
                 typeSelectWrapper.classList.add('is--hidden')
 
             }
@@ -1801,23 +1599,18 @@ function initModel()
     let currentRafter = '2x6';
 
     // on change of rafters select, update folderRafters controllers and update price
-    raftersSelect.addEventListener('change', (event) =>
-    {
+    raftersSelect.addEventListener('change', (event) => {
         let raftersName = event.target.value
-        folderRafters.controllers.forEach((controller) =>
-        {
-            if (controller._name === 'rafterType')
-            {
+        folderRafters.controllers.forEach((controller) => {
+            if (controller._name === 'rafterType') {
                 controller.setValue(raftersName)
                 currentRafter = raftersName
-                typeInput.forEach((item) =>
-                {
+                typeInput.forEach((item) => {
                     item.value = `Lattice tubes:${currentLattice}; rafters:${currentRafter};`
                     item.placeholder = item.value
 
                 })
-                typeOutput.forEach((item) =>
-                {
+                typeOutput.forEach((item) => {
                     item.textContent = `Lattice tubes:${currentLattice}; rafters:${currentRafter};`
                 })
             }
@@ -1826,22 +1619,17 @@ function initModel()
     })
 
     // on change of lattice select, update folderLattice controllers and update price
-    latticeSelect.addEventListener('change', (event) =>
-    {
+    latticeSelect.addEventListener('change', (event) => {
         let latticeName = event.target.value
-        folderLattice.controllers.forEach((controller) =>
-        {
-            if (controller._name === 'latticeType')
-            {
+        folderLattice.controllers.forEach((controller) => {
+            if (controller._name === 'latticeType') {
                 controller.setValue(latticeName)
                 currentLattice = latticeName
-                typeInput.forEach((item) =>
-                {
+                typeInput.forEach((item) => {
                     item.value = `Lattice tubes:${currentLattice}; rafters:${currentRafter};`
                     item.placeholder = item.value
                 })
-                typeOutput.forEach((item) =>
-                {
+                typeOutput.forEach((item) => {
                     item.textContent = `Lattice tubes:${currentLattice}; rafters:${currentRafter};`
                 })
             }
@@ -1854,26 +1642,20 @@ function initModel()
     // Color
     const colorLists = colorList.querySelectorAll('.button-grid')
     // Set active button by default for first element of each list
-    colorLists.forEach((list) =>
-    {
+    colorLists.forEach((list) => {
         addActiveClassDefault(list)
-        list.addEventListener('click', (event) =>
-        {
-            if (event.target.classList.contains('trigger-button-item'))
-            {
+        list.addEventListener('click', (event) => {
+            if (event.target.classList.contains('trigger-button-item')) {
                 removeActiveClass(list)
                 addActiveClass(event.target.parentElement)
             }
         })
     });
 
-    function replaceWords(str, replacementIndex, newWord)
-    {
+    function replaceWords(str, replacementIndex, newWord) {
         const words = str.split(', ');
-        const replacedWords = words.map((word, index) =>
-        {
-            if (index === replacementIndex - 1)
-            {
+        const replacedWords = words.map((word, index) => {
+            if (index === replacementIndex - 1) {
                 const originalWord = word.split(': ')[0];
                 return `${originalWord}: ${newWord}`;
             }
@@ -1882,15 +1664,12 @@ function initModel()
         return replacedWords.join(', ');
     }
 
-    colorList.addEventListener('click', (event) =>
-    {
-        if (event.target.classList.contains('trigger-button-item'))
-        {
+    colorList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('trigger-button-item')) {
             let colorType = event.target.getAttribute('data-type')
             let colorAddType = event.target.getAttribute('data-typ')
             let colorName = event.target.getAttribute('data-name').toLowerCase()
-            if (colorType === 'colorRoof' || colorAddType === 'colorLattice')
-            {
+            if (colorType === 'colorRoof' || colorAddType === 'colorLattice') {
                 color.changeMaterialColor(materials.lattice, colorName)
                 // get current value of color input and output
                 let currentValue = colorInput[0].value
@@ -1899,8 +1678,7 @@ function initModel()
                 replaceWords(currentValue, 3, colorName)
                 setInputOutput(colorInput, colorOutput, replaceWords(currentValue, 1, colorName))
 
-            } else if (colorType === 'colorBeams')
-            {
+            } else if (colorType === 'colorBeams') {
                 color.changeMaterialColor(materials.beams, colorName)
                 // get current value of color input and output
                 let currentValue = colorInput[0].value
@@ -1909,8 +1687,7 @@ function initModel()
                 replaceWords(currentValue, 2, colorName)
                 setInputOutput(colorInput, colorOutput, replaceWords(currentValue, 2, colorName))
 
-            } else if (colorType === 'colorPosts')
-            {
+            } else if (colorType === 'colorPosts') {
                 color.changeMaterialColor(materials.posts, colorName)
                 // get current value of color input and output
                 let currentValue = colorInput[0].value
@@ -1919,8 +1696,7 @@ function initModel()
                 replaceWords(currentValue, 3, colorName)
                 setInputOutput(colorInput, colorOutput, replaceWords(currentValue, 3, colorName))
 
-            } else if (colorType === 'colorRafters')
-            {
+            } else if (colorType === 'colorRafters') {
                 color.changeMaterialColor(materials.rafters, colorName)
                 // get current value of color input and output
                 let currentValue = colorInput[0].value
@@ -1929,8 +1705,7 @@ function initModel()
                 replaceWords(currentValue, 4, colorName)
                 setInputOutput(colorInput, colorOutput, replaceWords(currentValue, 4, colorName))
 
-            } else if (colorType === 'combineValue')
-            {
+            } else if (colorType === 'combineValue') {
                 color.changeMaterialColor(materials.general, colorName)
                 color.updateColors(materials, roof, rafters, beams, posts, lattice)
                 setInputOutput(colorInput, colorOutput, event.target.getAttribute('data-name'))
@@ -1945,16 +1720,13 @@ function initModel()
     const colorTabLinks = colorTab.querySelectorAll('.w-tab-link');
     const colorTabPanes = colorTab.querySelectorAll('.w-tab-pane');
 
-    if (colorToggleWrapper)
-    {
-        colorToggleWrapper.addEventListener('click', () =>
-        {
+    if (colorToggleWrapper) {
+        colorToggleWrapper.addEventListener('click', () => {
             colorToggleWrapper.classList.toggle('is--active');
             colorTab.classList.toggle('is--hidden');
             colorCombine.classList.toggle('is--hidden');
             // if colorToggleWrapper is active, then activate first combine color
-            if (colorToggleWrapper.classList.contains('is--active'))
-            {
+            if (colorToggleWrapper.classList.contains('is--active')) {
 
                 // update value and placeholder of input and textContent of output
                 setInputOutput(colorInput, colorOutput, 'Adobe')
@@ -1967,8 +1739,7 @@ function initModel()
                 removeActiveClass(colorLists[colorLists.length - 1])
                 // activate first button of last color list
                 colorLists[colorLists.length - 1].querySelectorAll('.button-item')[0].classList.add('active')
-            } else
-            {
+            } else {
                 // if colorToggleWrapper is not active, then change input and output values to default
                 setInputOutput(colorInput, colorOutput, 'Roof: adobe, Beams: adobe, Posts: adobe, Rafters: adobe')
                 color.changeMaterialColor(materials.lattice, 'adobe')
@@ -1987,12 +1758,10 @@ function initModel()
                 addActiveClass(colorLists[2].querySelectorAll('.button-item')[0])
                 addActiveClass(colorLists[3].querySelectorAll('.button-item')[0])
                 // reactive all tabs of colors tabs
-                colorTabLinks.forEach((link) =>
-                {
+                colorTabLinks.forEach((link) => {
                     link.classList.remove('w--current')
                 })
-                colorTabPanes.forEach((pane) =>
-                {
+                colorTabPanes.forEach((pane) => {
                     pane.classList.remove('w--tab-active')
                 })
                 // activate first tab of colors tabs
@@ -2003,8 +1772,7 @@ function initModel()
         })
     }
 
-    function defaultAttachment()
-    {
+    function defaultAttachment() {
         setAttached()
         PARAMS.attachmentType = 'wall'
         setAttachmentHeight()
@@ -2014,15 +1782,12 @@ function initModel()
     const attachmentImageInput = document.querySelector('.patio-image-input');
     const attachedImage = 'https://uploads-ssl.webflow.com/642e62f5ba9679c13f59f5e1/6526c54f932e6e80d8672878_attached-min.jpg';
     const freeStandingImage = 'https://uploads-ssl.webflow.com/642e62f5ba9679c13f59f5e1/6526c4df72011401910ad876_free-standing-min.jpg';
-    attachmentList.addEventListener('click', (event) =>
-    {
-        if (event.target.classList.contains('trigger-button-item'))
-        {
+    attachmentList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('trigger-button-item')) {
             let attachmentName = event.target.getAttribute('data-name')
             removeActiveClass(attachmentList)
             addActiveClass(event.target.parentElement)
-            if (attachmentName.toLowerCase() === 'free standing')
-            {
+            if (attachmentName.toLowerCase() === 'free standing') {
                 defaultAttachment()
                 sizesDefaultValues()
                 // set folderAttachement freeStanding
@@ -2036,8 +1801,7 @@ function initModel()
                 // set imageInpout valeu free standing image
                 attachmentImageInput.value = freeStandingImage;
                 // rectivate all butons of sizes free standing list
-                freeStandingSizes.querySelectorAll('.button-item').forEach((button) =>
-                {
+                freeStandingSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
                 })
                 // reactivate custom size button
@@ -2045,8 +1809,7 @@ function initModel()
                 customSizeHide()
                 // activate first button of sizes free standing list
                 addActiveClass(freeStandingSizes.querySelectorAll('.button-item')[0])
-            } else if (attachmentName.toLowerCase() === 'to the wall')
-            {
+            } else if (attachmentName.toLowerCase() === 'to the wall') {
                 sizesDefaultValues()
                 defaultAttachment()
                 attachedSize()
@@ -2060,8 +1823,7 @@ function initModel()
                 // reset accesorries
                 accessoriesElem.parentElement.classList.remove('active')
                 // rectivate all butons of sizes attached list
-                attachedSizes.querySelectorAll('.button-item').forEach((button) =>
-                {
+                attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
                 })
                 // reactivate custom size button
@@ -2069,8 +1831,7 @@ function initModel()
                 customSizeHide()
                 // activate first button of sizes attached list
                 addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
-            } else if (attachmentName.toLowerCase() === 'to facia/eave')
-            {
+            } else if (attachmentName.toLowerCase() === 'to facia/eave') {
                 defaultAttachment()
                 sizesDefaultValues()
                 setAttached()
@@ -2085,8 +1846,7 @@ function initModel()
                 // reset accesorries
                 accessoriesElem.parentElement.classList.remove('active')
                 // rectivate all butons of sizes attached list
-                attachedSizes.querySelectorAll('.button-item').forEach((button) =>
-                {
+                attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
                 })
                 // reactivate custom size button
@@ -2094,8 +1854,7 @@ function initModel()
                 customSizeHide()
                 // activate first button of sizes attached list
                 addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
-            } else if (attachmentName.toLowerCase() === 'to under eave')
-            {
+            } else if (attachmentName.toLowerCase() === 'to under eave') {
                 defaultAttachment()
                 sizesDefaultValues()
                 folderAttachment.controllers[0].setValue('attached')
@@ -2111,8 +1870,7 @@ function initModel()
                 // reset accesorries
                 accessoriesElem.parentElement.classList.remove('active')
                 // rectivate all butons of sizes attached list
-                attachedSizes.querySelectorAll('.button-item').forEach((button) =>
-                {
+                attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
                 })
                 // reactivate custom size button
@@ -2120,8 +1878,7 @@ function initModel()
                 customSizeHide()
                 // activate first button of sizes attached list
                 addActiveClass(attachedSizes.querySelectorAll('.button-item')[0])
-            } else if (attachmentName.toLowerCase() === 'to the roof')
-            {
+            } else if (attachmentName.toLowerCase() === 'to the roof') {
                 defaultAttachment()
                 sizesDefaultValues()
                 setAttached()
@@ -2135,8 +1892,7 @@ function initModel()
                 // reset accesorries
                 accessoriesElem.parentElement.classList.remove('active')
                 // rectivate all butons of sizes attached list
-                attachedSizes.querySelectorAll('.button-item').forEach((button) =>
-                {
+                attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                     button.classList.remove('active')
                 })
                 // reactivate custom size button
@@ -2149,27 +1905,22 @@ function initModel()
     })
 
     // Beams/headers
-    beamsList.addEventListener('click', (event) =>
-    {
-        if (event.target.classList.contains('trigger-button-item'))
-        {
+    beamsList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('trigger-button-item')) {
             let beamsName = event.target.getAttribute('data-type')
             let beamsTypeSize = event.target.getAttribute('data-size-type')
             removeActiveClass(beamsList)
             addActiveClass(event.target.parentElement)
-            if (beamsName.toLowerCase() === 'single')
-            {
+            if (beamsName.toLowerCase() === 'single') {
                 folderBeams.controllers[0].setValue('single')
                 // update value and placeholder of input and textContent of output
                 setInputOutput(headerInput, headerOutput, 'Single 3x8')
-            } else if (beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '8x3')
-            {
+            } else if (beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '8x3') {
                 // update value and placeholder of input and textContent of output
                 setInputOutput(headerInput, headerOutput, 'Double 8x3')
                 folderBeams.controllers[0].setValue('double')
                 folderBeams.controllers[1].setValue('8x3')
-            } else if (beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '6x2')
-            {
+            } else if (beamsName.toLowerCase() === 'double' && beamsTypeSize.toLowerCase() === '6x2') {
                 // update value and placeholder of input and textContent of output
                 setInputOutput(headerInput, headerOutput, 'Double 6x2')
                 folderBeams.controllers[0].setValue('double')
@@ -2194,15 +1945,12 @@ function initModel()
     postsSelectsSquare.classList.add('is--hidden')
     postsSelectsRound.classList.add('is--hidden')
 
-    postsList.addEventListener('click', (event) =>
-    {
-        if (event.target.classList.contains('trigger-button-item'))
-        {
+    postsList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('trigger-button-item')) {
             let postsName = event.target.getAttribute('data-type')
             removeActiveClass(postsList)
             addActiveClass(event.target.parentElement)
-            if (postsName.toLowerCase() === 'default')
-            {
+            if (postsName.toLowerCase() === 'default') {
                 postsSelectsWrapper.classList.add('is--hidden')
                 folderPosts.controllers[0].setValue('default')
                 folderPosts.controllers[1].setValue('8 ft')
@@ -2213,8 +1961,7 @@ function initModel()
                 postsSelectSquareTall.value = 'Tall 8'
                 postsSelectRoundWide.value = 'Wide 8'
                 postsSelectRoundTall.value = 'Tall 8'
-            } else if (postsName.toLowerCase() === 'square')
-            {
+            } else if (postsName.toLowerCase() === 'square') {
                 postsSelectsWrapper.classList.remove('is--hidden')
                 postsSelectsSquare.classList.remove('is--hidden')
                 postsSelectsRound.classList.add('is--hidden')
@@ -2225,38 +1972,31 @@ function initModel()
                 // set default value to the selects round
                 postsSelectRoundWide.value = 'Wide 8'
                 postsSelectRoundTall.value = 'Tall 8'
-                postsSelectSquareWide.addEventListener('change', (event) =>
-                {
+                postsSelectSquareWide.addEventListener('change', (event) => {
                     let postsWideSize = postsSelectSquareWide.value
 
-                    if (postsWideSize.toLowerCase() === 'wide 8')
-                    {
+                    if (postsWideSize.toLowerCase() === 'wide 8') {
                         folderPosts.controllers[0].setValue('8x8')
                         // update value and placeholder of input and textContent of output
                         setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
-                    } else if (postsWideSize.toLowerCase() === 'wide 10')
-                    {
+                    } else if (postsWideSize.toLowerCase() === 'wide 10') {
                         folderPosts.controllers[0].setValue('10x10')
                         // update value and placeholder of input and textContent of output
                         setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
                     }
                 })
-                postsSelectSquareTall.addEventListener('change', (event) =>
-                {
+                postsSelectSquareTall.addEventListener('change', (event) => {
                     let postsTallSize = postsSelectSquareTall.value
 
-                    if (postsTallSize.toLowerCase() === 'tall 8')
-                    {
+                    if (postsTallSize.toLowerCase() === 'tall 8') {
                         folderPosts.controllers[1].setValue('8 ft')
                         setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
-                    } else if (postsTallSize.toLowerCase() === 'tall 10')
-                    {
+                    } else if (postsTallSize.toLowerCase() === 'tall 10') {
                         folderPosts.controllers[1].setValue('10 ft')
                         setInputOutput(postsInput, postsOutput, `Squere ${postsSelectSquareWide.value} ${postsSelectSquareTall.value}`)
                     }
                 })
-            } else if (postsName.toLowerCase() === 'round')
-            {
+            } else if (postsName.toLowerCase() === 'round') {
                 postsSelectsWrapper.classList.remove('is--hidden')
                 postsSelectsRound.classList.remove('is--hidden')
                 postsSelectsSquare.classList.add('is--hidden')
@@ -2267,30 +2007,24 @@ function initModel()
                 // set default value to the selects square
                 postsSelectSquareWide.value = 'Wide 8'
                 postsSelectSquareTall.value = 'Tall 8'
-                postsSelectRoundWide.addEventListener('change', (event) =>
-                {
+                postsSelectRoundWide.addEventListener('change', (event) => {
                     let postsWideSize = postsSelectRoundWide.value
                     setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
-                    if (postsWideSize.toLowerCase() === 'wide 8')
-                    {
+                    if (postsWideSize.toLowerCase() === 'wide 8') {
                         folderPosts.controllers[0].setValue('D=8')
                         setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
-                    } else if (postsWideSize.toLowerCase() === 'wide 10')
-                    {
+                    } else if (postsWideSize.toLowerCase() === 'wide 10') {
                         folderPosts.controllers[0].setValue('D=10')
                         setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     }
                 })
-                postsSelectRoundTall.addEventListener('change', (event) =>
-                {
+                postsSelectRoundTall.addEventListener('change', (event) => {
                     let postsTallSize = postsSelectRoundTall.value
                     setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
-                    if (postsTallSize.toLowerCase() === 'tall 8')
-                    {
+                    if (postsTallSize.toLowerCase() === 'tall 8') {
                         folderPosts.controllers[1].setValue('8 ft')
                         setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
-                    } else if (postsTallSize.toLowerCase() === 'tall 10')
-                    {
+                    } else if (postsTallSize.toLowerCase() === 'tall 10') {
                         folderPosts.controllers[1].setValue('10 ft')
                         setInputOutput(postsInput, postsOutput, `Round ${postsSelectRoundWide.value} ${postsSelectRoundTall.value}`)
                     }
@@ -2300,19 +2034,14 @@ function initModel()
     })
 
     // Size
-    function connectInputWithController(input, controller, min, max)
-    {
-        input.addEventListener('input', (event) =>
-        {
+    function connectInputWithController(input, controller, min, max) {
+        input.addEventListener('input', (event) => {
             let value = parseFloat(event.target.value);
-            if (event.target.value.length > 1)
-            {
+            if (event.target.value.length > 1) {
 
-                if (value < min)
-                {
+                if (value < min) {
                     value = min;
-                } else if (value > max)
-                {
+                } else if (value > max) {
                     value = max;
                     event.target.value = value.toFixed(1)
                 }
@@ -2320,15 +2049,13 @@ function initModel()
                 controller.setValue(value);
             }
             // if it's free standing inputs then update input and output of size
-            if (input === freeStandingWidthInput || input === freeStandingDepthInput)
-            {
+            if (input === freeStandingWidthInput || input === freeStandingDepthInput) {
                 let width = parseFloat(freeStandingWidthInput.value)
                 let depth = parseFloat(freeStandingDepthInput.value)
                 let sizeName = `${width}x${depth}`
                 // update value and placeholder of input and textContent of output
                 setInputOutput(sizeInput, sizeOutput, sizeName)
-            } else if (input === attachedWidthInput)
-            {
+            } else if (input === attachedWidthInput) {
                 let width = parseFloat(attachedWidthInput.value)
                 let sizeName = `${width}`
                 // update value and placeholder of input and textContent of output
@@ -2338,12 +2065,11 @@ function initModel()
     }
 
     connectInputWithController(freeStandingWidthInput, folderSizes.controllers[7], 12, 24)
-    connectInputWithController(freeStandingDepthInput, folderSizes.controllers[8], 10, 12)
+    connectInputWithController(freeStandingDepthInput, folderSizes.controllers[8], 10, 24)
     connectInputWithController(attachedWidthInput, folderSizes.controllers[9], 12, 24)
 
     // set to freeWidthInput and freeDepthInput and attachedWidthInput default values
-    function sizesDefaultValues()
-    {
+    function sizesDefaultValues() {
         freeStandingWidthInput.value = 12.0
         freeStandingDepthInput.value = 10.0
         attachedWidthInput.value = 12.0
@@ -2353,56 +2079,46 @@ function initModel()
     freeStandingSizesSettingsHide()
     sizesDefaultValues()
 
-    function customSizeHide()
-    {
+    function customSizeHide() {
         customSizeWrapper.classList.add('is--hidden')
     }
 
-    function customSizeShow()
-    {
+    function customSizeShow() {
         customSizeWrapper.classList.remove('is--hidden')
     }
 
-    function attachedSize()
-    {
+    function attachedSize() {
         customSizeAttached.classList.remove('is--hidden')
         customSizeFreeStanding.classList.add('is--hidden')
         freeStandingSizesSettingsHide()
     }
 
-    function freeStandingSize()
-    {
+    function freeStandingSize() {
         customSizeFreeStanding.classList.remove('is--hidden')
         customSizeAttached.classList.add('is--hidden')
         attachedSizesSettingsHide()
     }
 
-    function attachedSizesSettingsHide()
-    {
+    function attachedSizesSettingsHide() {
         attachedSizes.classList.add('is--hidden')
         freeStandingSizes.classList.remove('is--hidden')
     }
 
-    function freeStandingSizesSettingsHide()
-    {
+    function freeStandingSizesSettingsHide() {
         freeStandingSizes.classList.add('is--hidden')
         attachedSizes.classList.remove('is--hidden')
     }
 
-    sizeList.addEventListener('click', (event) =>
-    {
-        if (event.target.classList.contains('trigger-button-item'))
-        {
+    sizeList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('trigger-button-item')) {
             let sizeName = event.target.getAttribute('data-type');
             removeActiveClass(sizeList)
             addActiveClass(event.target.parentElement)
             // Loop through the controllers to find a match
-            for (const controller of folderSizes.controllers)
-            {
+            for (const controller of folderSizes.controllers) {
                 const controllerProperty = controller.property.replace('size', '');
 
-                if (controllerProperty === sizeName)
-                {
+                if (controllerProperty === sizeName) {
                     // reset all inputs for sizes
                     sizesDefaultValues()
                     customSizeHide()
@@ -2410,24 +2126,20 @@ function initModel()
                     // update value and placeholder of input and textContent of output
                     setInputOutput(sizeInput, sizeOutput, sizeName)
                     // if local storage requestedZipCode is not false, then call checkoutState function, else call requestState function
-                    if (localStorage.getItem('requestedZipCode') !== 'false')
-                    {
+                    if (localStorage.getItem('requestedZipCode') !== 'false') {
                         checkoutState();
                     }
                 }
             }
 
             // Handle the 'custom' case
-            if (sizeName === 'custom')
-            {
+            if (sizeName === 'custom') {
                 customSizeShow();
                 // call func request state
                 requestState()
-                if (PARAMS.attachment === 'free standing')
-                {
+                if (PARAMS.attachment === 'free standing') {
                     freeStandingSize();
-                } else if (PARAMS.attachment === 'attached')
-                {
+                } else if (PARAMS.attachment === 'attached') {
                     attachedSize();
                 }
             }
@@ -2435,10 +2147,8 @@ function initModel()
     });
 
 
-    folderPrice.onChange(event =>
-    {
-        if (Number(event.controller.object.total) > 0)
-        {
+    folderPrice.onChange(event => {
+        if (Number(event.controller.object.total) > 0) {
             priceInput.value = event.controller.object.total;
             priceOutput.innerHTML = `$${event.controller.object.total}`;
         }
@@ -2448,18 +2158,15 @@ function initModel()
     let defaultStanding = localStorage.getItem('default-standing');
     let defaultAttachedSize = localStorage.getItem('data-attached');
     let defaultFreeStandingSize = localStorage.getItem('data-free-standing');
-    if (defaultStanding !== null)
-    {
-        if (defaultStanding === 'free-standing')
-        {
+    if (defaultStanding !== null) {
+        if (defaultStanding === 'free-standing') {
             setFreeStanding()
             freeStandingSize()
             // update value and placeholder of input and textContent of output
             setInputOutput(attachmentInput, attachmentOutput, 'Free standing')
 
             // rectivate all butons of sizes free standing list
-            freeStandingSizes.querySelectorAll('.button-item').forEach((button) =>
-            {
+            freeStandingSizes.querySelectorAll('.button-item').forEach((button) => {
                 button.classList.remove('active')
             })
             // set imageInpout valeu free standing image
@@ -2477,8 +2184,7 @@ function initModel()
             removeActiveClass(sizeList)
             sizeList.querySelector(`[data-type="${defaultFreeStandingSize}"]`).parentElement.classList.add('active')
 
-        } else if (defaultStanding === 'attached-standing')
-        {
+        } else if (defaultStanding === 'attached-standing') {
             setAttached()
             PARAMS.attachmentType = 'wall'
             setAttachmentHeight()
@@ -2486,8 +2192,7 @@ function initModel()
             // update value and placeholder of input and textContent of output
             setInputOutput(attachmentInput, attachmentOutput, 'To the wall')
             // rectivate all butons of sizes attached list
-            attachedSizes.querySelectorAll('.button-item').forEach((button) =>
-            {
+            attachedSizes.querySelectorAll('.button-item').forEach((button) => {
                 button.classList.remove('active')
             })
             // set imageInpout valeu attached image
@@ -2505,14 +2210,11 @@ function initModel()
         }
     }
 
-    function setDefaultSize(value)
-    {
-        for (const controller of folderSizes.controllers)
-        {
+    function setDefaultSize(value) {
+        for (const controller of folderSizes.controllers) {
             const controllerProperty = controller.property.replace('size', '');
 
-            if (controllerProperty === value)
-            {
+            if (controllerProperty === value) {
                 // reset all inputs for sizes
                 freeStandingWidthInput.value = 12.0
                 freeStandingDepthInput.value = 10.0
@@ -2522,8 +2224,7 @@ function initModel()
                 // update value and placeholder of input and textContent of output
                 setInputOutput(sizeInput, sizeOutput, value)
                 // if local storage requestedZipCode is not false, then call checkoutState function, else call requestState function
-                if (localStorage.getItem('requestedZipCode') !== 'false')
-                {
+                if (localStorage.getItem('requestedZipCode') !== 'false') {
                     checkoutState();
                 }
             }
@@ -2533,18 +2234,15 @@ function initModel()
     // Installation
     const installationText = document.querySelector('#installation-text')
 
-    installationList.addEventListener('click', (event) =>
-    {
-        if (event.target.classList.contains('trigger-button-item'))
-        {
+    installationList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('trigger-button-item')) {
             removeActiveClass(installationList)
             addActiveClass(event.target.parentElement)
             installationText.classList.add('is--hidden')
             // update value and placeholder of input and textContent of output
             setInputOutput(installationInput, installationOutput, 'Self Installation')
 
-            if (event.target.parentElement === installationList.querySelectorAll('.button-item')[1])
-            {
+            if (event.target.parentElement === installationList.querySelectorAll('.button-item')[1]) {
                 installationText.classList.remove('is--hidden')
                 setInputOutput(installationInput, installationOutput, 'Installer')
             }
@@ -2552,10 +2250,8 @@ function initModel()
     });
 
     // Accessories
-    accessoriesList.addEventListener('click', (event) =>
-    {
-        if (event.target.classList.contains('trigger-button-item'))
-        {
+    accessoriesList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('trigger-button-item')) {
             const parentElement = event.target.parentElement;
             parentElement.classList.toggle('active');
 
@@ -2572,12 +2268,10 @@ function initModel()
     // set all inputs name and values from request form #wf-form-Request-Form to local storage on click on request trigger button
     const requestTriggerButton = document.querySelector('.submit-button');
 
-    requestTriggerButton.addEventListener('click', () =>
-    {
+    requestTriggerButton.addEventListener('click', () => {
         const requestForm = document.querySelector('#wf-form-Request-Form');
         const requestFormInputs = requestForm.querySelectorAll('input');
-        requestFormInputs.forEach((input) =>
-        {
+        requestFormInputs.forEach((input) => {
             localStorage.setItem(input.name, input.value)
         })
     });
@@ -2585,8 +2279,7 @@ function initModel()
     // Get image by class-name patio-image, get src and set it to the local storage
     const patioImage = document.querySelector('.patio-image');
 
-    if (patioImage)
-    {
+    if (patioImage) {
         const patioImageSrc = patioImage.getAttribute('src');
         localStorage.setItem('Image', patioImageSrc)
     }
