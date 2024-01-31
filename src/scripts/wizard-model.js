@@ -1427,6 +1427,11 @@ function initModel()
 
     const button12x16 = folderSizes.add(classSizes, 'size12x16').name('12x16').show().onChange((value) =>
     {
+        if (PARAMS.attachment === 'free standing')
+        {
+            value = size12x16Wrapper()
+            updatePatioSize(value)
+        }
         if (PARAMS.attachment === 'attached')
         {
             value = size12x16Wrapper()
@@ -1440,6 +1445,12 @@ function initModel()
     })
     const button12x20 = folderSizes.add(classSizes, 'size12x20').name('12x20').show().onChange((value) =>
     {
+        if (PARAMS.attachment === 'free standing')
+        {
+            value = size12x20Wrapper()
+            updatePatioSize(value)
+        }
+
         if (PARAMS.attachment === 'attached')
         {
             value = size12x20Wrapper()
@@ -1454,6 +1465,12 @@ function initModel()
     })
     const button12x24 = folderSizes.add(classSizes, 'size12x24').name('12x24').show().onChange((value) =>
     {
+        if (PARAMS.attachment === 'free standing')
+        {
+            value = size12x24Wrapper()
+            updatePatioSize(value)
+        }
+
         if (PARAMS.attachment === 'attached')
         {
             value = size12x24Wrapper()
@@ -1755,12 +1772,15 @@ function initModel()
         })
     });
 
-    function replaceWords(str, replacementIndex, newWord) {
+    function replaceWords(str, replacementIndex, newWord)
+    {
         const words = str.split(', ');
-        const replacedWords = words.map((word, index) => {
-            if (index === replacementIndex - 1) {
-            const originalWord = word.split(': ')[0];
-            return `${originalWord}: ${newWord}`;
+        const replacedWords = words.map((word, index) =>
+        {
+            if (index === replacementIndex - 1)
+            {
+                const originalWord = word.split(': ')[0];
+                return `${originalWord}: ${newWord}`;
             }
             return word;
         });
@@ -1783,7 +1803,7 @@ function initModel()
                 // replace color name in current value and output
                 replaceWords(currentValue, 3, colorName)
                 setInputOutput(colorInput, colorOutput, replaceWords(currentValue, 1, colorName))
-                
+
             } else if (colorType === 'colorBeams')
             {
                 color.changeMaterialColor(materials.beams, colorName)
@@ -1840,7 +1860,7 @@ function initModel()
             // if colorToggleWrapper is active, then activate first combine color
             if (colorToggleWrapper.classList.contains('is--active'))
             {
-                
+
                 // update value and placeholder of input and textContent of output
                 setInputOutput(colorInput, colorOutput, 'Adobe')
                 color.changeMaterialColor(materials.lattice, 'adobe')
